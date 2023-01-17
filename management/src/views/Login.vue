@@ -69,13 +69,12 @@ export default {
           this.loading = true;
           // 登录处理逻辑
           login(this.loginForm).then((res) => {
-            console.log(res);
             const jwt = res.data.jwt;
             const userInfo = res.data.user;
             // 把token和用户信息共享出去
             this.$store.commit("SET_TOKEN", jwt);
             this.$store.commit("SET_USERINFO", userInfo);
-            this.$router.push({ path: "/dashboard" });
+            this.$router.push({ path: "/" });
             this.loading = false;
           });
         } else {

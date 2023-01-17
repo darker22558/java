@@ -9,26 +9,21 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
-    name: "Index",
-    redirect: "/login",
-    hidden: true,
-  },
-  {
     path: "/login",
     name: "Login",
     component: Login,
     hidden: true,
   },
   {
-    path: "/dashboard",
-    name: "Dashboard",
+    path: "/",
+    name: "Index",
     component: Container,
     children: [
       {
-        path: "/",
+        path: "/dashboard",
         name: "Dashboard",
         component: Dashboard,
+        meta: { title: "首页", icon: "el-icon-s-home" },
       },
     ],
   },

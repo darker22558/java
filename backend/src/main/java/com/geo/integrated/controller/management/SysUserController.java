@@ -25,17 +25,19 @@ public class SysUserController {
     private UserService userService;
 
     @PostMapping("/login")
-    public Result login(@Validated @RequestBody LoginDTO loginDTO, HttpServletResponse response) {
+    public Result login(@Validated @RequestBody LoginDTO loginDTO) {
         User user = userService.login(loginDTO);
         if (user == null) {
             return Result.fail("用户不存在或密码不正确");
         }
         String jwt = TokenUtils.generateToken(user.getId(), user.getPassword());
-        response.setHeader("Authorization", jwt);
-        response.setHeader("Access-Control-Expose-Headers", "Authorization");
         Map<String, Object> data = new LinkedHashMap<>();
         data.put("user", user);
         data.put("jwt", jwt);
         return Result.success("登录成功", data);
+    }
+    @PostMapping("/logout")
+    public Result logout() {
+        return Result.success("退出登录");
     }
 }

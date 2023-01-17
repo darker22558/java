@@ -7,8 +7,10 @@ import router from "@/router/index";
 const service = axios.create({
   // url = base url + request url
   baseURL: "http://localhost:8080",
-  // withCredentials: true, // send cookies when cross-domain requests
-  timeout: 30000, // request timeout
+  // send cookies when cross-domain requests
+  // withCredentials: true,
+  // request timeout
+  timeout: 30000,
 });
 
 // request interceptor
@@ -21,12 +23,6 @@ service.interceptors.request.use(
       // please modify it according to the actual situation
       config.headers["Authorization"] = store.state.token;
     }
-
-    /*if (localStorage.getItem("token")) {
-      // 让每个请求都携带token
-      config.headers["Authorization"] = localStorage.getItem("token");
-      console.log(config);
-    }*/
     return config;
   },
   (error) => {

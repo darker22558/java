@@ -4,9 +4,9 @@ function resolve(dir) {
 }
 
 const defaultSettings = require("./src/settings.js");
-// page title
+// 网站标题
 const name = defaultSettings.title || "后台管理系统";
-// dev port
+// 本地端口
 const port = process.env.port || process.env.npm_config_port || 9528;
 
 // 所有配置项说明参见https://cli.vuejs.org/config/
@@ -24,7 +24,8 @@ module.exports = {
   devServer: {
     port: port,
     host: "localhost",
-    open: false, // 自动打开浏览器
+    // 自动打开浏览器
+    open: false,
     overlay: {
       warnings: false,
       errors: true,

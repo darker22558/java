@@ -1,35 +1,18 @@
 <template>
   <div>
-    <el-container
-      style="height: 100%; border: 1px solid #eee"
-      class="container"
-    >
-      <el-aside
-        style="width: 20%; background-color: rgb(238, 241, 246); height: 100vh"
-      >
+    <el-container style="height: 100%; border: 1px solid #eee" class="container">
+      <el-aside style="width: 20%; background-color: rgb(238, 241, 246); height: 100vh">
         <div style="height: 60px; line-height: 60px; text-align: center">
-          <img
-            src="../assets/logo.png"
-            alt=""
-            style="width: 20px; position: relative; top: 5px"
-          />
+          <img src="../assets/logo.png" alt="" style="width: 20px; position: relative; top: 5px"/>
           <b style="color: black; margin-left: 5px">地学综合平台</b>
         </div>
         <el-menu :router="true">
-          <el-submenu
-            v-for="(item, index) in this.$router.options.routes"
-            :key="index"
-            :index="index + ''"
-          >
+          <el-submenu v-for="(item, index) in this.$router.options.routes" :key="index" :index="index + ''">
             <template slot="title">
               <i class="el-icon-box"></i>
               <span>{{ item.name }}</span>
             </template>
-            <el-menu-item
-              :key="indexOfChild"
-              :index="children.path"
-              v-for="(children, indexOfChild) in item.children"
-            >
+            <el-menu-item :key="indexOfChild" :index="children.path" v-for="(children, indexOfChild) in item.children">
               {{ children.name }}
             </el-menu-item>
           </el-submenu>
@@ -39,7 +22,7 @@
       <el-container>
         <el-header style="text-align: right; font-size: 12px">
           <el-dropdown>
-            <span>{{ username }}</span>
+            <span>{{ userInfo.username || "请登录" }}</span>
             <el-avatar
               :size="30"
               style="margin-top: 8px"
@@ -47,8 +30,15 @@
             ></el-avatar>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>查看</el-dropdown-item>
-              <el-dropdown-item>新增</el-dropdown-item>
-              <el-dropdown-item>删除</el-dropdown-item>
+              <a target="_blank" :href="github">
+                <el-dropdown-item>Github</el-dropdown-item>
+              </a>
+              <a target="_blank" :href="docs">
+                <el-dropdown-item>Docs</el-dropdown-item>
+              </a>
+              <el-dropdown-item divided @click.native="handleLogout()">
+                <span style="display: block">Log Out</span>
+              </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </el-header>
@@ -62,12 +52,28 @@
 </template>
 
 <script>
+import { logout } from "@/api/login";
+
 export default {
   name: "Container",
   data() {
     return {
-      username: this.$store.state.userInfo.username,
+      userInfo: sessionStorage.getItem("userInfo")
+        ? JSON.parse(sessionStorage.getItem("userInfo"))
+        : [],
+      github: "https://github.com/whtli/geo-integrated",
+      docs: "https://github.com/whtli/geo-integrated/blob/master/README.md",
     };
+  },
+  methods: {
+    async handleLogout() {
+      logout().then((res) => {
+        console.log(res);
+        // 把token和用户信息共享出去
+        this.$store.commit("REMOVE_INFO");
+        this.$router.push(`/login?redirect=${this.$route.fullPath}`);
+      });
+    },
   },
 };
 </script>
