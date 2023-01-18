@@ -23,8 +23,8 @@ export default new Vuex.Store({
     REMOVE_INFO: (state) => {
       state.token = "";
       state.userInfo = "";
-      localStorage.setItem("token", "");
-      sessionStorage.setItem("userInfo", "");
+      localStorage.removeItem("token");
+      sessionStorage.removeItem("userInfo");
     },
   },
   getters: {
