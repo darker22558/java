@@ -88,7 +88,8 @@ public class CorsConfig implements WebMvcConfigurer {
 }
 ```
 ### 1.4.在[pom.xml](./backend/pom.xml)中引入hutool等常用的依赖
-```java
+```xml
+    <dependencies>
         <!--mybatis plus-->
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -113,6 +114,7 @@ public class CorsConfig implements WebMvcConfigurer {
             <artifactId>java-jwt</artifactId>
             <version>3.10.3</version>
         </dependency>
+    </dependencies>
 ```
 ### 1.5.Mybatis Plus设置
 ```java
@@ -247,6 +249,71 @@ export default service;
 
 #### 2.2.1.布局调整
 + 添加界面统一布局[Container](management/src/components/Container.vue)并完善侧边栏导航配置
+```vue
+<template>
+  <div>
+    <el-container style="height: 100%; border: 1px solid #eee" class="container">
+      <el-aside style="width: 20%; background-color: rgb(238, 241, 246); height: 100vh">
+        <div style="height: 60px; line-height: 60px; text-align: left; margin-left: 20px">
+          <img src="../assets/logo.png" alt="" style="width: 20px; position: relative; top: 5px"/>
+          <b style="color: black; margin-left: 5px">地学综合平台</b>
+        </div>
+        <el-menu router>
+          <template v-for="(item, index) in this.$router.options.routes">
+            <el-submenu :key="index" :index="index + ''" v-if="!item.hidden">
+              <template slot="title" v-if="item.meta">
+                <i :class="item.meta.icon"></i>
+                <span>{{ item.meta.title }}</span>
+              </template>
+              <template slot="title" v-else>
+                <i class="el-icon-s-home"></i>
+                <span>{{ item.name }}</span>
+              </template>
+              <template v-for="(children, indexOfChild) in item.children">
+                <el-menu-item :key="indexOfChild" :index="children.path">
+                  <template slot="title" v-if="children.meta">
+                    <i :class="children.meta.icon"></i>
+                    <span >{{ children.meta.title }}</span>
+                  </template>
+                  <template slot="title" v-else>
+                    <i class="el-icon-s-home"></i>
+                    <span >{{ children.name }}</span>
+                  </template>
+                </el-menu-item>
+              </template>
+            </el-submenu>
+          </template>
+        </el-menu>
+      </el-aside>
+
+      <el-container>
+        <el-header style="text-align: right; font-size: 12px">
+          <el-avatar :size="20" style="margin-top: 10px" src="http://hexo.li98.cn/img/snail2.png"></el-avatar>
+          <el-dropdown>
+            <span>{{ userInfo.username || "请登录" }}</span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>查看</el-dropdown-item>
+              <a target="_blank" :href="github">
+                <el-dropdown-item>Github</el-dropdown-item>
+              </a>
+              <a target="_blank" :href="docs">
+                <el-dropdown-item>Readme</el-dropdown-item>
+              </a>
+              <el-dropdown-item divided @click.native="handleLogout()">
+                <span style="display: block">退出登录</span>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </el-header>
+
+        <el-main>
+          <router-view />
+        </el-main>
+      </el-container>
+    </el-container>
+  </div>
+</template>
+```
 + 该布局使用的是ElementUI的container组件，Header+Main+Aside的形式
 
 #### 2.2.2.自定义配置，见[vue.config.js](management/vue.config.js)和[settings.js](management/src/settings.js)
@@ -257,10 +324,12 @@ export default service;
 + 添加界面统一布局[Container](management/src/components/Container.vue)
 + 该布局使用的是ElementUI的container组件，Header+Main+Footer的形式
 
-## 3.management的登录功能
+## 3.management的登录、退出功能
 + 添加登录界面[Login.vue](management/src/views/Login.vue)
 
-+ 在[api/login.js](management/src/api/login.js)中添加登录api
++ 在[Container](management/src/components/Container.vue)的Header中添加`退出`按钮
+
++ 在[api/login.js](management/src/api/login.js)中添加登录、退出api
 ```javascript
 export function login(loginForm) {
   return request({
@@ -269,8 +338,40 @@ export function login(loginForm) {
     data: loginForm,
   });
 }
+export function logout() {
+    return request({
+        url: "/management/user/logout",
+        method: "POST",
+    });
+}
 ```
 
++ 在[SysUserController.java](backend/src/main/java/com/geo/integrated/controller/management/SysUserController.java)中完成登录、退出功能
+```java
+@RestController
+@RequestMapping("/management/user")
+public class SysUserController {
+    @Autowired
+    private UserService userService;
+
+    @PostMapping("/login")
+    public Result login(@Validated @RequestBody LoginDTO loginDTO) {
+        User user = userService.login(loginDTO);
+        if (user == null) {
+            return Result.fail("用户不存在或密码不正确");
+        }
+        String jwt = TokenUtils.generateToken(user.getId(), user.getPassword());
+        Map<String, Object> data = new LinkedHashMap<>();
+        data.put("user", user);
+        data.put("jwt", jwt);
+        return Result.success("登录成功", data);
+    }
+    @PostMapping("/logout")
+    public Result logout() {
+        return Result.success("退出登录");
+    }
+}
+```
 + 在[store/index.js](management/src/store/index.js)中添加关于登录和退出时设置token和userInfo的方法
 ```javascript
 export default new Vuex.Store({
@@ -293,8 +394,8 @@ export default new Vuex.Store({
     REMOVE_INFO: (state) => {
       state.token = "";
       state.userInfo = "";
-      localStorage.setItem("token", "");
-      sessionStorage.setItem("userInfo", "");
+      localStorage.removeItem("token");
+      sessionStorage.removeItem("userInfo");
     },
   },
   getters: {
