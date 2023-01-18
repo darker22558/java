@@ -154,8 +154,9 @@ spring:
 + 前台相关的控制层统一放置在controller/front路径下
 
 ## 2.前端基本配置
+
 ### 2.1.通用配置(以后台管理系统为例)
-### 2.1.1.引入ElementUI
+#### 2.1.1.引入ElementUI
 + 下载
 ```bash
 npm install element-ui -S
@@ -167,7 +168,7 @@ import "element-ui/lib/theme-chalk/index.css";
 Vue.use(ElementUI);
 ```
 
-### 2.1.2.引入Axios并配置请求文件
+#### 2.1.2.引入Axios并配置请求文件
 + 下载
 ```bash
 npm install axios -S
@@ -242,7 +243,7 @@ service.interceptors.response.use(
 export default service;
 ```
 
-### 2.1.3.完成前端跨域配置
+#### 2.1.3.完成前端跨域配置
 + 见[request.js](./management/src/utils/request.js)文件中的创建axios实例，baseURL填写后端地址和端口
 
 ### 2.2 地学综合平台管理系统
@@ -253,48 +254,72 @@ export default service;
 <template>
   <div>
     <el-container style="height: 100%; border: 1px solid #eee" class="container">
-      <el-aside style="width: 20%; background-color: rgb(238, 241, 246); height: 100vh">
-        <div style="height: 60px; line-height: 60px; text-align: left; margin-left: 20px">
+      <el-aside style="width: 20%; background-color: #545c64; height: 100vh">
+        <div style="height: 54px; line-height: 60px; text-align: left; margin-left: 23px; margin-top: 6px">
           <img src="../assets/logo.png" alt="" style="width: 20px; position: relative; top: 5px"/>
           <b style="color: black; margin-left: 5px">地学综合平台</b>
         </div>
-        <el-menu router>
+        <el-menu
+            router
+            class="el-menu-demo"
+            background-color="#545c64"
+            text-color="#fff"
+            active-text-color="#ffd04b"
+        >
           <template v-for="(item, index) in this.$router.options.routes">
-            <el-submenu :key="index" :index="index + ''" v-if="!item.hidden">
-              <template slot="title" v-if="item.meta">
-                <i :class="item.meta.icon"></i>
-                <span>{{ item.meta.title }}</span>
-              </template>
-              <template slot="title" v-else>
-                <i class="el-icon-s-home"></i>
-                <span>{{ item.name }}</span>
-              </template>
-              <template v-for="(children, indexOfChild) in item.children">
-                <el-menu-item :key="indexOfChild" :index="children.path">
-                  <template slot="title" v-if="children.meta">
-                    <i :class="children.meta.icon"></i>
-                    <span >{{ children.meta.title }}</span>
-                  </template>
-                  <template slot="title" v-else>
-                    <i class="el-icon-s-home"></i>
-                    <span >{{ children.name }}</span>
-                  </template>
-                </el-menu-item>
-              </template>
-            </el-submenu>
+            <template v-if="!item.hidden && item.children != null && item.children.length > 1">
+              <el-submenu :key="index" :index="index + ''" >
+                <template slot="title" v-if="item.meta">
+                  <i :class="item.meta.icon"></i>
+                  <span>{{ item.meta.title }}</span>
+                </template>
+                <template slot="title" v-else>
+                  <i class="el-icon-s-home"></i>
+                  <span>{{ item.name }}</span>
+                </template>
+                <template v-for="(children, indexOfChild) in item.children">
+                  <el-menu-item :key="indexOfChild" :index="children.path">
+                    <template slot="title" v-if="children.meta">
+                      <i :class="children.meta.icon"></i>
+                      <span>{{ children.meta.title }}</span>
+                    </template>
+                    <template slot="title" v-else>
+                      <i class="el-icon-s-home"></i>
+                      <span>{{ children.name }}</span>
+                    </template>
+                  </el-menu-item>
+                </template>
+              </el-submenu>
+            </template>
+            <template v-if="!item.hidden && (item.children == null || item.children.length === 1)">
+              <el-menu-item :key="index" :index="item.children[0].path">
+                <template slot="title" v-if="item.children[0].meta">
+                  <i :class="item.children[0].meta.icon"></i>
+                  <span>{{ item.children[0].meta.title }}</span>
+                </template>
+                <template slot="title" v-else>
+                  <i class="el-icon-s-home"></i>
+                  <span>{{ item.children[0].name }}</span>
+                </template>
+              </el-menu-item>
+            </template>
           </template>
         </el-menu>
       </el-aside>
 
       <el-container>
-        <el-header style="text-align: right; font-size: 12px">
-          <el-avatar :size="20" style="margin-top: 10px" src="http://hexo.li98.cn/img/snail2.png"></el-avatar>
+        <el-header style="text-align: right; font-size: 12px; background-color: #545c64">
+          <el-avatar :size="25" style="margin-top: 5px; margin-right: 15px" src="http://hexo.li98.cn/img/snail2.png"></el-avatar>
           <el-dropdown>
-            <span>{{ userInfo.username || "请登录" }}</span>
+            <span style="color: black; cursor: pointer">
+              <b>
+                {{ userInfo.username || "请登录" }}
+              </b>
+            </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>查看</el-dropdown-item>
+              <el-dropdown-item>个人主页</el-dropdown-item>
               <a target="_blank" :href="github">
-                <el-dropdown-item>Github</el-dropdown-item>
+                <el-dropdown-item divided>Github</el-dropdown-item>
               </a>
               <a target="_blank" :href="docs">
                 <el-dropdown-item>Readme</el-dropdown-item>
@@ -314,6 +339,7 @@ export default service;
   </div>
 </template>
 ```
+
 + 该布局使用的是ElementUI的container组件，Header+Main+Aside的形式
 
 #### 2.2.2.自定义配置，见[vue.config.js](management/vue.config.js)和[settings.js](management/src/settings.js)
@@ -322,6 +348,7 @@ export default service;
 
 #### 2.3.1.布局调整
 + 添加界面统一布局[Container](management/src/components/Container.vue)
+
 + 该布局使用的是ElementUI的container组件，Header+Main+Footer的形式
 
 #### 2.3.2.自定义配置，见[vue.config.js](./front/vue.config.js)和[settings.js](front/src/settings.js)

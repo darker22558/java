@@ -16,6 +16,7 @@ const routes = [
         path: "/home",
         name: "首页",
         component: Home,
+        meta: { title: "导航", icon: "el-icon-house" },
       },
     ],
   },
@@ -90,19 +91,20 @@ const routes = [
     path: "/about",
     name: "关于",
     component: Container,
-    meta: { title: "关于我们", icon: "el-icon-collection-tag\n" },
+    meta: { title: "关于我们", icon: "el-icon-collection-tag" },
     hidden: false,
     children: [
       {
         path: "/overview",
         name: "概况",
-        meta: { title: "平台概况", icon: "el-icon-collection-tag\n" },
+        meta: { title: "平台概况", icon: "el-icon-collection-tag" },
       },
       {
-        path: "/about",
-        name: "About",
+        path: "/introduction",
+        name: "简介",
         component: () =>
-          import(/* webpackChunkName: "about" */ "../views/about/About.vue"),
+          import(/* webpackChunkName: "about" */ "../views/about/Introduction.vue"),
+        meta: { title: "简介", icon: "el-icon-collection-tag" },
       },
     ],
   },
