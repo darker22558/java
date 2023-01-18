@@ -245,7 +245,7 @@ export default service;
 ### 2.1.3.完成前端跨域配置
 + 见[request.js](./management/src/utils/request.js)文件中的创建axios实例，baseURL填写后端地址和端口
 
-### 2.2 地学综合平台后台管理系统
+### 2.2 地学综合平台管理系统
 
 #### 2.2.1.布局调整
 + 添加界面统一布局[Container](management/src/components/Container.vue)并完善侧边栏导航配置
@@ -318,11 +318,13 @@ export default service;
 
 #### 2.2.2.自定义配置，见[vue.config.js](management/vue.config.js)和[settings.js](management/src/settings.js)
 
-### 2.3 地学综合平台前台
+### 2.3 地学综合平台
 
 #### 2.3.1.布局调整
 + 添加界面统一布局[Container](management/src/components/Container.vue)
 + 该布局使用的是ElementUI的container组件，Header+Main+Footer的形式
+
+#### 2.3.2.自定义配置，见[vue.config.js](./front/vue.config.js)和[settings.js](front/src/settings.js)
 
 ## 3.management的登录、退出功能
 + 添加登录界面[Login.vue](management/src/views/Login.vue)

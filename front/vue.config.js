@@ -5,9 +5,9 @@ function resolve(dir) {
 
 const defaultSettings = require("./src/settings.js");
 // 网站标题
-const name = defaultSettings.title || "后台管理系统";
+const name = defaultSettings.title || "地学综合平台";
 // 本地端口
-const port = process.env.port || process.env.npm_config_port || 9091;
+const port = process.env.port || process.env.npm_config_port || 9092;
 
 // 所有配置项说明参见https://cli.vuejs.org/config/
 module.exports = {

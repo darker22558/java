@@ -1,12 +1,18 @@
 <template>
   <div>
     <el-container style="height: 100%; border: 1px solid #eee" class="container">
-      <el-aside style="width: 20%; background-color: rgb(238, 241, 246); height: 100vh">
-        <div style="height: 60px; line-height: 60px; text-align: left; margin-left: 20px">
+      <el-aside style="width: 20%; background-color: #545c64; height: 100vh">
+        <div style="height: 54px; line-height: 60px; text-align: left; margin-left: 23px; margin-top: 6px">
           <img src="../assets/logo.png" alt="" style="width: 20px; position: relative; top: 5px"/>
           <b style="color: black; margin-left: 5px">地学综合平台</b>
         </div>
-        <el-menu router>
+        <el-menu
+          router
+          class="el-menu-demo"
+          background-color="#545c64"
+          text-color="#fff"
+          active-text-color="#ffd04b"
+        >
           <template v-for="(item, index) in this.$router.options.routes">
             <el-submenu :key="index" :index="index + ''" v-if="!item.hidden">
               <template slot="title" v-if="item.meta">
@@ -35,14 +41,18 @@
       </el-aside>
 
       <el-container>
-        <el-header style="text-align: right; font-size: 12px">
-          <el-avatar :size="20" style="margin-top: 10px" src="http://hexo.li98.cn/img/snail2.png"></el-avatar>
+        <el-header style="text-align: right; font-size: 12px; background-color: #545c64">
+          <el-avatar :size="25" style="margin-top: 5px; margin-right: 15px" src="http://hexo.li98.cn/img/snail2.png"></el-avatar>
           <el-dropdown>
-            <span>{{ userInfo.username || "请登录" }}</span>
+            <span style="color: black; cursor: pointer">
+              <b>
+                {{ userInfo.username || "请登录" }}
+              </b>
+            </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>查看</el-dropdown-item>
+              <el-dropdown-item>个人主页</el-dropdown-item>
               <a target="_blank" :href="github">
-                <el-dropdown-item>Github</el-dropdown-item>
+                <el-dropdown-item divided>Github</el-dropdown-item>
               </a>
               <a target="_blank" :href="docs">
                 <el-dropdown-item>Readme</el-dropdown-item>
