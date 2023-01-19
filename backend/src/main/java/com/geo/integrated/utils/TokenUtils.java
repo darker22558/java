@@ -4,9 +4,8 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.geo.integrated.model.entity.User;
-import com.geo.integrated.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.geo.integrated.model.SysUser;
+import com.geo.integrated.service.SysUserService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -23,14 +22,14 @@ import java.util.Date;
  */
 @Component
 public class TokenUtils {
-    private static UserService staticUserService;
+    private static SysUserService staticSysUserService;
 
     @Resource
-    private UserService userService;
+    private SysUserService sysUserService;
 
     @PostConstruct
     public void setUserService() {
-        staticUserService = userService;
+        staticSysUserService = sysUserService;
     }
 
     /**
@@ -52,13 +51,13 @@ public class TokenUtils {
      *
      * @return user对象
      */
-    public static User getCurrentUser() {
+    public static SysUser getCurrentUser() {
         try {
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             String token = request.getHeader("Authorization");
             if (StrUtil.isNotBlank(token)) {
                 String userId = JWT.decode(token).getAudience().get(0);
-                return staticUserService.getById(Integer.valueOf(userId));
+                return staticSysUserService.getById(Integer.valueOf(userId));
             }
         } catch (Exception e) {
             return null;

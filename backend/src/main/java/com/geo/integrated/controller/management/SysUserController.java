@@ -2,8 +2,8 @@ package com.geo.integrated.controller.management;
 
 import com.geo.integrated.common.Result;
 import com.geo.integrated.model.dto.LoginDTO;
-import com.geo.integrated.model.entity.User;
-import com.geo.integrated.service.UserService;
+import com.geo.integrated.model.SysUser;
+import com.geo.integrated.service.SysUserService;
 import com.geo.integrated.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -21,11 +21,11 @@ import java.util.Map;
 @RequestMapping("/management/user")
 public class SysUserController {
     @Autowired
-    private UserService userService;
+    private SysUserService sysUserService;
 
     @PostMapping("/login")
     public Result login(@Validated @RequestBody LoginDTO loginDTO) {
-        User user = userService.login(loginDTO);
+        SysUser user = sysUserService.login(loginDTO);
         if (user == null) {
             return Result.fail("用户不存在或密码不正确");
         }

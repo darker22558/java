@@ -508,3 +508,6 @@ router.afterEach(() => {
 // permission control
 import "@/permission";
 ```
+
+
+## 4.设计数据库表并添加对应的后端实体类

@@ -40,7 +40,7 @@ const routes = [
         path: "/mine",
         name: "煤矿",
         meta: { title: "煤矿数据", icon: "el-icon-notebook-2" },
-        component: MineData
+        component: MineData,
       },
       {
         path: "/remoteSensing",
@@ -51,6 +51,11 @@ const routes = [
         path: "/earthquake",
         name: "地震",
         meta: { title: "地震数据", icon: "el-icon-notebook-2" },
+      },
+      {
+        path: "/paper",
+        name: "文献",
+        meta: { title: "文献数据", icon: "el-icon-notebook-2" },
       },
     ],
   },
@@ -122,6 +127,30 @@ const routes = [
         path: "/dataService",
         name: "数据服务",
         meta: { title: "数据服务中心", icon: "el-icon-data-analysis" },
+      },
+    ],
+  },
+  {
+    path: "/log",
+    name: "日志",
+    component: Container,
+    meta: { title: "日志管理", icon: "el-icon-data-date" },
+    hidden: false,
+    children: [
+      {
+        path: "/exception",
+        name: "异常",
+        meta: { title: "异常日志", icon: "el-icon-data-date" },
+      },
+      {
+        path: "/operation",
+        name: "操作",
+        meta: { title: "操作日志", icon: "el-icon-data-date" },
+      },
+      {
+        path: "/visit",
+        name: "访问",
+        meta: { title: "访问日志", icon: "el-icon-data-date" },
       },
     ],
   },

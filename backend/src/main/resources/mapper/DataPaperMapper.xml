@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geo.integrated.dao.DataPaperMapper">
+  <resultMap id="BaseResultMap" type="com.geo.integrated.model.DataPaper">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="eid" jdbcType="VARCHAR" property="eid" />
+    <result column="paper_title" jdbcType="VARCHAR" property="paperTitle" />
+    <result column="public_data" jdbcType="TIMESTAMP" property="publicData" />
+    <result column="issn" jdbcType="VARCHAR" property="issn" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, eid, paper_title, public_data, issn, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from data_paper
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from data_paper
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.geo.integrated.model.DataPaper" useGeneratedKeys="true">
+    insert into data_paper (eid, paper_title, public_data, 
+      issn, remark)
+    values (#{eid,jdbcType=VARCHAR}, #{paperTitle,jdbcType=VARCHAR}, #{publicData,jdbcType=TIMESTAMP}, 
+      #{issn,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.geo.integrated.model.DataPaper" useGeneratedKeys="true">
+    insert into data_paper
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="eid != null">
+        eid,
+      </if>
+      <if test="paperTitle != null">
+        paper_title,
+      </if>
+      <if test="publicData != null">
+        public_data,
+      </if>
+      <if test="issn != null">
+        issn,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="eid != null">
+        #{eid,jdbcType=VARCHAR},
+      </if>
+      <if test="paperTitle != null">
+        #{paperTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="publicData != null">
+        #{publicData,jdbcType=TIMESTAMP},
+      </if>
+      <if test="issn != null">
+        #{issn,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.geo.integrated.model.DataPaper">
+    update data_paper
+    <set>
+      <if test="eid != null">
+        eid = #{eid,jdbcType=VARCHAR},
+      </if>
+      <if test="paperTitle != null">
+        paper_title = #{paperTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="publicData != null">
+        public_data = #{publicData,jdbcType=TIMESTAMP},
+      </if>
+      <if test="issn != null">
+        issn = #{issn,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.geo.integrated.model.DataPaper">
+    update data_paper
+    set eid = #{eid,jdbcType=VARCHAR},
+      paper_title = #{paperTitle,jdbcType=VARCHAR},
+      public_data = #{publicData,jdbcType=TIMESTAMP},
+      issn = #{issn,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
