@@ -6,7 +6,7 @@ import router from "@/router/index";
 // create an axios instance
 const service = axios.create({
   // url = base url + request url
-  baseURL: "http://localhost:9090",
+  baseURL: "http://localhost:9090/management",
   // send cookies when cross-domain requests
   // withCredentials: true,
   // request timeout
@@ -17,11 +17,13 @@ const service = axios.create({
 service.interceptors.request.use(
   (config) => {
     // do something before request is sent
-    if (store.state.token) {
+    const token = localStorage.getItem("token");
+    // console.log("token ========== {}", token)
+    if (token) {
       // let each request carry token
       // ['X-Token'] is a custom headers key
       // please modify it according to the actual situation
-      config.headers["Authorization"] = store.state.token;
+      config.headers["Authorization"] = token;
     }
     return config;
   },

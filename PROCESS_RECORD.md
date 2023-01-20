@@ -511,3 +511,39 @@ import "@/permission";
 
 
 ## 4.设计数据库表并添加对应的后端实体类
++ 数据库导入问题，navicate15导入csv报错以下，把编码选为`936 (ANSI/OEM - Simplified Chinese GBK)`即可
+```sql
+[ERR] 1366 - Incorrect string value: '\xD6\xD0\xB9\xFA\xBB\xB4...' for colum
+```
+
+## 5.完善management中各个界面的功能
+### 5.1.数据相关（data）
+#### 5.1.1.文献数据
++ 实体类[DataPaper.java](backend/src/main/java/com/geo/integrated/model/DataPaper.java)
++ 控制层[DataPaperController.java](backend/src/main/java/com/geo/integrated/controller/management/DataPaperController.java)
++ 业务层[DataPaperService.java](backend/src/main/java/com/geo/integrated/service/DataPaperService.java)
++ 业务实现层[DataPaperServiceImpl.java](backend/src/main/java/com/geo/integrated/service/impl/DataPaperServiceImpl.java)
++ 持久层[DataPaperMapper.java](backend/src/main/java/com/geo/integrated/dao/DataPaperMapper.java)
++ xml[DataPaperMapper.xml](backend/src/main/resources/mapper/DataPaperMapper.xml)
++ 界面组件[PaperData.vue](management/src/views/data/PaperData.vue)
++ api文件[paper.js](management/src/api/data/paper.js)
++ 添加界面路由[index.js](management/src/router/index.js)
+    ```javascript
+    const routes = [
+      {
+        path: "/data",
+        name: "数据",
+        component: Container,
+        meta: { title: "数据管理", icon: "el-icon-notebook-2" },
+        hidden: false,
+        children: [
+          {
+            path: "/paper",
+            name: "文献",
+            meta: { title: "文献数据", icon: "el-icon-notebook-2" },
+            component: PaperData
+          },
+        ],
+      },
+    ];
+    ```

@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-container style="height: 100%; border: 1px solid #eee" class="container">
-      <el-aside style="width: 20%; background-color: #545c64; height: 100vh">
+      <el-aside style="width: 18%; background-color: #545c64; height: 100vh">
         <div style="height: 54px; line-height: 60px; text-align: left; margin-left: 23px; margin-top: 6px">
           <img src="../assets/logo.png" alt="" style="width: 20px; position: relative; top: 5px"/>
           <b style="color: black; margin-left: 5px">地学综合平台</b>
@@ -56,7 +56,7 @@
 
       <el-container>
         <el-header style="text-align: right; font-size: 12px; background-color: #545c64">
-          <el-avatar :size="25" style="margin-top: 5px; margin-right: 15px" src="http://hexo.li98.cn/img/snail2.png"></el-avatar>
+          <el-avatar :size="40" style="margin-top: 5px; margin-right: 15px" :src="logo"></el-avatar>
           <el-dropdown>
             <span style="color: black; cursor: pointer">
               <b>
@@ -97,6 +97,7 @@ export default {
         : [],
       github: "https://github.com/whtli/geo-integrated",
       docs: "https://github.com/whtli/geo-integrated/blob/master/README.md",
+      logo: "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80",
     };
   },
   methods: {
