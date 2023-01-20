@@ -1,8 +1,9 @@
 package com.geo.integrated.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.geo.integrated.model.DataPaper;
 
-public interface DataPaperMapper {
+public interface DataPaperMapper extends BaseMapper<DataPaper> {
     int deleteByPrimaryKey(Long id);
 
     int insert(DataPaper record);

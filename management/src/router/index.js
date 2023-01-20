@@ -4,6 +4,7 @@ import Dashboard from "@/views/Dashboard.vue";
 import Container from "@/components/Container.vue";
 import Login from "@/views/Login.vue";
 import MineData from "@/views/data/MineData.vue";
+import PaperData from "@/views/data/PaperData.vue";
 
 Vue.use(VueRouter);
 
@@ -56,6 +57,7 @@ const routes = [
         path: "/paper",
         name: "文献",
         meta: { title: "文献数据", icon: "el-icon-notebook-2" },
+        component: PaperData
       },
     ],
   },
@@ -134,23 +136,23 @@ const routes = [
     path: "/log",
     name: "日志",
     component: Container,
-    meta: { title: "日志管理", icon: "el-icon-data-date" },
+    meta: { title: "日志管理", icon: "el-icon-date" },
     hidden: false,
     children: [
       {
         path: "/exception",
         name: "异常",
-        meta: { title: "异常日志", icon: "el-icon-data-date" },
+        meta: { title: "异常日志", icon: "el-icon-date" },
       },
       {
         path: "/operation",
         name: "操作",
-        meta: { title: "操作日志", icon: "el-icon-data-date" },
+        meta: { title: "操作日志", icon: "el-icon-date" },
       },
       {
         path: "/visit",
         name: "访问",
-        meta: { title: "访问日志", icon: "el-icon-data-date" },
+        meta: { title: "访问日志", icon: "el-icon-date" },
       },
     ],
   },

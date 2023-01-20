@@ -4,13 +4,13 @@
   <resultMap id="BaseResultMap" type="com.geo.integrated.model.DataPaper">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="eid" jdbcType="VARCHAR" property="eid" />
-    <result column="paper_title" jdbcType="VARCHAR" property="paperTitle" />
-    <result column="public_data" jdbcType="TIMESTAMP" property="publicData" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="public_date" jdbcType="TIMESTAMP" property="publicDate" />
     <result column="issn" jdbcType="VARCHAR" property="issn" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, eid, paper_title, public_data, issn, remark
+    id, eid, title, public_date, issn, remark
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -23,9 +23,9 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.geo.integrated.model.DataPaper" useGeneratedKeys="true">
-    insert into data_paper (eid, paper_title, public_data, 
+    insert into data_paper (eid, title, public_date, 
       issn, remark)
-    values (#{eid,jdbcType=VARCHAR}, #{paperTitle,jdbcType=VARCHAR}, #{publicData,jdbcType=TIMESTAMP}, 
+    values (#{eid,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{publicDate,jdbcType=TIMESTAMP}, 
       #{issn,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.geo.integrated.model.DataPaper" useGeneratedKeys="true">
@@ -34,11 +34,11 @@
       <if test="eid != null">
         eid,
       </if>
-      <if test="paperTitle != null">
-        paper_title,
+      <if test="title != null">
+        title,
       </if>
-      <if test="publicData != null">
-        public_data,
+      <if test="publicDate != null">
+        public_date,
       </if>
       <if test="issn != null">
         issn,
@@ -51,11 +51,11 @@
       <if test="eid != null">
         #{eid,jdbcType=VARCHAR},
       </if>
-      <if test="paperTitle != null">
-        #{paperTitle,jdbcType=VARCHAR},
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
       </if>
-      <if test="publicData != null">
-        #{publicData,jdbcType=TIMESTAMP},
+      <if test="publicDate != null">
+        #{publicDate,jdbcType=TIMESTAMP},
       </if>
       <if test="issn != null">
         #{issn,jdbcType=VARCHAR},
@@ -71,11 +71,11 @@
       <if test="eid != null">
         eid = #{eid,jdbcType=VARCHAR},
       </if>
-      <if test="paperTitle != null">
-        paper_title = #{paperTitle,jdbcType=VARCHAR},
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
       </if>
-      <if test="publicData != null">
-        public_data = #{publicData,jdbcType=TIMESTAMP},
+      <if test="publicDate != null">
+        public_date = #{publicDate,jdbcType=TIMESTAMP},
       </if>
       <if test="issn != null">
         issn = #{issn,jdbcType=VARCHAR},
@@ -89,8 +89,8 @@
   <update id="updateByPrimaryKey" parameterType="com.geo.integrated.model.DataPaper">
     update data_paper
     set eid = #{eid,jdbcType=VARCHAR},
-      paper_title = #{paperTitle,jdbcType=VARCHAR},
-      public_data = #{publicData,jdbcType=TIMESTAMP},
+      title = #{title,jdbcType=VARCHAR},
+      public_date = #{publicDate,jdbcType=TIMESTAMP},
       issn = #{issn,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}

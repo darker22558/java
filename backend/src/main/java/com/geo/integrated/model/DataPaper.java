@@ -3,8 +3,6 @@ package com.geo.integrated.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -18,7 +16,6 @@ public class DataPaper implements Serializable {
     /**
      * id
      */
-    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
@@ -29,12 +26,12 @@ public class DataPaper implements Serializable {
     /**
      * 论文标题
      */
-    private String paperTitle;
+    private String title;
 
     /**
      * 发表时间
      */
-    private Date publicData;
+    private Date publicDate;
 
     /**
      * 标准国际刊号
