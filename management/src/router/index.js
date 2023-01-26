@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import Dashboard from "@/views/Dashboard.vue";
 import Container from "@/components/Container.vue";
 import Login from "@/views/Login.vue";
-import MineData from "@/views/data/MineData.vue";
+import CoalfieldData from "@/views/data/CoalfieldData.vue";
 import PaperData from "@/views/data/PaperData.vue";
 
 Vue.use(VueRouter);
@@ -38,10 +38,10 @@ const routes = [
     hidden: false,
     children: [
       {
-        path: "/mine",
-        name: "煤矿",
-        meta: { title: "煤矿数据", icon: "el-icon-notebook-2" },
-        component: MineData,
+        path: "/coalfield",
+        name: "煤田",
+        meta: { title: "煤田数据", icon: "el-icon-notebook-2" },
+        component: CoalfieldData,
       },
       {
         path: "/remoteSensing",
@@ -57,7 +57,7 @@ const routes = [
         path: "/paper",
         name: "文献",
         meta: { title: "文献数据", icon: "el-icon-notebook-2" },
-        component: PaperData
+        component: PaperData,
       },
     ],
   },

@@ -509,14 +509,13 @@ router.afterEach(() => {
 import "@/permission";
 ```
 
-
 ## 4.设计数据库表并添加对应的后端实体类
 + 数据库导入问题，navicate15导入csv报错以下，把编码选为`936 (ANSI/OEM - Simplified Chinese GBK)`即可
 ```sql
 [ERR] 1366 - Incorrect string value: '\xD6\xD0\xB9\xFA\xBB\xB4...' for colum
 ```
 
-## 5.完善management中各个界面的功能
+## 5.初步完善management中各界面的功能
 ### 5.1.数据相关（data）
 #### 5.1.1.文献数据
 + 实体类[DataPaper.java](backend/src/main/java/com/geo/integrated/model/DataPaper.java)
@@ -541,6 +540,36 @@ import "@/permission";
             path: "/paper",
             name: "文献",
             meta: { title: "文献数据", icon: "el-icon-notebook-2" },
+            component: PaperData
+          },
+        ],
+      },
+    ];
+    ```
+
+#### 5.1.2.煤田数据
++ 实体类[DataCoalfield.java](backend/src/main/java/com/geo/integrated/model/DataCoalfield.java)
++ 控制层[DataCoalfieldController.java](backend/src/main/java/com/geo/integrated/controller/management/DataCoalfieldController.java)
++ 业务层[DataCoalfieldService.java](backend/src/main/java/com/geo/integrated/service/DataCoalfieldService.java)
++ 业务实现层[DataCoalfieldServiceImpl.java](backend/src/main/java/com/geo/integrated/service/impl/DataCoalfieldServiceImpl.java)
++ 持久层[DataCoalfieldMapper.java](backend/src/main/java/com/geo/integrated/dao/DataCoalfieldMapper.java)
++ xml[DataCoalfieldMapper.xml](backend/src/main/resources/mapper/DataCoalfieldMapper.xml)
++ 界面组件[CoalfieldData.vue](management/src/views/data/CoalfieldData.vue)
++ api文件[coalfield.js](management/src/api/data/coalfield.js)
++ 添加界面路由[index.js](management/src/router/index.js)
+    ```javascript
+    const routes = [
+      {
+        path: "/data",
+        name: "数据",
+        component: Container,
+        meta: { title: "数据管理", icon: "el-icon-notebook-2" },
+        hidden: false,
+        children: [
+          {
+            path: "/coalfield",
+            name: "煤田",
+            meta: { title: "煤田数据", icon: "el-icon-notebook-2" },
             component: PaperData
           },
         ],
