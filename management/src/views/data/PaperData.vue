@@ -36,7 +36,7 @@
           <el-input v-model="paperForm.title" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="发表时间">
-          <el-date-picker v-if="paperForm.paperForm != null" v-model="paperForm.publicDate" disabled autocomplete="off" format="yyyy 年 M 月 dd 日"></el-date-picker>
+          <el-date-picker v-if="paperForm.id != null" v-model="paperForm.publicDate" disabled autocomplete="off" format="yyyy 年 M 月 dd 日"></el-date-picker>
           <el-date-picker v-else v-model="paperForm.publicDate" autocomplete="off" format="yyyy 年 M 月 dd 日"></el-date-picker>
         </el-form-item>
         <el-form-item label="标准国际刊号">

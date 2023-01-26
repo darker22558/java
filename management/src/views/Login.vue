@@ -4,7 +4,7 @@
     <div>
       <el-container>
         <el-header>
-          <img class="logo" src="http://hexo.li98.cn/img/snail2.png" />
+          <img class="logo" src="../assets/logo.png" />
         </el-header>
         <el-main>
           <el-form

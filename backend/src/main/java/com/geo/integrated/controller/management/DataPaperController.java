@@ -10,8 +10,8 @@ import com.geo.integrated.service.DataPaperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,6 +45,26 @@ public class DataPaperController {
             return Result.success("未查找到相应文献", data);
         } else {
             return Result.success("查询成功", data);
+        }
+    }
+
+    @DeleteMapping("deletePaperById")
+    public Result deletePaperById(@RequestParam Long id) {
+        boolean delete = dataPaperService.removeById(id);
+        if (delete) {
+            return Result.success("文献信息删除成功", id);
+        } else {
+            return Result.fail("文献信息删除失败", id);
+        }
+    }
+
+    @DeleteMapping("/deletePaperBatchByIds")
+    public Result deletePaperBatchByIds(@RequestBody List<Long> ids) {
+        boolean delete = dataPaperService.removeByIds(ids);
+        if (delete) {
+            return Result.success("文献信息批量删除成功", ids);
+        } else {
+            return Result.fail("文献信息批量删除失败", ids);
         }
     }
 
