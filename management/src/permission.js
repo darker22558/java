@@ -21,6 +21,13 @@ router.beforeEach((to, from, next) => {
   // const hasToken = store.state.token;
   // console.log("判断用户是否登录: " + hasToken);
   if (hasToken) {
+    const hasUserInfo = sessionStorage.getItem("userInfo");
+    if (!hasUserInfo) {
+      next({path: "/login"})
+      localStorage.removeItem("token")
+      // 进度条结束
+      NProgress.done();
+    }
     if (to.path === "/login") {
       // 如果路由要跳转到登录页，重定向到主页
       next({ path: "/" });
