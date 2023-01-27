@@ -5,24 +5,24 @@
       <el-input placeholder="请输入标准国际刊号（issn）" v-model="queryInfo.issn" clearable style="width: 220px; margin-left: 10px" suffix-icon="el-icon-document-remove"></el-input>
       <el-button @click.native.prevent="loadPaperList" style="margin-left: 10px" type="primary">查询</el-button>
       <el-button type="warning" @click="reset">重置</el-button>
-    </div>
-    <div style="margin-left: 10px; width: 50%; display: flex; justify-content: space-between">
       <el-button type="primary" @click="addPaper" class="el-icon-circle-plus-outline"> 新增</el-button>
       <el-button type="danger" @click="deletePaperBatch" class="el-icon-remove-outline"> 批量删除</el-button>
     </div>
     <div style="margin: 10px; width: 99%">
-      <el-table :data="paperList" border stripe v-loading="loading" :height="660" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55"> </el-table-column>
+      <el-table :data="paperList" border stripe v-loading="loading" :height="400" @selection-change="handleSelectionChange">
+        <el-table-column type="selection" width="40"> </el-table-column>
         <el-table-column label="序号" prop="id" width="50"> </el-table-column>
         <el-table-column label="eid" prop="eid" width="160"> </el-table-column>
         <el-table-column label="标题" prop="title" width="200" :show-overflow-tooltip="true"> </el-table-column>
-        <el-table-column label="发表时间" prop="publicDate" width="100" :show-overflow-tooltip="true"> </el-table-column>
+        <el-table-column label="发表时间" prop="publicDate" width="100" :show-overflow-tooltip="true">
+          <template v-slot="scope">{{ scope.row.publicDate.substring(0, 10) }}</template>
+        </el-table-column>
         <el-table-column label="标准国际刊号" prop="issn" width="110"> </el-table-column>
-        <el-table-column label="备注" prop="remark" width="60" :show-overflow-tooltip="true"> </el-table-column>
+        <el-table-column label="备注" prop="remark" width="50" :show-overflow-tooltip="true"> </el-table-column>
         <el-table-column label="操作" fixed="right">
           <template v-slot="scope">
-            <el-button type="success" icon="el-icon-edit" @click="editPaper(scope.row)"> 编辑</el-button>
-            <el-button type="danger" icon="el-icon-delete" @click="deletePaper(scope.row.id)"> 删除</el-button>
+            <el-button size="mini" type="success" icon="el-icon-edit" @click="editPaper(scope.row)"> 编辑</el-button>
+            <el-button size="mini" type="danger" icon="el-icon-delete" @click="deletePaper(scope.row.id)"> 删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -123,10 +123,6 @@ export default {
       this.loading = true;
       getPaperList(this.queryInfo).then((res) => {
         this.paperList = res.data.paperList;
-        let index = 0;
-        for (index in this.paperList) {
-          this.paperList[index].publicDate = this.paperList[index].publicDate.substring(0, 10)
-        }
         this.total = res.data.total;
         this.loading = false;
       });
@@ -135,6 +131,8 @@ export default {
     reset() {
       this.queryInfo.title = "";
       this.queryInfo.issn = "";
+      this.queryInfo.pageNum = 1;
+      this.queryInfo.pageSize = 10;
       this.loadPaperList();
     },
     addPaper() {

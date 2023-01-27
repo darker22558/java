@@ -577,7 +577,8 @@ import "@/permission";
     ];
     ```
 
-#### 5.1.3.操作日志
+### 5.2.日志相关（log）
+#### 5.2.1.操作日志
 + 实体类[LogOperation.java](backend/src/main/java/com/geo/integrated/model/LogOperation.java)
 + 控制层[LogOperationController.java](backend/src/main/java/com/geo/integrated/controller/management/LogOperationController.java)
 + 业务层[LogOperationService.java](backend/src/main/java/com/geo/integrated/service/LogOperationService.java)
@@ -656,3 +657,4 @@ import "@/permission";
     },
   ];
   ```
++ 关于自定义AOP时，Spring AOP @Before @Around @After的区别，[参考链接](https://blog.csdn.net/jsbylibo/article/details/106548691)

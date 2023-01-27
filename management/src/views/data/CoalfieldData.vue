@@ -2,27 +2,25 @@
   <div>
     <div style="padding: 10px">
       <el-input placeholder="请输入煤田名称" v-model="queryInfo.coalfieldName" clearable style="width: 220px" suffix-icon="el-icon-document-remove"></el-input>
-      <el-select v-model="queryInfo.coalCoveringArea" clearable placeholder="请选择聚煤区">
+      <el-select v-model="queryInfo.coalCoveringArea" clearable placeholder="请选择聚煤区" class="select">
         <el-option v-for="item in allCoalCoveringArea" :key="item.areaId" :label="item.areaName" :value="item.areaName">
           {{ item.areaName }}
         </el-option>
       </el-select>
       <el-button @click.native.prevent="loadCoalfieldList" style="margin-left: 10px" type="primary">查询</el-button>
       <el-button type="warning" @click="reset">重置</el-button>
-    </div>
-    <div style="margin-left: 10px; width: 50%; display: flex; justify-content: space-between">
       <el-button type="primary" @click="addCoalfield" class="el-icon-circle-plus-outline"> 新增</el-button>
       <el-button type="danger" @click="deleteCoalfieldBatch" class="el-icon-remove-outline"> 批量删除</el-button>
     </div>
     <div style="margin: 10px; width: 99%">
-      <el-table :data="coalfieldList" border stripe v-loading="loading" :height="660" @selection-change="handleSelectionChange">
+      <el-table :data="coalfieldList" border stripe v-loading="loading" :height="380" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="40"> </el-table-column>
 <!--        <el-table-column label="序号" prop="id" width="50"> </el-table-column>-->
         <el-table-column label="煤田名称" prop="coalfieldName" width="100"> </el-table-column>
-        <el-table-column label="所属省份" prop="province" width="80"> </el-table-column>
-        <el-table-column label="所属聚煤区" prop="coalCoveringArea" width="140" > </el-table-column>
+        <el-table-column label="省份" prop="province" width="70"> </el-table-column>
+        <el-table-column label="聚煤区" prop="coalCoveringArea" width="100" > </el-table-column>
         <el-table-column label="成煤期" prop="coalFormingPeriods" width="80"> </el-table-column>
-        <el-table-column label="样本数量" prop="sampleNumber" width="80"> </el-table-column>
+        <el-table-column label="样本数" prop="sampleNumber" width="70"> </el-table-column>
         <el-table-column label="灰分产量" prop="ashYield" width="100">
           <template slot="header"> <span>灰分产量</span>
             <el-tooltip class="item" effect="dark" content="（ %; Dry Basis）" placement="top">
@@ -30,12 +28,12 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column label="相关论文" prop="relevantPaper" width="240" :show-overflow-tooltip="true"> </el-table-column>
-        <el-table-column label="备注" prop="remark" width="60" :show-overflow-tooltip="true"> </el-table-column>
+        <el-table-column label="相关论文" prop="relevantPaper" width="200" :show-overflow-tooltip="true"> </el-table-column>
+        <el-table-column label="备注" prop="remark" width="50" :show-overflow-tooltip="true"> </el-table-column>
         <el-table-column label="操作" fixed="right">
           <template v-slot="scope">
-            <el-button type="success" icon="el-icon-edit" @click="editCoalfield(scope.row)"> 编辑</el-button>
-            <el-button type="danger" icon="el-icon-delete" @click="deleteCoalfield(scope.row.id)"> 删除</el-button>
+            <el-button size="mini" type="success" icon="el-icon-edit" @click="editCoalfield(scope.row)"></el-button>
+            <el-button size="mini" type="danger" icon="el-icon-delete" @click="deleteCoalfield(scope.row.id)"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -78,14 +76,14 @@
     </el-dialog>
     <div style="padding: 10px 0">
       <el-pagination
-          background
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="queryInfo.pageNum"
-          :page-sizes="[5, 10, 15, 20]"
-          :page-size="queryInfo.pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total">
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="queryInfo.pageNum"
+        :page-sizes="[5, 10, 15, 20]"
+        :page-size="queryInfo.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
       </el-pagination>
     </div>
   </div>
@@ -124,7 +122,7 @@ export default {
         {
           areaId: "5",
           areaName: "南部区域",
-        }
+        },
       ],
       coalfieldForm: {},
       total: 0,
@@ -174,8 +172,10 @@ export default {
     },
     // 清空查询条件查询所有煤田
     reset() {
-      this.queryInfo.title = "";
-      this.queryInfo.issn = "";
+      this.queryInfo.coalfieldName = "";
+      this.queryInfo.coalCoveringArea = "";
+      this.queryInfo.pageNum = 1;
+      this.queryInfo.pageSize = 10;
       this.loadCoalfieldList();
     },
     addCoalfield() {
@@ -248,4 +248,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.select {
+  margin-left: 10px;
+}
+</style>

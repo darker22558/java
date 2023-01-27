@@ -42,7 +42,7 @@ service.interceptors.response.use(
     if (res.code !== 200) {
       Message({
         showClose: true,
-        message: "错了哦，这是一条错误消息",
+        message: res.message,
         type: "error",
         duration: 3 * 1000,
       });
