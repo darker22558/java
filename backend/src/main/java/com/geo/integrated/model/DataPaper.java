@@ -9,8 +9,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
- * data_paper
- * @author 
+ * @author: whtli
+ * @date: 2023/01/19
+ * @description: 文献信息实体类
  */
 @Data
 @TableName("data_paper")

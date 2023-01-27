@@ -10,7 +10,7 @@ import lombok.Data;
 /**
  * @author: whtli
  * @date: 2023/01/26
- * @description: data_coalfield 实体类
+ * @description: 煤田信息实体类
  */
 @Data
 @TableName("data_coalfield")

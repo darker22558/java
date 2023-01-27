@@ -11,8 +11,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * log_operation
- * @author 
+ * @author: whtli
+ * @date: 2023/01/19
+ * @description: 操作日志实体类
  */
 @Data
 @NoArgsConstructor

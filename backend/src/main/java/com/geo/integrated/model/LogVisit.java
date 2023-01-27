@@ -9,8 +9,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
- * log_visit
- * @author 
+ * @author: whtli
+ * @date: 2023/01/26
+ * @description: 访问日志实体类
  */
 @Data
 @TableName("log_visit")

@@ -6,7 +6,7 @@ import com.geo.integrated.model.DataPaper;
 /**
  * @author: whtli
  * @date: 2023/01/20
- * @description:
+ * @description: 文献信息数据业务层
  */
 public interface DataPaperService extends IService<DataPaper> {
 }

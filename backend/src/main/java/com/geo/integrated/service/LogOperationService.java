@@ -6,7 +6,7 @@ import com.geo.integrated.model.LogOperation;
 /**
  * @author: whtli
  * @date: 2023/01/27
- * @description:
+ * @description: 操作日志业务层
  */
 public interface LogOperationService extends IService<LogOperation> {
 }
