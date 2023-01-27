@@ -6,13 +6,17 @@ import java.util.Date;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * log_operation
  * @author 
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @TableName("log_operation")
 public class LogOperation implements Serializable {
     /**
@@ -82,4 +86,19 @@ public class LogOperation implements Serializable {
     private String userAgent;
 
     private static final long serialVersionUID = 1L;
+
+    public LogOperation(String username, String description, String uri, String method, String userAgent, String ip, String ipSource, int times, String param, String os, String browser) {
+        this.username = username;
+        this.description = description;
+        this.uri = uri;
+        this.method = method;
+        this.userAgent = userAgent;
+        this.ip = ip;
+        this.ipSource = ipSource;
+        this.times = times;
+        this.param = param;
+        this.os = os;
+        this.browser = browser;
+        this.createTime = new Date();
+    }
 }

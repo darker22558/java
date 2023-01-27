@@ -1,8 +1,9 @@
 package com.geo.integrated.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.geo.integrated.model.LogOperation;
 
-public interface LogOperationMapper {
+public interface LogOperationMapper extends BaseMapper<LogOperation> {
     int deleteByPrimaryKey(Long id);
 
     int insert(LogOperation record);

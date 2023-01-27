@@ -576,3 +576,83 @@ import "@/permission";
       },
     ];
     ```
+
+#### 5.1.3.操作日志
++ 实体类[LogOperation.java](backend/src/main/java/com/geo/integrated/model/LogOperation.java)
++ 控制层[LogOperationController.java](backend/src/main/java/com/geo/integrated/controller/management/LogOperationController.java)
++ 业务层[LogOperationService.java](backend/src/main/java/com/geo/integrated/service/LogOperationService.java)
++ 业务实现层[LogOperationServiceImpl.java](backend/src/main/java/com/geo/integrated/service/impl/LogOperationServiceImpl.java)
++ 持久层[LogOperationMapper.java](backend/src/main/java/com/geo/integrated/dao/LogOperationMapper.java)
++ xml[LogOperationMapper.xml](backend/src/main/resources/mapper/LogOperationMapper.xml)\
++ 记录操作日志的annotation[OperationLogger.java](backend/src/main/java/com/geo/integrated/annotation/OperationLogger.java)
++ 记录操作日志的切面[OperationLogAspect.java](backend/src/main/java/com/geo/integrated/aspect/OperationLogAspect.java)
++ AOP工具类[AopUtils.java](backend/src/main/java/com/geo/integrated/utils/AopUtils.java)
++ IP工具类[IpAddressUtils.java](backend/src/main/java/com/geo/integrated/utils/IpAddressUtils.java)
++ Jackson工具类[JacksonUtils.java](backend/src/main/java/com/geo/integrated/utils/JacksonUtils.java)
++ 用户代理解析工具类[UserAgentUtils.java](backend/src/main/java/com/geo/integrated/utils/UserAgentUtils.java)
++ ip转换的数据库[ip2region.db](backend/src/main/resources/ipdb/ip2region.db)
++ 新增IP相关的常量[Constant.java](backend/src/main/java/com/geo/integrated/common/Constant.java)
+  ```java
+  public interface Constant {
+  
+      /**
+       * 未知IP
+       */
+      String IP_UNKNOWN = "unknown";
+  
+      /**
+       * ipv4本机地址
+       */
+      String IP_V4_LOCALHOST = "127.0.0.1";
+  
+      /**
+       * ipv6本机地址
+       */
+      String IP_V6_LOCALHOST = "0:0:0:0:0:0:0:1";
+  }
+  ```
++ 新增依赖[pom.xml](backend/pom.xml)
+  ```xml
+      <dependencies>
+          <!-- aspect -->
+          <dependency>
+              <groupId>org.aspectj</groupId>
+              <artifactId>aspectjweaver</artifactId>
+              <version>1.9.6</version>
+          </dependency>
+          <!-- ip2region -->
+          <dependency>
+              <groupId>org.lionsoul</groupId>
+              <artifactId>ip2region</artifactId>
+              <version>1.7.2</version>
+          </dependency>
+          <!-- 解析客户端操作系统、浏览器 -->
+          <dependency>
+              <groupId>nl.basjes.parse.useragent</groupId>
+              <artifactId>yauaa</artifactId>
+              <version>5.20</version>
+          </dependency>
+      </dependencies>
+  ```
++ 界面组件[OperationLog.vue](management/src/views/log/OperationLog.vue)
++ api文件[operation.js](management/src/api/log/operation.js)
++ 添加界面路由[index.js](management/src/router/index.js)
+  ```javascript
+  const routes = [
+    {
+      path: "/log",
+      name: "日志",
+      component: Container,
+      meta: { title: "日志管理", icon: "el-icon-date" },
+      hidden: false,
+      children: [
+        {
+          path: "/operation",
+          name: "操作",
+          meta: { title: "操作日志", icon: "el-icon-date" },
+          component: OperationLog,
+        },
+      ],
+    },
+  ];
+  ```

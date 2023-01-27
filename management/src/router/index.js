@@ -5,6 +5,7 @@ import Container from "@/components/Container.vue";
 import Login from "@/views/Login.vue";
 import CoalfieldData from "@/views/data/CoalfieldData.vue";
 import PaperData from "@/views/data/PaperData.vue";
+import OperationLog from "@/views/log/OperationLog.vue";
 
 Vue.use(VueRouter);
 
@@ -148,6 +149,7 @@ const routes = [
         path: "/operation",
         name: "操作",
         meta: { title: "操作日志", icon: "el-icon-date" },
+        component: OperationLog,
       },
       {
         path: "/visit",

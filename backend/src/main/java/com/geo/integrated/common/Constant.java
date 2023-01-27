@@ -30,4 +30,19 @@ public interface Constant {
      * 其他业务异常
      */
     Integer CODE_ELSE_ERROR = 600;
+
+    /**
+     * 未知IP
+     */
+    String IP_UNKNOWN = "unknown";
+
+    /**
+     * ipv4本机地址
+     */
+    String IP_V4_LOCALHOST = "127.0.0.1";
+
+    /**
+     * ipv6本机地址
+     */
+    String IP_V6_LOCALHOST = "0:0:0:0:0:0:0:1";
 }
