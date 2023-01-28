@@ -1,4 +1,4 @@
-package com.geo.integrated.model;
+package com.geo.integrated.entity;
 
 import java.io.Serializable;
 import java.util.Date;

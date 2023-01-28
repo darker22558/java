@@ -2,7 +2,7 @@ package com.geo.integrated.controller.management;
 
 import com.geo.integrated.common.Result;
 import com.geo.integrated.model.dto.LoginDTO;
-import com.geo.integrated.model.SysUser;
+import com.geo.integrated.entity.SysUser;
 import com.geo.integrated.service.SysUserService;
 import com.geo.integrated.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;

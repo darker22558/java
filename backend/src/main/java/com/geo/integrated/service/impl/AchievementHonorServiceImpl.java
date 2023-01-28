@@ -2,7 +2,7 @@ package com.geo.integrated.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.geo.integrated.dao.AchievementHonorMapper;
-import com.geo.integrated.model.AchievementHonor;
+import com.geo.integrated.entity.AchievementHonor;
 import com.geo.integrated.service.AchievementHonorService;
 import org.springframework.stereotype.Service;
 

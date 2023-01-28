@@ -1,7 +1,7 @@
 package com.geo.integrated.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.geo.integrated.model.AchievementProject;
+import com.geo.integrated.entity.AchievementProject;
 
 /**
  * @author: whtli

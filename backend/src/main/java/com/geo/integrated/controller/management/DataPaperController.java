@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.geo.integrated.annotation.OperationLogger;
 import com.geo.integrated.common.Result;
-import com.geo.integrated.model.DataPaper;
+import com.geo.integrated.entity.DataPaper;
 import com.geo.integrated.service.DataPaperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

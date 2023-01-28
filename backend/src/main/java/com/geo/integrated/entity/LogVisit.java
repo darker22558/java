@@ -1,4 +1,4 @@
-package com.geo.integrated.model;
+package com.geo.integrated.entity;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -6,20 +6,16 @@ import java.util.Date;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * @author: whtli
- * @date: 2023/01/19
- * @description: 操作日志实体类
+ * @date: 2023/01/26
+ * @description: 访问日志实体类
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@TableName("log_operation")
-public class LogOperation implements Serializable {
+@TableName("log_visit")
+public class LogVisit implements Serializable {
     /**
      * id
      */
@@ -27,9 +23,9 @@ public class LogOperation implements Serializable {
     private Long id;
 
     /**
-     * 操作者用户名
+     * 访客标识码
      */
-    private String username;
+    private String uuid;
 
     /**
      * 请求接口
@@ -47,9 +43,19 @@ public class LogOperation implements Serializable {
     private String param;
 
     /**
-     * 操作描述
+     * 访问行为
      */
-    private String description;
+    private String behavior;
+
+    /**
+     * 访问内容
+     */
+    private String content;
+
+    /**
+     * 备注
+     */
+    private String remark;
 
     /**
      * ip
@@ -77,7 +83,7 @@ public class LogOperation implements Serializable {
     private Integer times;
 
     /**
-     * 操作时间
+     * 访问时间
      */
     private Date createTime;
 
@@ -87,19 +93,4 @@ public class LogOperation implements Serializable {
     private String userAgent;
 
     private static final long serialVersionUID = 1L;
-
-    public LogOperation(String username, String description, String uri, String method, String userAgent, String ip, String ipSource, int times, String param, String os, String browser) {
-        this.username = username;
-        this.description = description;
-        this.uri = uri;
-        this.method = method;
-        this.userAgent = userAgent;
-        this.ip = ip;
-        this.ipSource = ipSource;
-        this.times = times;
-        this.param = param;
-        this.os = os;
-        this.browser = browser;
-        this.createTime = new Date();
-    }
 }

@@ -2,7 +2,7 @@ package com.geo.integrated.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.geo.integrated.dao.AchievementPatentMapper;
-import com.geo.integrated.model.AchievementPatent;
+import com.geo.integrated.entity.AchievementPatent;
 import com.geo.integrated.service.AchievementPatentService;
 import org.springframework.stereotype.Service;
 

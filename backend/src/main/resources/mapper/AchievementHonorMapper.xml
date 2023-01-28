@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.geo.integrated.dao.AchievementHonorMapper">
-  <resultMap id="BaseResultMap" type="com.geo.integrated.model.AchievementHonor">
+  <resultMap id="BaseResultMap" type="com.geo.integrated.entity.AchievementHonor">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="honor_name" jdbcType="VARCHAR" property="honorName" />
     <result column="achievement_name" jdbcType="VARCHAR" property="achievementName" />
@@ -20,13 +20,13 @@
     delete from achievement_honor
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.geo.integrated.model.AchievementHonor" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.geo.integrated.entity.AchievementHonor" useGeneratedKeys="true">
     insert into achievement_honor (honor_name, achievement_name, participants_rank
       )
     values (#{honorName,jdbcType=VARCHAR}, #{achievementName,jdbcType=VARCHAR}, #{participantsRank,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.geo.integrated.model.AchievementHonor" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.geo.integrated.entity.AchievementHonor" useGeneratedKeys="true">
     insert into achievement_honor
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="honorName != null">
@@ -51,7 +51,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.geo.integrated.model.AchievementHonor">
+  <update id="updateByPrimaryKeySelective" parameterType="com.geo.integrated.entity.AchievementHonor">
     update achievement_honor
     <set>
       <if test="honorName != null">
@@ -66,7 +66,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.geo.integrated.model.AchievementHonor">
+  <update id="updateByPrimaryKey" parameterType="com.geo.integrated.entity.AchievementHonor">
     update achievement_honor
     set honor_name = #{honorName,jdbcType=VARCHAR},
       achievement_name = #{achievementName,jdbcType=VARCHAR},

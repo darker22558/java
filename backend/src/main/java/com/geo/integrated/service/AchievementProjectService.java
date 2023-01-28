@@ -1,7 +1,7 @@
 package com.geo.integrated.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.geo.integrated.model.AchievementProject;
+import com.geo.integrated.entity.AchievementProject;
 
 /**
  * @author: whtli

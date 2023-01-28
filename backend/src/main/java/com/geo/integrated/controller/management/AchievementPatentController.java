@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.geo.integrated.annotation.OperationLogger;
 import com.geo.integrated.common.Result;
-import com.geo.integrated.model.AchievementPatent;
+import com.geo.integrated.entity.AchievementPatent;
 import com.geo.integrated.service.AchievementPatentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

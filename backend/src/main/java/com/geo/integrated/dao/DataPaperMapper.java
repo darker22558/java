@@ -1,7 +1,7 @@
 package com.geo.integrated.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.geo.integrated.model.DataPaper;
+import com.geo.integrated.entity.DataPaper;
 /**
  * @author: whtli
  * @date: 2023/01/19

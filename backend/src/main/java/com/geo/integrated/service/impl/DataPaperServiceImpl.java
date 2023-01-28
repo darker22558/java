@@ -2,7 +2,7 @@ package com.geo.integrated.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.geo.integrated.dao.DataPaperMapper;
-import com.geo.integrated.model.DataPaper;
+import com.geo.integrated.entity.DataPaper;
 import com.geo.integrated.service.DataPaperService;
 import org.springframework.stereotype.Service;
 

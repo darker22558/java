@@ -1,7 +1,7 @@
 package com.geo.integrated.aspect;
 
 import com.geo.integrated.annotation.OperationLogger;
-import com.geo.integrated.model.LogOperation;
+import com.geo.integrated.entity.LogOperation;
 import com.geo.integrated.service.LogOperationService;
 import com.geo.integrated.utils.*;
 import org.aspectj.lang.ProceedingJoinPoint;

@@ -1,7 +1,7 @@
 package com.geo.integrated.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.geo.integrated.model.LogOperation;
+import com.geo.integrated.entity.LogOperation;
 /**
  * @author: whtli
  * @date: 2023/01/26

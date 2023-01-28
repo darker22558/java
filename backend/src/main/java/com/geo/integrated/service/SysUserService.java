@@ -2,7 +2,7 @@ package com.geo.integrated.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.geo.integrated.model.dto.LoginDTO;
-import com.geo.integrated.model.SysUser;
+import com.geo.integrated.entity.SysUser;
 
 /**
  * @author: whtli

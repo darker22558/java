@@ -1,7 +1,7 @@
 package com.geo.integrated.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.geo.integrated.model.DataPaper;
+import com.geo.integrated.entity.DataPaper;
 
 /**
  * @author: whtli

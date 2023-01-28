@@ -4,7 +4,7 @@ import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.geo.integrated.dao.SysUserMapper;
 import com.geo.integrated.model.dto.LoginDTO;
-import com.geo.integrated.model.SysUser;
+import com.geo.integrated.entity.SysUser;
 import com.geo.integrated.service.SysUserService;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.geo.integrated.annotation.OperationLogger;
 import com.geo.integrated.common.Result;
-import com.geo.integrated.model.DataCoalfield;
+import com.geo.integrated.entity.DataCoalfield;
 import com.geo.integrated.service.DataCoalfieldService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

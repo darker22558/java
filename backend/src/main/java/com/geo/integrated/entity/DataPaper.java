@@ -1,6 +1,7 @@
-package com.geo.integrated.model;
+package com.geo.integrated.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -9,12 +10,12 @@ import lombok.Data;
 
 /**
  * @author: whtli
- * @date: 2023/01/28
- * @description: 发明专利信息实体类
+ * @date: 2023/01/19
+ * @description: 文献信息实体类
  */
 @Data
-@TableName("achievement_patent")
-public class AchievementPatent implements Serializable {
+@TableName("data_paper")
+public class DataPaper implements Serializable {
     /**
      * id
      */
@@ -22,19 +23,29 @@ public class AchievementPatent implements Serializable {
     private Long id;
 
     /**
-     * 编号
+     * eid
      */
-    private String number;
+    private String eid;
 
     /**
-     * 名称
+     * 论文标题
      */
     private String title;
 
     /**
-     * 完成人(固定人员)
+     * 发表时间
      */
-    private String finisher;
+    private Date publicDate;
+
+    /**
+     * 标准国际刊号
+     */
+    private String issn;
+
+    /**
+     * 备注
+     */
+    private String remark;
 
     private static final long serialVersionUID = 1L;
 }

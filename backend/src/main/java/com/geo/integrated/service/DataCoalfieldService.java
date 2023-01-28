@@ -1,7 +1,7 @@
 package com.geo.integrated.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.geo.integrated.model.DataCoalfield;
+import com.geo.integrated.entity.DataCoalfield;
 
 /**
  * @author: whtli

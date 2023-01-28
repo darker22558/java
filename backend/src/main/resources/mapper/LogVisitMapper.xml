@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.geo.integrated.dao.LogVisitMapper">
-  <resultMap id="BaseResultMap" type="com.geo.integrated.model.LogVisit">
+  <resultMap id="BaseResultMap" type="com.geo.integrated.entity.LogVisit">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="uuid" jdbcType="VARCHAR" property="uuid" />
     <result column="uri" jdbcType="VARCHAR" property="uri" />
@@ -32,7 +32,7 @@
     delete from log_visit
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.geo.integrated.model.LogVisit" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.geo.integrated.entity.LogVisit" useGeneratedKeys="true">
     insert into log_visit (uuid, uri, `method`, 
       param, behavior, content, 
       remark, ip, ip_source, 
@@ -44,7 +44,7 @@
       #{os,jdbcType=VARCHAR}, #{browser,jdbcType=VARCHAR}, #{times,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{userAgent,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.geo.integrated.model.LogVisit" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.geo.integrated.entity.LogVisit" useGeneratedKeys="true">
     insert into log_visit
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="uuid != null">
@@ -135,7 +135,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.geo.integrated.model.LogVisit">
+  <update id="updateByPrimaryKeySelective" parameterType="com.geo.integrated.entity.LogVisit">
     update log_visit
     <set>
       <if test="uuid != null">
@@ -183,7 +183,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.geo.integrated.model.LogVisit">
+  <update id="updateByPrimaryKey" parameterType="com.geo.integrated.entity.LogVisit">
     update log_visit
     set uuid = #{uuid,jdbcType=VARCHAR},
       uri = #{uri,jdbcType=VARCHAR},

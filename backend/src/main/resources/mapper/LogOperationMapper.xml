@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.geo.integrated.dao.LogOperationMapper">
-  <resultMap id="BaseResultMap" type="com.geo.integrated.model.LogOperation">
+  <resultMap id="BaseResultMap" type="com.geo.integrated.entity.LogOperation">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="uri" jdbcType="VARCHAR" property="uri" />
@@ -30,7 +30,7 @@
     delete from log_operation
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.geo.integrated.model.LogOperation" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.geo.integrated.entity.LogOperation" useGeneratedKeys="true">
     insert into log_operation (username, uri, `method`, 
       param, description, ip, 
       ip_source, os, browser, 
@@ -42,7 +42,7 @@
       #{times,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{userAgent,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.geo.integrated.model.LogOperation" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.geo.integrated.entity.LogOperation" useGeneratedKeys="true">
     insert into log_operation
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="username != null">
@@ -121,7 +121,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.geo.integrated.model.LogOperation">
+  <update id="updateByPrimaryKeySelective" parameterType="com.geo.integrated.entity.LogOperation">
     update log_operation
     <set>
       <if test="username != null">
@@ -163,7 +163,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.geo.integrated.model.LogOperation">
+  <update id="updateByPrimaryKey" parameterType="com.geo.integrated.entity.LogOperation">
     update log_operation
     set username = #{username,jdbcType=VARCHAR},
       uri = #{uri,jdbcType=VARCHAR},
