@@ -64,7 +64,7 @@ const routes = [
       {
         path: "/else",
         name: "其他",
-        meta: { title: "其他项目", icon: "el-icon-collection\n" },
+        meta: { title: "其他项目", icon: "el-icon-collection" },
       },
     ],
   },

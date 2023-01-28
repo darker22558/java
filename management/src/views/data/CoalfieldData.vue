@@ -13,7 +13,7 @@
       <el-button type="danger" @click="deleteCoalfieldBatch" class="el-icon-remove-outline"> 批量删除</el-button>
     </div>
     <div style="margin: 10px; width: 99%">
-      <el-table :data="coalfieldList" border stripe v-loading="loading" :height="380" @selection-change="handleSelectionChange">
+      <el-table :data="coalfieldList" border stripe v-loading="loading" :height="400" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="40"> </el-table-column>
 <!--        <el-table-column label="序号" prop="id" width="50"> </el-table-column>-->
         <el-table-column label="煤田名称" prop="coalfieldName" width="100"> </el-table-column>

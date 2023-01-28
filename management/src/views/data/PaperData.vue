@@ -164,7 +164,7 @@ export default {
       })
         .then(() => {
           deletePaperById(id).then((response) => {
-            this.$message.success(response.data.message);
+            this.$message.success(response.message);
             this.loadPaperList();
           });
         })
@@ -190,7 +190,7 @@ export default {
       })
         .then(() => {
           deletePaperBatchByIds(ids).then((response) => {
-            this.$message.success(response.data.message + ",ID为: " + ids);
+            this.$message.success(response.message + ",ID为: " + ids);
             this.loadPaperList();
           });
         })

@@ -10,7 +10,7 @@
       <el-button type="warning" @click="reset">重置</el-button>
     </div>
     <div style="margin: 10px; width: 99%">
-      <el-table :data="logList" border stripe :height="420">
+      <el-table :data="logList" border stripe :height="400">
         <el-table-column label="详情" type="expand" width="50">
           <template v-slot="props">
             <el-form label-position="left" inline class="table-expand">
@@ -29,7 +29,7 @@
         <el-table-column label="描述" prop="description" width="140" />
         <el-table-column label="ip" prop="ip" width="120"/>
         <el-table-column label="ip来源" prop="ipSource" show-overflow-tooltip />
-        <el-table-column label="操作系统" prop="os"  width="100"/>
+        <el-table-column label="操作系统" prop="os" width="100"/>
         <el-table-column label="浏览器" prop="browser" show-overflow-tooltip />
         <el-table-column label="操作耗时" width="80">
           <template v-slot="scope">
