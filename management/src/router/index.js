@@ -6,6 +6,9 @@ import Login from "@/views/Login.vue";
 import CoalfieldData from "@/views/data/CoalfieldData.vue";
 import PaperData from "@/views/data/PaperData.vue";
 import OperationLog from "@/views/log/OperationLog.vue";
+import Patent from "@/views/achievement/Patent.vue";
+import Project from "@/views/achievement/Project.vue";
+import Honor from "@/views/achievement/Honor.vue";
 
 Vue.use(VueRouter);
 
@@ -63,16 +66,29 @@ const routes = [
     ],
   },
   {
-    path: "/data",
-    name: "项目",
+    path: "/achievement",
+    name: "科研成果",
     component: Container,
-    meta: { title: "项目管理", icon: "el-icon-collection" },
+    meta: { title: "科研成果管理", icon: "el-icon-collection" },
     hidden: false,
     children: [
       {
-        path: "/country",
-        name: "国自然",
-        meta: { title: "国自然项目", icon: "el-icon-collection" },
+        path: "/honor",
+        name: "所获荣誉",
+        meta: { title: "所获荣誉", icon: "el-icon-collection" },
+        component: Honor,
+      },
+      {
+        path: "/project",
+        name: "科研项目",
+        meta: { title: "科研项目", icon: "el-icon-collection" },
+        component: Project,
+      },
+      {
+        path: "/patent",
+        name: "发明专利",
+        meta: { title: "发明专利", icon: "el-icon-collection" },
+        component: Patent,
       },
       {
         path: "/independent",
@@ -82,7 +98,7 @@ const routes = [
       {
         path: "/else",
         name: "其他",
-        meta: { title: "其他项目", icon: "el-icon-collection\n" },
+        meta: { title: "其他项目", icon: "el-icon-collection" },
       },
     ],
   },
@@ -109,13 +125,13 @@ const routes = [
     path: "/about",
     name: "关于",
     component: Container,
-    meta: { title: "概况管理", icon: "el-icon-collection-tag\n" },
+    meta: { title: "概况管理", icon: "el-icon-collection-tag" },
     hidden: false,
     children: [
       {
         path: "/overview",
         name: "概况",
-        meta: { title: "平台概况", icon: "el-icon-collection-tag\n" },
+        meta: { title: "平台概况", icon: "el-icon-collection-tag" },
       },
     ],
   },

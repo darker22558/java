@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geo.integrated.dao.AchievementProjectMapper">
+  <resultMap id="BaseResultMap" type="com.geo.integrated.model.AchievementProject">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <id column="number" jdbcType="VARCHAR" property="number" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="charge_person" jdbcType="VARCHAR" property="chargePerson" />
+    <result column="start_date" jdbcType="VARCHAR" property="startDate" />
+    <result column="end_date" jdbcType="VARCHAR" property="endDate" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="funds" jdbcType="VARCHAR" property="funds" />
+    <result column="funds_source" jdbcType="VARCHAR" property="fundsSource" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, `number`, title, charge_person, start_date, end_date, `type`, funds, funds_source
+  </sql>
+</mapper>
