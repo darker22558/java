@@ -24,8 +24,8 @@
         </el-table-column>
       </el-table>
     </div>
-    <el-dialog title="项目信息" :visible.sync="dialogFormVisible" width="30%">
-      <el-form label-width="100px" size="small">
+    <el-dialog title="荣誉信息" :visible.sync="dialogFormVisible" width="40%">
+      <el-form label-width="120px" size="small">
         <el-form-item label="所获荣誉名称">
           <el-input v-model="honorForm.honorName"></el-input>
         </el-form-item>

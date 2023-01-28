@@ -5,24 +5,26 @@
       <el-input placeholder="请输入标准国际刊号（issn）" v-model="queryInfo.issn" clearable style="width: 220px; margin-left: 10px" suffix-icon="el-icon-document-remove"></el-input>
       <el-button @click.native.prevent="loadPaperList" style="margin-left: 10px" type="primary">查询</el-button>
       <el-button type="warning" @click="reset">重置</el-button>
-      <el-button type="primary" @click="addPaper" class="el-icon-circle-plus-outline"> 新增</el-button>
-      <el-button type="danger" @click="deletePaperBatch" class="el-icon-remove-outline"> 批量删除</el-button>
+      <el-button type="primary" @click="addPaper" class="el-icon-circle-plus-outline">新增</el-button>
+      <el-button type="danger" @click="deletePaperBatch" class="el-icon-remove-outline">批量删除</el-button>
     </div>
     <div style="margin: 10px; width: 99%">
       <el-table :data="paperList" border stripe v-loading="loading" :height="400" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="40"> </el-table-column>
-        <el-table-column label="序号" prop="id" width="50"> </el-table-column>
+<!--        <el-table-column label="序号" prop="id" width="50"> </el-table-column>-->
         <el-table-column label="eid" prop="eid" width="160"> </el-table-column>
-        <el-table-column label="标题" prop="title" width="200" :show-overflow-tooltip="true"> </el-table-column>
-        <el-table-column label="发表时间" prop="publicDate" width="100" :show-overflow-tooltip="true">
-          <template v-slot="scope">{{ scope.row.publicDate.substring(0, 10) }}</template>
+        <el-table-column label="标题" prop="title" width="200" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column label="发表时间" width="260">
+          <template v-slot="scope">
+            <el-date-picker disabled v-model="scope.row.publicDate" size="small"></el-date-picker>
+          </template>
         </el-table-column>
-        <el-table-column label="标准国际刊号" prop="issn" width="110"> </el-table-column>
-        <el-table-column label="备注" prop="remark" width="50" :show-overflow-tooltip="true"> </el-table-column>
+        <el-table-column label="标准国际刊号" prop="issn" width="110"></el-table-column>
+        <el-table-column label="备注" prop="remark" width="50" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column label="操作" fixed="right">
           <template v-slot="scope">
-            <el-button size="mini" type="success" icon="el-icon-edit" @click="editPaper(scope.row)"> 编辑</el-button>
-            <el-button size="mini" type="danger" icon="el-icon-delete" @click="deletePaper(scope.row.id)"> 删除</el-button>
+            <el-button size="mini" type="success" icon="el-icon-edit" @click="editPaper(scope.row)"></el-button>
+            <el-button size="mini" type="danger" icon="el-icon-delete" @click="deletePaper(scope.row.id)"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -30,20 +32,19 @@
     <el-dialog title="文献信息" :visible.sync="dialogFormVisible" width="30%">
       <el-form label-width="100px" size="small">
         <el-form-item label="eid">
-          <el-input v-model="paperForm.eid" autocomplete="off"></el-input>
+          <el-input v-model="paperForm.eid"></el-input>
         </el-form-item>
         <el-form-item label="标题">
-          <el-input v-model="paperForm.title" autocomplete="off"></el-input>
+          <el-input v-model="paperForm.title" type="textarea"></el-input>
         </el-form-item>
         <el-form-item label="发表时间">
-          <el-date-picker v-if="paperForm.id != null" v-model="paperForm.publicDate" disabled autocomplete="off" format="yyyy 年 M 月 dd 日"></el-date-picker>
-          <el-date-picker v-else v-model="paperForm.publicDate" autocomplete="off" format="yyyy 年 M 月 dd 日"></el-date-picker>
+          <el-date-picker v-model="paperForm.publicDate"></el-date-picker>
         </el-form-item>
         <el-form-item label="标准国际刊号">
-          <el-input v-model="paperForm.issn" autocomplete="off"></el-input>
+          <el-input v-model="paperForm.issn"></el-input>
         </el-form-item>
         <el-form-item label="备注">
-          <el-input v-model="paperForm.remark" autocomplete="off"></el-input>
+          <el-input v-model="paperForm.remark"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -60,7 +61,8 @@
         :page-sizes="[5, 10, 15, 20]"
         :page-size="queryInfo.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="total">
+        :total="total"
+      >
       </el-pagination>
     </div>
   </div>
@@ -147,12 +149,12 @@ export default {
       saveOrUpdate(this.paperForm)
         .then((res) => {
           this.$message.success(res.message);
-          this.dialogFormVisible = false
+          this.dialogFormVisible = false;
           this.loadPaperList();
         })
         .catch(() => {
           this.$message.error("保存失败");
-      })
+        });
     },
     // 根据id删除文献
     deletePaper(id) {

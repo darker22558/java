@@ -24,7 +24,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <el-dialog title="专利信息" :visible.sync="dialogFormVisible" width="30%">
+    <el-dialog title="专利信息" :visible.sync="dialogFormVisible" width="40%">
       <el-form label-width="100px" size="small">
         <el-form-item label="编号">
           <el-input v-model="patentForm.number"></el-input>

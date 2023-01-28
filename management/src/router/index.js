@@ -9,6 +9,7 @@ import OperationLog from "@/views/log/OperationLog.vue";
 import Patent from "@/views/achievement/Patent.vue";
 import Project from "@/views/achievement/Project.vue";
 import Honor from "@/views/achievement/Honor.vue";
+import Paper from "@/views/achievement/Paper.vue";
 
 Vue.use(VueRouter);
 
@@ -42,23 +43,23 @@ const routes = [
     hidden: false,
     children: [
       {
-        path: "/coalfield",
+        path: "/coalfieldData",
         name: "煤田",
         meta: { title: "煤田数据", icon: "el-icon-notebook-2" },
         component: CoalfieldData,
       },
-      {
-        path: "/remoteSensing",
+      /*      {
+        path: "/remoteSensingData",
         name: "遥感",
         meta: { title: "遥感数据", icon: "el-icon-notebook-2" },
       },
       {
-        path: "/earthquake",
+        path: "/earthquakeData",
         name: "地震",
         meta: { title: "地震数据", icon: "el-icon-notebook-2" },
-      },
+      },*/
       {
-        path: "/paper",
+        path: "/paperData",
         name: "文献",
         meta: { title: "文献数据", icon: "el-icon-notebook-2" },
         component: PaperData,
@@ -83,6 +84,12 @@ const routes = [
         name: "科研项目",
         meta: { title: "科研项目", icon: "el-icon-collection" },
         component: Project,
+      },
+      {
+        path: "/paper",
+        name: "发表论文",
+        meta: { title: "发表论文", icon: "el-icon-collection" },
+        component: Paper,
       },
       {
         path: "/patent",

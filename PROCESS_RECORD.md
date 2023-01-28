@@ -546,6 +546,10 @@ import "@/permission";
       },
     ];
     ```
++ 后端使用Date类型的属性，如果前端使用字符串形式展示，则日期会少一天
+  - 错误显示情况举例1：后端传的是8月1日，前端显示7月31日
+  - 错误显示情况举例2：前端选择2月2日，回显是2月1日
+  - 参考[element-ui的DatePicker日期选择器说明](https://element.faas.ele.me/#/zh-CN/component/date-picker#ri-qi-ge-shi)，使用`el-date-picker`展示日期字段，可以使其正常显示
 
 #### 5.1.2.煤田数据
 + 实体类[DataCoalfield.java](backend/src/main/java/com/geo/integrated/model/DataCoalfield.java)
@@ -658,7 +662,6 @@ import "@/permission";
   ];
   ```
 + 关于自定义AOP时，Spring AOP @Before @Around @After的区别，[参考链接](https://blog.csdn.net/jsbylibo/article/details/106548691)
-
 
 ### 5.3.科研成果相关（achievement）
 + 与`5.1.数据相关（data）`中配置步骤类似
