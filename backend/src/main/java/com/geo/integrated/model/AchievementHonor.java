@@ -8,8 +8,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
- * achievement_honor
- * @author 
+ * @author: whtli
+ * @date: 2023/01/28
+ * @description: 所获荣誉信息实体类
  */
 @Data
 @TableName("achievement_honor")

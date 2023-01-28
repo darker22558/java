@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * @author: whtli
  * @date: 2023/01/28
- * @description:
+ * @description: 发明专利信息管理控制层
  */
 @RestController
 @RequestMapping("/management/achievement/patent/")

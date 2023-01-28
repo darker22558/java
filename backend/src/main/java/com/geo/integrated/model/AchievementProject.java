@@ -9,8 +9,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
- * achievement_project
- * @author 
+ * @author: whtli
+ * @date: 2023/01/28
+ * @description: 科研项目信息管理控制层
  */
 @Data
 @TableName("achievement_project")

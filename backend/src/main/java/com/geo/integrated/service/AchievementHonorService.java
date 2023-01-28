@@ -6,7 +6,7 @@ import com.geo.integrated.model.AchievementHonor;
 /**
  * @author: whtli
  * @date: 2023/01/28
- * @description:
+ * @description: 所获荣誉信息服务层
  */
 public interface AchievementHonorService extends IService<AchievementHonor> {
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 /**
  * @author: whtli
  * @date: 2023/01/26
- * @description: 煤田信息数据业务实现层
+ * @description: 煤田信息数据服务层实现
  */
 @Service
 public class DataCoalfieldServiceImpl extends ServiceImpl<DataCoalfieldMapper, DataCoalfield> implements DataCoalfieldService {

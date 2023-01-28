@@ -8,9 +8,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
- * achievement_patent
- *
- * @author
+ * @author: whtli
+ * @date: 2023/01/28
+ * @description: 发明专利信息实体类
  */
 @Data
 @TableName("achievement_patent")

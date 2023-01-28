@@ -12,7 +12,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 /**
  * @author: whtli
  * @date: 2023/01/16
- * @description: 用户相关功能业务实现层
+ * @description: 用户相关功能服务层实现
  */
 @Service
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {

@@ -7,7 +7,7 @@ import com.geo.integrated.model.SysUser;
 /**
  * @author: whtli
  * @date: 2023/01/16
- * @description: 用户管理业务层
+ * @description: 用户管理服务层
  */
 public interface SysUserService extends IService<SysUser> {
     /**

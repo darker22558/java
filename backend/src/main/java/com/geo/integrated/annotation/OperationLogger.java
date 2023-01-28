@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * @author: whtli
  * @date: 2023/01/27
- * @description: 记录操作日志
+ * @description: 操作日志注解
  * JDK元注解
  *    @Retention：定义注解的保留策略
  *       @Retention(RetentionPolicy.SOURCE)             //注解仅存在于源码中，在class字节码文件中不包含

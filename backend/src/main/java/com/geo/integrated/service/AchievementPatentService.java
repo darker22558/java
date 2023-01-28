@@ -6,7 +6,7 @@ import com.geo.integrated.model.AchievementPatent;
 /**
  * @author: whtli
  * @date: 2023/01/28
- * @description:
+ * @description: 发明专利信息信息服务层
  */
 public interface AchievementPatentService extends IService<AchievementPatent> {
 }

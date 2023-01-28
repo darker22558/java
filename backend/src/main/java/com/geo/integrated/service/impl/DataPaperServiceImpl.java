@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 /**
  * @author: whtli
  * @date: 2023/01/20
- * @description: 文献信息数据业务实现层
+ * @description: 文献信息数据服务层实现
  */
 @Service
 public class DataPaperServiceImpl extends ServiceImpl<DataPaperMapper, DataPaper> implements DataPaperService {

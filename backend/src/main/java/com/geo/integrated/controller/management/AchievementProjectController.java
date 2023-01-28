@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * @author: whtli
  * @date: 2023/01/28
- * @description:
+ * @description: 科研项目信息管理控制层
  */
 @RestController
 @RequestMapping("/management/achievement/project/")
