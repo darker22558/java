@@ -152,6 +152,11 @@ spring:
 ### 1.7.后台与前台控制层的目录结构区分
 + 后台管理系统相关的控制层统一放置在controller/management路径下
 + 前台相关的控制层统一放置在controller/front路径下
+### 1.8.全局异常处理
++ 因为不能避免服务器报错的情况，如果不配置异常处理机制，就会默认返回tomcat或者nginx的5XX页面。
++ 对用户来说此类返回信息不友好，用户无法理解是什么错误。这时候需要返回一个友好简单的格式给前端便于用户理解。
++ 自定义服务异常[ServiceException.java](backend/src/main/java/com/geo/integrated/exception/ServiceException.java)，继承自运行时异常RuntimeException
++ 添加全局异常处理[GlobalExceptionHandler.java](backend/src/main/java/com/geo/integrated/exception/GlobalExceptionHandler.java)
 
 ## 2.前端基本配置
 

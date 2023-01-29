@@ -32,7 +32,8 @@ public class GlobalExceptionHandler {
         log.error("实体校验异常：----------------{}", e);
         BindingResult bindingResult = e.getBindingResult();
         ObjectError objectError = bindingResult.getAllErrors().stream().findFirst().get();
-        return Result.fail(objectError.getDefaultMessage());
+        // return Result.fail(objectError.getDefaultMessage());
+        return Result.fail("实体校验异常");
     }
 
     /**
@@ -45,7 +46,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = RuntimeException.class)
     public Result handler(RuntimeException e) {
         log.error("运行时异常：----------------{}", e);
-        return Result.fail(e.getMessage());
+        // return Result.fail(e.getMessage());
+        return Result.fail("运行时异常");
     }
 
     /**
