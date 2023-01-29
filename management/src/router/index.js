@@ -10,6 +10,7 @@ import Patent from "@/views/achievement/Patent.vue";
 import Project from "@/views/achievement/Project.vue";
 import Honor from "@/views/achievement/Honor.vue";
 import Paper from "@/views/achievement/Paper.vue";
+import ExceptionLog from "@/views/log/ExceptionLog.vue";
 
 Vue.use(VueRouter);
 
@@ -87,8 +88,8 @@ const routes = [
       },
       {
         path: "/paper",
-        name: "发表论文",
-        meta: { title: "发表论文", icon: "el-icon-collection" },
+        name: "论文发表",
+        meta: { title: "论文发表", icon: "el-icon-collection" },
         component: Paper,
       },
       {
@@ -130,9 +131,9 @@ const routes = [
   },
   {
     path: "/about",
-    name: "关于",
+    name: "相关信息",
     component: Container,
-    meta: { title: "概况管理", icon: "el-icon-collection-tag" },
+    meta: { title: "相关信息管理", icon: "el-icon-collection-tag" },
     hidden: false,
     children: [
       {
@@ -164,15 +165,16 @@ const routes = [
     hidden: false,
     children: [
       {
-        path: "/exception",
-        name: "异常",
-        meta: { title: "异常日志", icon: "el-icon-date" },
-      },
-      {
         path: "/operation",
         name: "操作",
         meta: { title: "操作日志", icon: "el-icon-date" },
         component: OperationLog,
+      },
+      {
+        path: "/exception",
+        name: "异常",
+        meta: { title: "异常日志", icon: "el-icon-date" },
+        component: ExceptionLog,
       },
       {
         path: "/visit",

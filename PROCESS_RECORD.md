@@ -663,5 +663,8 @@ import "@/permission";
   ```
 + 关于自定义AOP时，Spring AOP @Before @Around @After的区别，[参考链接](https://blog.csdn.net/jsbylibo/article/details/106548691)
 
+#### 5.2.2.异常日志
++ 与`5.2.1.操作日志`中配置步骤类似，不需要单独配置Logger，从操作日志或访问日志中获取引发异常的描述即可
+
 ### 5.3.科研成果相关（achievement）
 + 与`5.1.数据相关（data）`中配置步骤类似
