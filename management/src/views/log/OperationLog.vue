@@ -23,13 +23,13 @@
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column label="序号" type="index" width="50" />
-        <el-table-column label="操作者" prop="username" width="80"/>
+        <el-table-column label="序号" prop="id" width="50" />
+        <el-table-column label="操作者" prop="username" width="80" />
         <el-table-column label="请求方式" prop="method" width="80" />
         <el-table-column label="描述" prop="description" width="140" />
-        <el-table-column label="ip" prop="ip" width="120"/>
+        <el-table-column label="ip" prop="ip" width="120" />
         <el-table-column label="ip来源" prop="ipSource" show-overflow-tooltip />
-        <el-table-column label="操作系统" prop="os" width="100"/>
+        <el-table-column label="操作系统" prop="os" width="100" />
         <el-table-column label="浏览器" prop="browser" show-overflow-tooltip />
         <el-table-column label="操作耗时" width="80">
           <template v-slot="scope">
@@ -39,11 +39,9 @@
         <el-table-column label="操作时间" width="100">
           <template v-slot="scope">{{ scope.row.createTime.substring(0, 10) }}</template>
         </el-table-column>
-        <el-table-column label="操作" width="120" fixed="right">
+        <el-table-column label="操作" fixed="right">
           <template v-slot="scope">
-            <el-popconfirm title="确定删除吗？" icon="el-icon-delete" icon-color="red" @onConfirm="deleteLogById(scope.row.id)">
-              <el-button slot="reference" size="mini" type="danger" icon="el-icon-delete">删除</el-button>
-            </el-popconfirm>
+            <el-button size="mini" type="danger" icon="el-icon-delete" @click="deleteLogById(scope.row.id)"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -113,10 +111,24 @@ export default {
       this.loadOperationLog();
     },
     deleteLogById(id) {
-      deleteOperationLogById(id).then((res) => {
-        this.$message.success(res.data.message);
-        this.loadOperationLog();
-      });
+      this.$confirm("此操作将永久删除该日志,是否删除?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+        dangerouslyUseHTMLString: true,
+      })
+        .then(() => {
+          deleteOperationLogById(id).then((res) => {
+            this.$message.success(res.message);
+            this.loadOperationLog();
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除操作",
+          });
+        });
     },
     setDate(value) {
       this.queryInfo.date = value;

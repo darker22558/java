@@ -81,8 +81,6 @@ public class OperationLogAspect {
         String uri = request.getRequestURI();
         // 获取请求方式
         String method = request.getMethod();
-        // 获取用户代理方式
-        String userAgent = request.getHeader("User-Agent");
         // 借助IpAddressUtils工具类获取用户ip
         String ip = IpAddressUtils.getIpAddress(request);
         // 借助IpAddressUtils工具获取ip来源
@@ -90,6 +88,8 @@ public class OperationLogAspect {
         // 借助AopUtils工具类获取请求参数
         Map<String, Object> requestParams = AopUtils.getRequestParams(joinPoint);
         String param = JacksonUtils.writeValueAsString(requestParams);
+        // 获取用户代理方式
+        String userAgent = request.getHeader("User-Agent");
         // 借助UserAgentUtils工具类获取操作系统和浏览器信息
         Map<String, String> userAgentMap = userAgentUtils.parseOsAndBrowser(userAgent);
         String os = userAgentMap.get("os");

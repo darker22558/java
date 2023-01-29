@@ -60,7 +60,7 @@ public class LogOperationController {
      */
     @OperationLogger("删除指定操作日志")
     @DeleteMapping("/deleteOperationLogById")
-    public Result delete(@RequestParam Long id) {
+    public Result deleteOperationLogById(@RequestParam Long id) {
         boolean delete = logOperationService.removeById(id);
         if (delete) {
             return Result.success("删除成功", id);
