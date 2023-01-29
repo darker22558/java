@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>发表论文</h2>
+    <h2>论文发表</h2>
   </div>
 </template>
 
