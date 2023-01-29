@@ -1,6 +1,9 @@
 package com.geo.integrated.controller;
 
+import com.geo.integrated.annotation.OperationLogger;
 import com.geo.integrated.common.Result;
+import com.geo.integrated.service.TestService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,9 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/management/test")
 public class TestController {
+    @Autowired
+    private TestService testService;
+    @OperationLogger("测试连接")
     @GetMapping("/hello")
     public Result test() {
         String testString = "hello world";
+        // testService.testGlobalException(testString);
         return Result.success("连接成功", testString);
     }
 }
