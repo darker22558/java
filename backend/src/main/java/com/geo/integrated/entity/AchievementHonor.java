@@ -13,7 +13,7 @@ import lombok.Data;
  * @description: 所获荣誉信息实体类
  */
 @Data
-@TableName("achievement_honor")
+@TableName("ach_honor")
 public class AchievementHonor implements Serializable {
     /**
      * id

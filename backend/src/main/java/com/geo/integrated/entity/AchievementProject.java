@@ -14,7 +14,7 @@ import lombok.Data;
  * @description: 科研项目信息管理控制层
  */
 @Data
-@TableName("achievement_project")
+@TableName("ach_project")
 public class AchievementProject implements Serializable {
     /**
      * id

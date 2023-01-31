@@ -176,11 +176,11 @@ const routes = [
         meta: { title: "异常日志", icon: "el-icon-date" },
         component: ExceptionLog,
       },
-      {
+      /*{
         path: "/visit",
         name: "访问",
         meta: { title: "访问日志", icon: "el-icon-date" },
-      },
+      },*/
     ],
   },
 ];

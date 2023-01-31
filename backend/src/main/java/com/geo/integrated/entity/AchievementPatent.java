@@ -13,7 +13,7 @@ import lombok.Data;
  * @description: 发明专利信息实体类
  */
 @Data
-@TableName("achievement_patent")
+@TableName("ach_patent")
 public class AchievementPatent implements Serializable {
     /**
      * id
