@@ -12,6 +12,8 @@ const whiteList = ["/login"]; // no redirect whitelist
 // from: Route: 当前导航正要离开的路由
 // next: Function: 一定要调用该方法来 resolve 这个钩子。执行效果依赖 next 方法的调用参数。
 router.beforeEach((to, from, next) => {
+  console.log("to ========= ")
+  console.log(to)
   // 开始加载进度条
   NProgress.start();
   // 设置页面标题

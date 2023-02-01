@@ -40,7 +40,6 @@ public class SysUser implements Serializable {
      * 密码
      */
     @ApiModelProperty(value = "密码")
-    @JsonIgnore
     private String password;
 
     /**
