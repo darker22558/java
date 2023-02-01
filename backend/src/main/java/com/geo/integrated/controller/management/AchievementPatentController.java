@@ -21,7 +21,7 @@ import java.util.Map;
  * @date: 2023/01/28
  * @description: 发明专利信息管理控制层
  */
-@Api(tags = "AchievementPatentController", description = "发明专利信息管理控制层")
+@Api(tags = "AchievementPatentController")
 @RestController
 @RequestMapping("/management/achievement/patent/")
 public class AchievementPatentController {

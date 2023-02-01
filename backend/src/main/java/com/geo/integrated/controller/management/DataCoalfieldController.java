@@ -21,7 +21,7 @@ import java.util.Map;
  * @date: 2023/01/26
  * @description: 煤田信息数据管理控制层
  */
-@Api(tags = "DataCoalfieldController", description = "煤田信息数据管理控制层")
+@Api(tags = "DataCoalfieldController")
 @RestController
 @RequestMapping("/management/coalfield")
 public class DataCoalfieldController {

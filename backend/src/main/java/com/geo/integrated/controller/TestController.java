@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date: 2023/01/13
  * @description: 测试接口
  */
-@Api(tags = "TestController", description = "测试接口")
+@Api(tags = "TestController")
 @RestController
 @RequestMapping("/management/test")
 public class TestController {

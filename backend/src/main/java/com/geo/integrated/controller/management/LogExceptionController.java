@@ -20,7 +20,7 @@ import java.util.Map;
  * @date: 2023/01/29
  * @description: 异常日志管理控制层
  */
-@Api(tags = "LogExceptionController", description = "异常日志管理控制层")
+@Api(tags = "LogExceptionController")
 @RestController
 @RequestMapping("/management/log/exception")
 public class LogExceptionController {

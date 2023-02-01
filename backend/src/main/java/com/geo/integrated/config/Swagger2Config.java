@@ -36,7 +36,6 @@ public class Swagger2Config {
         return new ApiInfoBuilder()
                 .title("SwaggerUI")
                 .description("geo.integrated")
-                .contact("whtli")
                 .version("1.0")
                 .build();
     }

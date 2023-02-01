@@ -4,26 +4,27 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.geo.integrated.dao.LogExceptionMapper;
 import com.geo.integrated.entity.LogException;
 import com.geo.integrated.service.LogExceptionService;
-import com.geo.integrated.utils.IpAddressUtils;
-import com.geo.integrated.utils.UserAgentUtils;
 import org.apache.ibatis.exceptions.PersistenceException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
+import javax.annotation.Resource;
 
 /**
  * @author: whtli
  * @date: 2023/01/28
- * @description:
+ * @description: 异常日志服务层实现
  */
 @Service
 public class LogExceptionServiceImpl extends ServiceImpl<LogExceptionMapper, LogException> implements LogExceptionService {
-    @Autowired
+    @Resource
     private LogExceptionMapper logExceptionMapper;
-    @Autowired
-    private UserAgentUtils userAgentUtils;
+
+    /**
+     * 报错异常日志
+     *
+     * @param log 异常日志对象
+     */
     @Transactional
     @Override
     public void saveExceptionLog(LogException log) {

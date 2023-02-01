@@ -19,7 +19,7 @@ import java.util.Map;
  * @date: 2023/01/14
  * @description: 用户管理控制层
  */
-@Api(tags = "SysUserController", description = "用户管理控制层")
+@Api(tags = "SysUserController")
 @RestController
 @RequestMapping("/management/user")
 public class SysUserController {

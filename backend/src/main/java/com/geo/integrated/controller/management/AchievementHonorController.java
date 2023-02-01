@@ -21,7 +21,7 @@ import java.util.Map;
  * @date: 2023/01/28
  * @description: 所获荣誉信息管理控制层
  */
-@Api(tags = "AchievementHonorController", description = "所获荣誉信息管理控制层")
+@Api(tags = "AchievementHonorController")
 @RestController
 @RequestMapping("/management/achievement/honor/")
 public class AchievementHonorController {

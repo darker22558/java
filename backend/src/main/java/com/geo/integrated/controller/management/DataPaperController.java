@@ -21,7 +21,7 @@ import java.util.Map;
  * @date: 2023/01/20
  * @description: 文献信息数据管理控制层
  */
-@Api(tags = "DataPaperController", description = "文献信息数据管理控制层")
+@Api(tags = "DataPaperController")
 @RestController
 @RequestMapping("/management/paper")
 public class DataPaperController {

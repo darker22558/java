@@ -20,7 +20,7 @@ import java.util.Map;
  * @date: 2023/01/27
  * @description: 操作日志管理控制层
  */
-@Api(tags = "LogOperationController", description = "操作日志管理控制层")
+@Api(tags = "LogOperationController")
 @RestController
 @RequestMapping("/management/log")
 public class LogOperationController {
