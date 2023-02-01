@@ -7,6 +7,8 @@ import com.geo.integrated.annotation.OperationLogger;
 import com.geo.integrated.common.Result;
 import com.geo.integrated.entity.DataPaper;
 import com.geo.integrated.service.DataPaperService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +21,7 @@ import java.util.Map;
  * @date: 2023/01/20
  * @description: 文献信息数据管理控制层
  */
+@Api(tags = "DataPaperController", description = "文献信息数据管理控制层")
 @RestController
 @RequestMapping("/management/paper")
 public class DataPaperController {
@@ -34,6 +37,7 @@ public class DataPaperController {
      * @param pageSize 页内数量
      * @return 文献信息列表
      */
+    @ApiOperation("获取文献信息列表")
     @OperationLogger("获取文献信息列表")
     @GetMapping("/getPaperList")
     public Result getPaperList(@RequestParam(value = "title", defaultValue = "") String title,
@@ -65,6 +69,7 @@ public class DataPaperController {
      * @param id 指定文献id
      * @return 删除操作的结果
      */
+    @ApiOperation("删除指定文献信息")
     @OperationLogger("删除指定文献信息")
     @DeleteMapping("deletePaperById")
     public Result deletePaperById(@RequestParam Long id) {
@@ -82,6 +87,7 @@ public class DataPaperController {
      * @param ids 多个指定文献信息id组成的列表
      * @return 删除操作的结果
      */
+    @ApiOperation("批量删除指定文献信息")
     @OperationLogger("批量删除指定文献信息")
     @DeleteMapping("/deletePaperBatchByIds")
     public Result deletePaperBatchByIds(@RequestBody List<Long> ids) {
@@ -99,6 +105,7 @@ public class DataPaperController {
      * @param paper 文献信息实体类
      * @return 新增或编辑结果
      */
+    @ApiOperation("新增或编辑文献信息")
     @OperationLogger("新增或编辑文献信息")
     @PostMapping("/saveOrUpdate")
     public Result saveOrUpdate(@RequestBody DataPaper paper) {

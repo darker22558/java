@@ -7,6 +7,8 @@ import com.geo.integrated.annotation.OperationLogger;
 import com.geo.integrated.common.Result;
 import com.geo.integrated.entity.AchievementPatent;
 import com.geo.integrated.service.AchievementPatentService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +21,7 @@ import java.util.Map;
  * @date: 2023/01/28
  * @description: 发明专利信息管理控制层
  */
+@Api(tags = "AchievementPatentController", description = "发明专利信息管理控制层")
 @RestController
 @RequestMapping("/management/achievement/patent/")
 public class AchievementPatentController {
@@ -35,6 +38,7 @@ public class AchievementPatentController {
      * @param pageSize 页内数量
      * @return 专利信息列表
      */
+    @ApiOperation("获取专利信息列表")
     @OperationLogger("获取专利信息列表")
     @GetMapping("/getPatentList")
     public Result getPatentList(@RequestParam(value = "number", defaultValue = "") String number,
@@ -67,6 +71,7 @@ public class AchievementPatentController {
      * @param id 指定专利信息id
      * @return 删除操作的结果
      */
+    @ApiOperation("删除指定专利信息")
     @OperationLogger("删除指定专利信息")
     @DeleteMapping("deletePatentById")
     public Result deletePatentById(@RequestParam Long id) {
@@ -84,6 +89,7 @@ public class AchievementPatentController {
      * @param ids 多个指定专利信息id组成的列表
      * @return 删除操作的结果
      */
+    @ApiOperation("批量删除指定专利信息")
     @OperationLogger("批量删除指定专利信息")
     @DeleteMapping("/deletePatentBatchByIds")
     public Result deletePatentBatchByIds(@RequestBody List<Long> ids) {
@@ -101,6 +107,7 @@ public class AchievementPatentController {
      * @param patent 专利信息实体类
      * @return 新增或编辑结果
      */
+    @ApiOperation("新增或编辑专利信息")
     @OperationLogger("新增或编辑专利信息")
     @PostMapping("/saveOrUpdate")
     public Result saveOrUpdate(@RequestBody AchievementPatent patent) {

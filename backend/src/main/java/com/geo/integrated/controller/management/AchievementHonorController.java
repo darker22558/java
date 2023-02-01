@@ -7,6 +7,8 @@ import com.geo.integrated.annotation.OperationLogger;
 import com.geo.integrated.common.Result;
 import com.geo.integrated.entity.AchievementHonor;
 import com.geo.integrated.service.AchievementHonorService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +21,7 @@ import java.util.Map;
  * @date: 2023/01/28
  * @description: 所获荣誉信息管理控制层
  */
+@Api(tags = "AchievementHonorController", description = "所获荣誉信息管理控制层")
 @RestController
 @RequestMapping("/management/achievement/honor/")
 public class AchievementHonorController {
@@ -35,6 +38,7 @@ public class AchievementHonorController {
      * @param pageSize         页内数量
      * @return 荣誉信息列表
      */
+    @ApiOperation("获取荣誉信息列表")
     @OperationLogger("获取荣誉信息列表")
     @GetMapping("/getHonorList")
     public Result getHonorList(@RequestParam(value = "honorName", defaultValue = "") String honorName,
@@ -67,6 +71,7 @@ public class AchievementHonorController {
      * @param id 指定荣誉信息id
      * @return 删除操作的结果
      */
+    @ApiOperation("删除指定荣誉信息")
     @OperationLogger("删除指定荣誉信息")
     @DeleteMapping("deleteHonorById")
     public Result deleteHonorById(@RequestParam Long id) {
@@ -84,6 +89,7 @@ public class AchievementHonorController {
      * @param ids 多个指定荣誉信息id组成的列表
      * @return 删除操作的结果
      */
+    @ApiOperation("批量删除指定荣誉信息")
     @OperationLogger("批量删除指定荣誉信息")
     @DeleteMapping("/deleteHonorBatchByIds")
     public Result deleteHonorBatchByIds(@RequestBody List<Long> ids) {
@@ -101,6 +107,7 @@ public class AchievementHonorController {
      * @param honor 荣誉信息实体类
      * @return 新增或编辑结果
      */
+    @ApiOperation("新增或编辑荣誉信息")
     @OperationLogger("新增或编辑荣誉信息")
     @PostMapping("/saveOrUpdate")
     public Result saveOrUpdate(@RequestBody AchievementHonor honor) {

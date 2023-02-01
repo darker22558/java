@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -24,34 +25,40 @@ public class SysUser implements Serializable {
     /**
      * id
      */
+    @ApiModelProperty(value = "id")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
      * 用户名
      */
+    @ApiModelProperty(value = "用户名")
     @NotBlank(message = "用户名不能为空")
     private String username;
 
     /**
      * 密码
      */
+    @ApiModelProperty(value = "密码")
     @JsonIgnore
     private String password;
 
     /**
      * 昵称
      */
+    @ApiModelProperty(value = "昵称")
     private String nickname;
 
     /**
      * 头像地址
      */
+    @ApiModelProperty(value = "头像地址")
     private String avatar;
 
     /**
      * 邮箱
      */
+    @ApiModelProperty(value = "邮箱")
     @NotBlank(message = "邮箱不能为空")
     @Email(message = "邮箱格式不正确")
     private String email;
@@ -59,16 +66,19 @@ public class SysUser implements Serializable {
     /**
      * 创建时间
      */
+    @ApiModelProperty(value = "创建时间")
     private Date createTime;
 
     /**
      * 更新时间
      */
+    @ApiModelProperty(value = "更新时间")
     private Date updateTime;
 
     /**
      * 角色访问权限
      */
+    @ApiModelProperty(value = "角色访问权限")
     private String role;
 
     private static final long serialVersionUID = 1L;

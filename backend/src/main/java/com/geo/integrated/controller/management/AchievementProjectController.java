@@ -7,6 +7,8 @@ import com.geo.integrated.annotation.OperationLogger;
 import com.geo.integrated.common.Result;
 import com.geo.integrated.entity.AchievementProject;
 import com.geo.integrated.service.AchievementProjectService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +21,7 @@ import java.util.Map;
  * @date: 2023/01/28
  * @description: 科研项目信息管理控制层
  */
+@Api(tags = "AchievementProjectController", description = "科研项目信息管理控制层")
 @RestController
 @RequestMapping("/management/achievement/project/")
 public class AchievementProjectController {
@@ -34,6 +37,7 @@ public class AchievementProjectController {
      * @param pageSize     页内数量
      * @return 项目信息列表
      */
+    @ApiOperation("获取项目信息列表")
     @OperationLogger("获取项目信息列表")
     @GetMapping("/getProjectList")
     public Result getProjectList(@RequestParam(value = "title", defaultValue = "") String title,
@@ -65,6 +69,7 @@ public class AchievementProjectController {
      * @param id 指定项目信息id
      * @return 删除操作的结果
      */
+    @ApiOperation("删除指定项目信息")
     @OperationLogger("删除指定项目信息")
     @DeleteMapping("deleteProjectById")
     public Result deleteProjectById(@RequestParam Long id) {
@@ -82,6 +87,7 @@ public class AchievementProjectController {
      * @param ids 多个指定项目信息id组成的列表
      * @return 删除操作的结果
      */
+    @ApiOperation("批量删除指定项目信息")
     @OperationLogger("批量删除指定项目信息")
     @DeleteMapping("/deleteProjectBatchByIds")
     public Result deleteProjectBatchByIds(@RequestBody List<Long> ids) {
@@ -99,6 +105,7 @@ public class AchievementProjectController {
      * @param project 项目信息实体类
      * @return 新增或编辑结果
      */
+    @ApiOperation("新增或编辑项目信息")
     @OperationLogger("新增或编辑项目信息")
     @PostMapping("/saveOrUpdate")
     public Result saveOrUpdate(@RequestBody AchievementProject project) {

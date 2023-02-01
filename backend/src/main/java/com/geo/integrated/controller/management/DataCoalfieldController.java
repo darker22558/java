@@ -7,6 +7,8 @@ import com.geo.integrated.annotation.OperationLogger;
 import com.geo.integrated.common.Result;
 import com.geo.integrated.entity.DataCoalfield;
 import com.geo.integrated.service.DataCoalfieldService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +21,7 @@ import java.util.Map;
  * @date: 2023/01/26
  * @description: 煤田信息数据管理控制层
  */
+@Api(tags = "DataCoalfieldController", description = "煤田信息数据管理控制层")
 @RestController
 @RequestMapping("/management/coalfield")
 public class DataCoalfieldController {
@@ -34,6 +37,7 @@ public class DataCoalfieldController {
      * @param pageSize         页内数量
      * @return 煤田信息列表
      */
+    @ApiOperation("获取煤田信息列表")
     @OperationLogger("获取煤田信息列表")
     @GetMapping("/getCoalfieldList")
     public Result getCoalfieldList(@RequestParam(value = "coalfieldName", defaultValue = "") String coalfieldName,
@@ -64,6 +68,7 @@ public class DataCoalfieldController {
      * @param id 指定煤田信息id
      * @return 删除操作的结果
      */
+    @ApiOperation("删除指定煤田信息")
     @OperationLogger("删除指定煤田信息")
     @DeleteMapping("deleteCoalfieldById")
     public Result deleteCoalfieldById(@RequestParam Long id) {
@@ -81,6 +86,7 @@ public class DataCoalfieldController {
      * @param ids 多个指定煤田信息id组成的列表
      * @return 删除操作的结果
      */
+    @ApiOperation("批量删除指定煤田信息")
     @OperationLogger("批量删除指定煤田信息")
     @DeleteMapping("/deleteCoalfieldBatchByIds")
     public Result deleteCoalfieldBatchByIds(@RequestBody List<Long> ids) {
@@ -98,6 +104,7 @@ public class DataCoalfieldController {
      * @param coalfield 煤田信息实体类
      * @return 新增或编辑结果
      */
+    @ApiOperation("新增或编辑煤田信息")
     @OperationLogger("新增或编辑煤田信息")
     @PostMapping("/saveOrUpdate")
     public Result saveOrUpdate(@RequestBody DataCoalfield coalfield) {

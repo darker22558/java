@@ -7,6 +7,8 @@ import com.geo.integrated.annotation.OperationLogger;
 import com.geo.integrated.common.Result;
 import com.geo.integrated.entity.LogException;
 import com.geo.integrated.service.LogExceptionService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +20,7 @@ import java.util.Map;
  * @date: 2023/01/29
  * @description: 异常日志管理控制层
  */
+@Api(tags = "LogExceptionController", description = "异常日志管理控制层")
 @RestController
 @RequestMapping("/management/log/exception")
 public class LogExceptionController {
@@ -31,6 +34,7 @@ public class LogExceptionController {
      * @param pageSize    每页个数
      * @return 异常日志列表
      */
+    @ApiOperation("查询异常日志列表")
     @OperationLogger("查询异常日志列表")
     @GetMapping("/getExceptionLogList")
     public Result getExceptionLogList(@RequestParam(value = "description", defaultValue = "") String description,
@@ -59,6 +63,7 @@ public class LogExceptionController {
      * @param id 指定异常日志id
      * @return 删除操作的结果
      */
+    @ApiOperation("删除指定异常日志")
     @OperationLogger("删除指定异常日志")
     @DeleteMapping("/deleteExceptionLogById")
     public Result deleteExceptionLogById(@RequestParam Long id) {

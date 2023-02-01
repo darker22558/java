@@ -157,6 +157,73 @@ spring:
 + 对用户来说此类返回信息不友好，用户无法理解是什么错误。这时候需要返回一个友好简单的格式给前端便于用户理解。
 + 自定义服务异常[ServiceException.java](backend/src/main/java/com/geo/integrated/exception/ServiceException.java)，继承自运行时异常RuntimeException
 + 添加全局异常处理[GlobalExceptionHandler.java](backend/src/main/java/com/geo/integrated/exception/GlobalExceptionHandler.java)
+### 1.9.整合SwaggerUI
++ 添加依赖[pom.xml](./backend/pom.xml)
+```xml
+    <dependencies>
+        <!--Swagger-UI API文档生产工具-->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.7.0</version>
+        </dependency>
+    </dependencies>
+```
++ 添加Swagger-UI配置[Swagger2Config.java](backend/src/main/java/com/geo/integrated/config/Swagger2Config.java)
++ 在配置文件[application.yml](./backend/src/main/resources/application.yml)中添加配置项，解决整合后的报错问题
+````bash
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2023-02-01 17:53:40.368 ERROR 10884 --- [           main] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.context.ApplicationContextException: Failed to start bean 'documentationPluginsBootstrapper'; nested exception is java.lang.NullPointerException
+	at org.springframework.context.support.DefaultLifecycleProcessor.doStart(DefaultLifecycleProcessor.java:181)
+	at org.springframework.context.support.DefaultLifecycleProcessor.access$200(DefaultLifecycleProcessor.java:54)
+	at org.springframework.context.support.DefaultLifecycleProcessor$LifecycleGroup.start(DefaultLifecycleProcessor.java:356)
+	at java.lang.Iterable.forEach(Iterable.java:75)
+	at org.springframework.context.support.DefaultLifecycleProcessor.startBeans(DefaultLifecycleProcessor.java:155)
+	at org.springframework.context.support.DefaultLifecycleProcessor.onRefresh(DefaultLifecycleProcessor.java:123)
+	at org.springframework.context.support.AbstractApplicationContext.finishRefresh(AbstractApplicationContext.java:935)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:586)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:147)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:731)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:408)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1303)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1292)
+	at com.geo.integrated.BackendApplication.main(BackendApplication.java:15)
+Caused by: java.lang.NullPointerException: null
+	at springfox.documentation.spi.service.contexts.Orderings$8.compare(Orderings.java:113)
+	at springfox.documentation.spi.service.contexts.Orderings$8.compare(Orderings.java:110)
+	at com.google.common.collect.ComparatorOrdering.compare(ComparatorOrdering.java:38)
+	at java.util.TimSort.countRunAndMakeAscending(TimSort.java:355)
+	at java.util.TimSort.sort(TimSort.java:234)
+	at java.util.Arrays.sort(Arrays.java:1438)
+	at com.google.common.collect.Ordering.sortedCopy(Ordering.java:817)
+	at springfox.documentation.spring.web.plugins.WebMvcRequestHandlerProvider.requestHandlers(WebMvcRequestHandlerProvider.java:52)
+	at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper$2.apply(DocumentationPluginsBootstrapper.java:129)
+	at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper$2.apply(DocumentationPluginsBootstrapper.java:126)
+	at com.google.common.collect.Iterators$8.transform(Iterators.java:799)
+	at com.google.common.collect.TransformedIterator.next(TransformedIterator.java:48)
+	at com.google.common.collect.TransformedIterator.next(TransformedIterator.java:48)
+	at com.google.common.collect.Iterators$5.hasNext(Iterators.java:548)
+	at com.google.common.collect.ImmutableList.copyOf(ImmutableList.java:268)
+	at com.google.common.collect.ImmutableList.copyOf(ImmutableList.java:226)
+	at com.google.common.collect.FluentIterable.toList(FluentIterable.java:373)
+	at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper.defaultContextBuilder(DocumentationPluginsBootstrapper.java:100)
+	at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper.buildContext(DocumentationPluginsBootstrapper.java:91)
+	at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper.start(DocumentationPluginsBootstrapper.java:154)
+	at org.springframework.context.support.DefaultLifecycleProcessor.doStart(DefaultLifecycleProcessor.java:178)
+	... 14 common frames omitted
+
+````
++ 给各个Controller添加Swagger注解
++ 给实体类的属性添加@ApiModelProperty注解
++ 接口地址：http://localhost:9090/swagger-ui.html
 
 ## 2.前端基本配置
 

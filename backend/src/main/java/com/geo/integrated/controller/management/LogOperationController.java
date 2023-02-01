@@ -7,6 +7,8 @@ import com.geo.integrated.annotation.OperationLogger;
 import com.geo.integrated.common.Result;
 import com.geo.integrated.entity.LogOperation;
 import com.geo.integrated.service.LogOperationService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +20,7 @@ import java.util.Map;
  * @date: 2023/01/27
  * @description: 操作日志管理控制层
  */
+@Api(tags = "LogOperationController", description = "操作日志管理控制层")
 @RestController
 @RequestMapping("/management/log")
 public class LogOperationController {
@@ -32,6 +35,7 @@ public class LogOperationController {
      * @param pageSize    每页个数
      * @return 操作日志列表
      */
+    @ApiOperation("查询操作日志列表")
     @OperationLogger("查询操作日志列表")
     @GetMapping("/getOperationLogList")
     public Result getOperationLogList(@RequestParam(defaultValue = "") String description,
@@ -58,6 +62,7 @@ public class LogOperationController {
      * @param id 指定操作日志id
      * @return 删除操作的结果
      */
+    @ApiOperation("删除指定操作日志")
     @OperationLogger("删除指定操作日志")
     @DeleteMapping("/deleteOperationLogById")
     public Result deleteOperationLogById(@RequestParam Long id) {
