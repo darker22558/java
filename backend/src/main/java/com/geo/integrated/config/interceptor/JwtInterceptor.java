@@ -35,14 +35,14 @@ public class JwtInterceptor implements HandlerInterceptor {
         }
         // 执行认证
         if (StrUtil.isBlank(token)) {
-            throw new ServiceException(Constant.CODE_ACCESS_DENIED, "无token，请重新登录");
+            throw new ServiceException(Constant.CODE_UNAUTHORIZED, "无token，请重新登录");
         }
         // 获取 token 中的 user id
         String userId;
         try {
             userId = JWT.decode(token).getAudience().get(0);
         } catch (JWTDecodeException j) {
-            throw new ServiceException(Constant.CODE_ACCESS_DENIED, "token验证失败，请重新登录");
+            throw new ServiceException(Constant.CODE_UNAUTHORIZED, "token验证失败，请重新登录");
         }
         // 根据token中的userid查询数据库
         SysUser user = sysUserService.getById(userId);
@@ -55,7 +55,7 @@ public class JwtInterceptor implements HandlerInterceptor {
             // 验证token
             jwtVerifier.verify(token);
         } catch (JWTVerificationException e) {
-            throw new ServiceException(Constant.CODE_ACCESS_DENIED, "token验证失败，请重新登录");
+            throw new ServiceException(Constant.CODE_UNAUTHORIZED, "token验证失败，请重新登录");
         }
         return true;
     }

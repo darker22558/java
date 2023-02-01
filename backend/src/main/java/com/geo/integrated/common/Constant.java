@@ -19,7 +19,17 @@ public interface Constant {
     /**
      * 权限不足
      */
-    Integer CODE_ACCESS_DENIED = 401;
+    Integer CODE_UNAUTHORIZED = 401;
+
+    /**
+     * 禁止访问
+     */
+    Integer CODE_FORBIDDEN = 403;
+
+    /**
+     * 无资源
+     */
+    Integer CODE_NOT_FOUND = 404;
 
     /**
      * 系统错误

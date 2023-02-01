@@ -24,7 +24,7 @@ public class TestController {
     @GetMapping("/hello")
     public Result test() {
         String testString = "hello world";
-        // testService.testGlobalException(testString);
+        /*testService.testGlobalException(testString);*/
         return Result.success("连接成功", testString);
     }
 }

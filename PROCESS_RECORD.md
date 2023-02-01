@@ -184,6 +184,8 @@ spring:
   ```
 + 添加Swagger-UI配置[Swagger2Config.java](backend/src/main/java/com/geo/integrated/config/Swagger2Config.java)
 
++ 给Swagger2Config.java添加注解`@Profile({"dev"})`，仅在本地开发环境中支持使用Swagger、生产环境禁用
+
 + 在配置文件[application.yml](./backend/src/main/resources/application.yml)中添加配置项，解决整合后的报错问题
   ````bash
   Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
