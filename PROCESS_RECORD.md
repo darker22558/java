@@ -30,6 +30,7 @@ public interface Constant {
     Integer CODE_ELSE_ERROR = 600;
 }
 ```
+
 ### 1.2.接口统一返回包装类
 ```java
 @Data
@@ -72,6 +73,7 @@ public class Result implements Serializable {
     }
 }
 ```
+
 ### 1.3.跨域配置
 ```java
 @Configuration
@@ -87,6 +89,7 @@ public class CorsConfig implements WebMvcConfigurer {
     }
 }
 ```
+
 ### 1.4.在[pom.xml](./backend/pom.xml)中引入hutool等常用的依赖
 ```xml
     <dependencies>
@@ -116,6 +119,7 @@ public class CorsConfig implements WebMvcConfigurer {
         </dependency>
     </dependencies>
 ```
+
 ### 1.5.Mybatis Plus设置
 ```java
 @Configuration
@@ -130,7 +134,8 @@ public class MybatisPlusConfig {
     }
 }
 ```
-### 1.6.[application.yml](./backend/src/main/resources/application.yml)中配置数据库和Mybatis Plus
+
+### 1.6.配置MySQL数据库和Mybatis Plus[application.yml](./backend/src/main/resources/application.yml)
 ```yaml
 server:
   address: localhost
@@ -149,80 +154,87 @@ spring:
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
 ```
+
 ### 1.7.后台与前台控制层的目录结构区分
 + 后台管理系统相关的控制层统一放置在controller/management路径下
 + 前台相关的控制层统一放置在controller/front路径下
+
 ### 1.8.全局异常处理
 + 因为不能避免服务器报错的情况，如果不配置异常处理机制，就会默认返回tomcat或者nginx的5XX页面。
 + 对用户来说此类返回信息不友好，用户无法理解是什么错误。这时候需要返回一个友好简单的格式给前端便于用户理解。
 + 自定义服务异常[ServiceException.java](backend/src/main/java/com/geo/integrated/exception/ServiceException.java)，继承自运行时异常RuntimeException
 + 添加全局异常处理[GlobalExceptionHandler.java](backend/src/main/java/com/geo/integrated/exception/GlobalExceptionHandler.java)
+
 ### 1.9.整合SwaggerUI
 + 添加依赖[pom.xml](./backend/pom.xml)
-```xml
-    <dependencies>
-        <!--Swagger-UI API文档生产工具-->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>2.7.0</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>2.7.0</version>
-        </dependency>
-    </dependencies>
-```
+  ```xml
+      <dependencies>
+          <!--Swagger-UI API文档生产工具-->
+          <dependency>
+              <groupId>io.springfox</groupId>
+              <artifactId>springfox-swagger2</artifactId>
+              <version>2.7.0</version>
+          </dependency>
+          <dependency>
+              <groupId>io.springfox</groupId>
+              <artifactId>springfox-swagger-ui</artifactId>
+              <version>2.7.0</version>
+          </dependency>
+      </dependencies>
+  ```
 + 添加Swagger-UI配置[Swagger2Config.java](backend/src/main/java/com/geo/integrated/config/Swagger2Config.java)
+
 + 在配置文件[application.yml](./backend/src/main/resources/application.yml)中添加配置项，解决整合后的报错问题
-````bash
-Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
-2023-02-01 17:53:40.368 ERROR 10884 --- [           main] o.s.boot.SpringApplication               : Application run failed
+  ````bash
+  Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+  2023-02-01 17:53:40.368 ERROR 10884 --- [           main] o.s.boot.SpringApplication               : Application run failed
+  
+  org.springframework.context.ApplicationContextException: Failed to start bean 'documentationPluginsBootstrapper'; nested exception is java.lang.NullPointerException
+      at org.springframework.context.support.DefaultLifecycleProcessor.doStart(DefaultLifecycleProcessor.java:181)
+      at org.springframework.context.support.DefaultLifecycleProcessor.access$200(DefaultLifecycleProcessor.java:54)
+      at org.springframework.context.support.DefaultLifecycleProcessor$LifecycleGroup.start(DefaultLifecycleProcessor.java:356)
+      at java.lang.Iterable.forEach(Iterable.java:75)
+      at org.springframework.context.support.DefaultLifecycleProcessor.startBeans(DefaultLifecycleProcessor.java:155)
+      at org.springframework.context.support.DefaultLifecycleProcessor.onRefresh(DefaultLifecycleProcessor.java:123)
+      at org.springframework.context.support.AbstractApplicationContext.finishRefresh(AbstractApplicationContext.java:935)
+      at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:586)
+      at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:147)
+      at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:731)
+      at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:408)
+      at org.springframework.boot.SpringApplication.run(SpringApplication.java:307)
+      at org.springframework.boot.SpringApplication.run(SpringApplication.java:1303)
+      at org.springframework.boot.SpringApplication.run(SpringApplication.java:1292)
+      at com.geo.integrated.BackendApplication.main(BackendApplication.java:15)
+  Caused by: java.lang.NullPointerException: null
+      at springfox.documentation.spi.service.contexts.Orderings$8.compare(Orderings.java:113)
+      at springfox.documentation.spi.service.contexts.Orderings$8.compare(Orderings.java:110)
+      at com.google.common.collect.ComparatorOrdering.compare(ComparatorOrdering.java:38)
+      at java.util.TimSort.countRunAndMakeAscending(TimSort.java:355)
+      at java.util.TimSort.sort(TimSort.java:234)
+      at java.util.Arrays.sort(Arrays.java:1438)
+      at com.google.common.collect.Ordering.sortedCopy(Ordering.java:817)
+      at springfox.documentation.spring.web.plugins.WebMvcRequestHandlerProvider.requestHandlers(WebMvcRequestHandlerProvider.java:52)
+      at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper$2.apply(DocumentationPluginsBootstrapper.java:129)
+      at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper$2.apply(DocumentationPluginsBootstrapper.java:126)
+      at com.google.common.collect.Iterators$8.transform(Iterators.java:799)
+      at com.google.common.collect.TransformedIterator.next(TransformedIterator.java:48)
+      at com.google.common.collect.TransformedIterator.next(TransformedIterator.java:48)
+      at com.google.common.collect.Iterators$5.hasNext(Iterators.java:548)
+      at com.google.common.collect.ImmutableList.copyOf(ImmutableList.java:268)
+      at com.google.common.collect.ImmutableList.copyOf(ImmutableList.java:226)
+      at com.google.common.collect.FluentIterable.toList(FluentIterable.java:373)
+      at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper.defaultContextBuilder(DocumentationPluginsBootstrapper.java:100)
+      at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper.buildContext(DocumentationPluginsBootstrapper.java:91)
+      at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper.start(DocumentationPluginsBootstrapper.java:154)
+      at org.springframework.context.support.DefaultLifecycleProcessor.doStart(DefaultLifecycleProcessor.java:178)
+      ... 14 common frames omitted
+  
+  ````
 
-org.springframework.context.ApplicationContextException: Failed to start bean 'documentationPluginsBootstrapper'; nested exception is java.lang.NullPointerException
-	at org.springframework.context.support.DefaultLifecycleProcessor.doStart(DefaultLifecycleProcessor.java:181)
-	at org.springframework.context.support.DefaultLifecycleProcessor.access$200(DefaultLifecycleProcessor.java:54)
-	at org.springframework.context.support.DefaultLifecycleProcessor$LifecycleGroup.start(DefaultLifecycleProcessor.java:356)
-	at java.lang.Iterable.forEach(Iterable.java:75)
-	at org.springframework.context.support.DefaultLifecycleProcessor.startBeans(DefaultLifecycleProcessor.java:155)
-	at org.springframework.context.support.DefaultLifecycleProcessor.onRefresh(DefaultLifecycleProcessor.java:123)
-	at org.springframework.context.support.AbstractApplicationContext.finishRefresh(AbstractApplicationContext.java:935)
-	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:586)
-	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:147)
-	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:731)
-	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:408)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1303)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1292)
-	at com.geo.integrated.BackendApplication.main(BackendApplication.java:15)
-Caused by: java.lang.NullPointerException: null
-	at springfox.documentation.spi.service.contexts.Orderings$8.compare(Orderings.java:113)
-	at springfox.documentation.spi.service.contexts.Orderings$8.compare(Orderings.java:110)
-	at com.google.common.collect.ComparatorOrdering.compare(ComparatorOrdering.java:38)
-	at java.util.TimSort.countRunAndMakeAscending(TimSort.java:355)
-	at java.util.TimSort.sort(TimSort.java:234)
-	at java.util.Arrays.sort(Arrays.java:1438)
-	at com.google.common.collect.Ordering.sortedCopy(Ordering.java:817)
-	at springfox.documentation.spring.web.plugins.WebMvcRequestHandlerProvider.requestHandlers(WebMvcRequestHandlerProvider.java:52)
-	at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper$2.apply(DocumentationPluginsBootstrapper.java:129)
-	at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper$2.apply(DocumentationPluginsBootstrapper.java:126)
-	at com.google.common.collect.Iterators$8.transform(Iterators.java:799)
-	at com.google.common.collect.TransformedIterator.next(TransformedIterator.java:48)
-	at com.google.common.collect.TransformedIterator.next(TransformedIterator.java:48)
-	at com.google.common.collect.Iterators$5.hasNext(Iterators.java:548)
-	at com.google.common.collect.ImmutableList.copyOf(ImmutableList.java:268)
-	at com.google.common.collect.ImmutableList.copyOf(ImmutableList.java:226)
-	at com.google.common.collect.FluentIterable.toList(FluentIterable.java:373)
-	at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper.defaultContextBuilder(DocumentationPluginsBootstrapper.java:100)
-	at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper.buildContext(DocumentationPluginsBootstrapper.java:91)
-	at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper.start(DocumentationPluginsBootstrapper.java:154)
-	at org.springframework.context.support.DefaultLifecycleProcessor.doStart(DefaultLifecycleProcessor.java:178)
-	... 14 common frames omitted
-
-````
 + 给各个Controller添加Swagger注解
+
 + 给实体类的属性添加@ApiModelProperty注解
+
 + 接口地址：http://localhost:9090/swagger-ui.html
 
 ## 2.前端基本配置
@@ -254,62 +266,65 @@ import router from "@/router/index";
 
 // create an axios instance
 const service = axios.create({
-    // url = base url + request url
-    baseURL: "http://localhost:8080",
-    // withCredentials: true, // send cookies when cross-domain requests
-    timeout: 30000, // request timeout
+  // url = base url + request url
+  baseURL: "http://localhost:9090/management",
+  // send cookies when cross-domain requests
+  // withCredentials: true,
+  // request timeout
+  timeout: 30000,
 });
 
 // request interceptor
 service.interceptors.request.use(
-    (config) => {
-        // do something before request is sent
-        if (store.state.token) {
+        (config) => {
+          // do something before request is sent
+          const token = localStorage.getItem("token");
+          if (token) {
             // let each request carry token
             // ['X-Token'] is a custom headers key
             // please modify it according to the actual situation
-            config.headers["Authorization"] = store.state.token;
+            config.headers["Authorization"] = token;
+          }
+          return config;
+        },
+        (error) => {
+          // do something with request error
+          console.log(error); // for debug
+          return Promise.reject(error);
         }
-        return config;
-    },
-    (error) => {
-        // do something with request error
-        console.log(error); // for debug
-        return Promise.reject(error);
-    }
 );
 
 // response interceptor
 service.interceptors.response.use(
-    (response) => {
-        const res = response.data;
-        // 如果不是200，则判定为一个错误
-        if (res.code !== 200) {
+        (response) => {
+          const res = response.data;
+          // 如果不是200，则判定为一个错误
+          if (res.code !== 200) {
             Message({
-                showClose: true,
-                message: "错了哦，这是一条错误消息",
-                type: "error",
-                duration: 3 * 1000,
+              showClose: true,
+              message: res.message,
+              type: "error",
+              duration: 3 * 1000,
             });
             // 如果是401说明没有token，需要重新登陆，直接跳转到重新登录界面
             if (res.code === 401) {
-                store.commit("RESET_STATE");
-                router.push("/login");
+              store.commit("RESET_STATE");
+              router.push("/login");
             }
             return Promise.reject(new Error(res.message || "Error"));
-        } else {
+          } else {
             return res;
-        }
-    },
-    (error) => {
-        console.log("err: " + error); // for debug
-        Message({
+          }
+        },
+        (error) => {
+          console.log("err: " + error); // for debug
+          Message({
             message: error.message,
             type: "error",
             duration: 5 * 1000,
-        });
-        return Promise.reject(error);
-    }
+          });
+          return Promise.reject(error);
+        }
 );
 
 export default service;
@@ -426,166 +441,192 @@ export default service;
 #### 2.3.2.自定义配置，见[vue.config.js](./front/vue.config.js)和[settings.js](front/src/settings.js)
 
 ## 3.management的登录、退出功能
-+ 添加登录界面[Login.vue](management/src/views/Login.vue)
+> 通过整合JWT实现后台用户的登录和授权功能
+> JWT实现认证和授权的原理:
+> 用户调用登录接口，登录成功后获取到JWT工具类生成的token； 
+> 之后用户每次调用接口都在http的header中添加一个叫Authorization的头，值为token； 
+> 后台程序通过对Authorization头中信息的解码及数字签名校验来获取其中的用户信息，从而实现认证和授权。
 
-+ 在[Container](management/src/components/Container.vue)的Header中添加`退出`按钮
+### 3.1.后端整合JWT
++ 在[pom.xml](./backend/pom.xml)中添加依赖
+  ```xml
+      <dependencies>
+          <!-- JWT -->
+          <dependency>
+              <groupId>com.auth0</groupId>
+              <artifactId>java-jwt</artifactId>
+              <version>3.10.3</version>
+          </dependency>
+      </dependencies>
+  ```
 
-+ 在[api/login.js](management/src/api/login.js)中添加登录、退出api
-```javascript
-export function login(loginForm) {
-  return request({
-    url: "/management/user/login",
-    method: "POST",
-    data: loginForm,
-  });
-}
-export function logout() {
-    return request({
-        url: "/management/user/logout",
-        method: "POST",
-    });
-}
-```
++ 添加JWT拦截器[JwtInterceptor.java](backend/src/main/java/com/geo/integrated/config/interceptor/JwtInterceptor.java)
+
++ 完成拦截器配置[InterceptorConfig.java](backend/src/main/java/com/geo/integrated/config/InterceptorConfig.java)
 
 + 在[SysUserController.java](backend/src/main/java/com/geo/integrated/controller/management/SysUserController.java)中完成登录、退出功能
-```java
-@RestController
-@RequestMapping("/management/user")
-public class SysUserController {
-    @Autowired
-    private UserService userService;
+  ```java
+  @RestController
+  @RequestMapping("/management/user")
+  public class SysUserController {
+      @Autowired
+      private UserService userService;
+  
+      @PostMapping("/login")
+      public Result login(@Validated @RequestBody LoginDTO loginDTO) {
+          User user = userService.login(loginDTO);
+          if (user == null) {
+              return Result.fail("用户不存在或密码不正确");
+          }
+          String jwt = TokenUtils.generateToken(user.getId(), user.getPassword());
+          Map<String, Object> data = new LinkedHashMap<>();
+          data.put("user", user);
+          data.put("jwt", jwt);
+          return Result.success("登录成功", data);
+      }
+      @PostMapping("/logout")
+      public Result logout() {
+          return Result.success("退出登录");
+      }
+  }
+  ```
 
-    @PostMapping("/login")
-    public Result login(@Validated @RequestBody LoginDTO loginDTO) {
-        User user = userService.login(loginDTO);
-        if (user == null) {
-            return Result.fail("用户不存在或密码不正确");
-        }
-        String jwt = TokenUtils.generateToken(user.getId(), user.getPassword());
-        Map<String, Object> data = new LinkedHashMap<>();
-        data.put("user", user);
-        data.put("jwt", jwt);
-        return Result.success("登录成功", data);
-    }
-    @PostMapping("/logout")
-    public Result logout() {
-        return Result.success("退出登录");
-    }
-}
-```
+### 3.2.前端组件、接口及配置
+
++ 添加登录界面[Login.vue](management/src/views/Login.vue)
+
++ 在[Container.vue](management/src/components/Container.vue)的Header中添加`退出`按钮
+
++ 在[api/login.js](management/src/api/login.js)中添加登录、退出api
+  ```javascript
+  export function login(loginForm) {
+    return request({
+      url: "/management/user/login",
+      method: "POST",
+      data: loginForm,
+    });
+  }
+  export function logout() {
+      return request({
+          url: "/management/user/logout",
+          method: "POST",
+      });
+  }
+  ```
+
 + 在[store/index.js](management/src/store/index.js)中添加关于登录和退出时设置token和userInfo的方法
-```javascript
-export default new Vuex.Store({
-  state: {
-    token: "",
-    userInfo: JSON.parse(sessionStorage.getItem("userInfo")),
-  },
-  mutations: {
-    // 设置token
-    SET_TOKEN: (state, token) => {
-      state.token = token;
-      localStorage.setItem("token", token);
+  ```javascript
+  export default new Vuex.Store({
+    state: {
+      token: "",
+      userInfo: JSON.parse(sessionStorage.getItem("userInfo")),
     },
-    // 设置用户信息
-    SET_USERINFO: (state, userInfo) => {
-      state.userInfo = userInfo;
-      sessionStorage.setItem("userInfo", JSON.stringify(userInfo));
+    mutations: {
+      // 设置token
+      SET_TOKEN: (state, token) => {
+        state.token = token;
+        localStorage.setItem("token", token);
+      },
+      // 设置用户信息
+      SET_USERINFO: (state, userInfo) => {
+        state.userInfo = userInfo;
+        sessionStorage.setItem("userInfo", JSON.stringify(userInfo));
+      },
+      // 移除token和用户信息
+      REMOVE_INFO: (state) => {
+        state.token = "";
+        state.userInfo = "";
+        localStorage.removeItem("token");
+        sessionStorage.removeItem("userInfo");
+      },
     },
-    // 移除token和用户信息
-    REMOVE_INFO: (state) => {
-      state.token = "";
-      state.userInfo = "";
-      localStorage.removeItem("token");
-      sessionStorage.removeItem("userInfo");
+    getters: {
+      // 获取用户信息
+      getUserInfo: (state) => {
+        return state.userInfo;
+      },
     },
-  },
-  getters: {
-    // 获取用户信息
-    getUserInfo: (state) => {
-      return state.userInfo;
-    },
-  },
-  actions: {},
-  modules: {},
-});
-```
+    actions: {},
+    modules: {},
+  });
+  ```
 
 + 配置路由权限拦截，见[permission.js](management/src/permission.js)
-```javascript
-import router from "./router";
-// import store from "./store";
-import NProgress from "nprogress"; // progress bar
-import "nprogress/nprogress.css"; // progress bar style
-import getPageTitle from "@/utils/get-page-title";
-NProgress.configure({ showSpinner: false }); // NProgress Configuration
-
-const whiteList = ["/login"]; // no redirect whitelist
-
-// 全局前置守卫,当有路由进行跳转时就会进入这个守卫
-// to: Route: 即将要进入的目标 路由对象
-// from: Route: 当前导航正要离开的路由
-// next: Function: 一定要调用该方法来 resolve 这个钩子。执行效果依赖 next 方法的调用参数。
-router.beforeEach((to, from, next) => {
-  // 开始加载进度条
-  NProgress.start();
-  // 设置页面标题
-  document.title = getPageTitle(to.meta.title);
-  // 判断用户是否登录，有token值就意味着已经登录了
-  const hasToken = localStorage.getItem("token");
-  // const hasToken = store.state.token;
-  // console.log("判断用户是否登录: " + hasToken);
-  if (hasToken) {
-    if (to.path === "/login") {
-      // 如果路由要跳转到登录页，重定向到主页
-      next({ path: "/" });
-      // 进度条结束
-      NProgress.done();
+  ```javascript
+  import router from "./router";
+  // import store from "./store";
+  import NProgress from "nprogress"; // progress bar
+  import "nprogress/nprogress.css"; // progress bar style
+  import getPageTitle from "@/utils/get-page-title";
+  NProgress.configure({ showSpinner: false }); // NProgress Configuration
+  
+  const whiteList = ["/login"]; // no redirect whitelist
+  
+  // 全局前置守卫,当有路由进行跳转时就会进入这个守卫
+  // to: Route: 即将要进入的目标 路由对象
+  // from: Route: 当前导航正要离开的路由
+  // next: Function: 一定要调用该方法来 resolve 这个钩子。执行效果依赖 next 方法的调用参数。
+  router.beforeEach((to, from, next) => {
+    // 开始加载进度条
+    NProgress.start();
+    // 设置页面标题
+    document.title = getPageTitle(to.meta.title);
+    // 判断用户是否登录，有token值就意味着已经登录了
+    const hasToken = localStorage.getItem("token");
+    // const hasToken = store.state.token;
+    // console.log("判断用户是否登录: " + hasToken);
+    if (hasToken) {
+      if (to.path === "/login") {
+        // 如果路由要跳转到登录页，重定向到主页
+        next({ path: "/" });
+        // 进度条结束
+        NProgress.done();
+      } else {
+        // 如果路由要跳转到其他界面，比如首页
+        // 去vuex仓库获取用户信息
+        const hasGetUserInfo = sessionStorage.getItem("userInfo");
+        // console.log("用户信息：");
+        // console.log(hasGetUserInfo);
+        if (hasGetUserInfo) {
+          // 如果取到了用户的名字信息就直接让它跳转到目标路由
+          next();
+        } else {
+          // 如果取不到则重定向到登录界面
+          next(`/login?redirect=${to.path}`);
+          NProgress.done();
+        }
+      }
     } else {
-      // 如果路由要跳转到其他界面，比如首页
-      // 去vuex仓库获取用户信息
-      const hasGetUserInfo = sessionStorage.getItem("userInfo");
-      // console.log("用户信息：");
-      // console.log(hasGetUserInfo);
-      if (hasGetUserInfo) {
-        // 如果取到了用户的名字信息就直接让它跳转到目标路由
+      // 没有token
+      if (whiteList.indexOf(to.path) !== -1) {
+        // 在白名单中的路由可以直接访问
         next();
       } else {
-        // 如果取不到则重定向到登录界面
+        // 不在白名单中的路由重定向到登录界面
         next(`/login?redirect=${to.path}`);
         NProgress.done();
       }
     }
-  } else {
-    // 没有token
-    if (whiteList.indexOf(to.path) !== -1) {
-      // 在白名单中的路由可以直接访问
-      next();
-    } else {
-      // 不在白名单中的路由重定向到登录界面
-      next(`/login?redirect=${to.path}`);
-      NProgress.done();
-    }
-  }
-});
-
-//全局后置钩子
-router.afterEach(() => {
-  // finish progress bar
-  NProgress.done();
-});
-```
+  });
+  
+  //全局后置钩子
+  router.afterEach(() => {
+    // finish progress bar
+    NProgress.done();
+  });
+  ```
 
 + 在[main.js](management/src/main.js)中引入permission.js
-```javascript
-// permission control
-import "@/permission";
-```
+  ```javascript
+  // permission control
+  import "@/permission";
+  ```
 
 ## 4.设计数据库表并添加对应的后端实体类
 + 数据库导入问题，navicate15导入csv报错以下，把编码选为`936 (ANSI/OEM - Simplified Chinese GBK)`即可
-```sql
-[ERR] 1366 - Incorrect string value: '\xD6\xD0\xB9\xFA\xBB\xB4...' for colum
-```
+  ```sql
+  [ERR] 1366 - Incorrect string value: '\xD6\xD0\xB9\xFA\xBB\xB4...' for colum
+  ```
 
 ## 5.初步完善management中各界面的功能
 ### 5.1.数据相关（data）
