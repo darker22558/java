@@ -2,7 +2,7 @@ import request from "@/utils/request";
 
 export function getPaperList(queryInfo) {
   return request({
-    url: "/paper/getPaperList",
+    url: "/data/paper/getPaperList",
     method: "GET",
     params: { ...queryInfo }
   });
@@ -10,7 +10,7 @@ export function getPaperList(queryInfo) {
 
 export function deletePaperById(id) {
   return request({
-    url: "/paper/deletePaperById",
+    url: "/data/paper/deletePaperById",
     method: "DELETE",
     params: { id },
   });
@@ -18,7 +18,7 @@ export function deletePaperById(id) {
 
 export function deletePaperBatchByIds(ids) {
   return request({
-    url: "/paper/deletePaperBatchByIds",
+    url: "/data/paper/deletePaperBatchByIds",
     method: "DELETE",
     params: { ids },
   });

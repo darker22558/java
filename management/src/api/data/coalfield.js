@@ -2,7 +2,7 @@ import request from "@/utils/request";
 
 export function getCoalfieldList(queryInfo) {
   return request({
-    url: "/coalfield/getCoalfieldList",
+    url: "/data/coalfield/getCoalfieldList",
     method: "GET",
     params: { ...queryInfo },
   });
@@ -10,7 +10,7 @@ export function getCoalfieldList(queryInfo) {
 
 export function deleteCoalfieldById(id) {
   return request({
-    url: "/coalfield/deleteCoalfieldById",
+    url: "/data/coalfield/deleteCoalfieldById",
     method: "DELETE",
     params: { id },
   });
@@ -18,7 +18,7 @@ export function deleteCoalfieldById(id) {
 
 export function deleteCoalfieldBatchByIds(ids) {
   return request({
-    url: "/coalfield/deleteCoalfieldBatchByIds",
+    url: "/data/coalfield/deleteCoalfieldBatchByIds",
     method: "DELETE",
     data: ids,
   });

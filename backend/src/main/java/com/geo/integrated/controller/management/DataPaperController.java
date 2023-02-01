@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @Api(tags = "DataPaperController")
 @RestController
-@RequestMapping("/management/paper")
+@RequestMapping("/management/data/paper")
 public class DataPaperController {
     @Autowired
     private DataPaperService dataPaperService;

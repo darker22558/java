@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @Api(tags = "LogOperationController")
 @RestController
-@RequestMapping("/management/log")
+@RequestMapping("/management/log/operation")
 public class LogOperationController {
     @Autowired
     private LogOperationService logOperationService;

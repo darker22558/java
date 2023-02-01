@@ -3,7 +3,9 @@ spring:
     active: dev
   mvc:
     pathmatch:
-      matching-strategy: ant_path_matcher
+      matching-strategy: ANT_PATH_MATCHER
+  application:
+    name: boot-swagger-starter
 
 mybatis-plus:
   mapper-locations: classpath*:mapper/*.xml

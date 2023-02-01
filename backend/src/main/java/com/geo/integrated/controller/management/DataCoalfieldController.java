@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @Api(tags = "DataCoalfieldController")
 @RestController
-@RequestMapping("/management/coalfield")
+@RequestMapping("/management/data/coalfield")
 public class DataCoalfieldController {
     @Autowired
     private DataCoalfieldService dataCoalfieldService;

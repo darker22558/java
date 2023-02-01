@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @Api(tags = "SysUserController")
 @RestController
-@RequestMapping("/management/user")
+@RequestMapping("/management/system/user")
 public class SysUserController {
     @Autowired
     private SysUserService sysUserService;

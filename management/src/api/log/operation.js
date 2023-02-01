@@ -2,7 +2,7 @@ import request from "@/utils/request";
 
 export function getOperationLogList(queryInfo) {
   return request({
-    url: "/log/getOperationLogList",
+    url: "/log/operation/getOperationLogList",
     method: "GET",
     params: {
       ...queryInfo,
@@ -12,7 +12,7 @@ export function getOperationLogList(queryInfo) {
 
 export function deleteOperationLogById(id) {
   return request({
-    url: "/log/deleteOperationLogById",
+    url: "/log/operation/deleteOperationLogById",
     method: "DELETE",
     params: { id },
   });
