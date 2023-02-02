@@ -25,29 +25,20 @@ router.beforeEach((to, from, next) => {
   if (hasToken) {
     const hasUserInfo = sessionStorage.getItem("userInfo");
     if (!hasUserInfo) {
-      next({path: "/login"})
-      localStorage.removeItem("token")
-      // 进度条结束
-      NProgress.done();
-    }
-    if (to.path === "/login") {
-      // 如果路由要跳转到登录页，重定向到主页
-      next({ path: "/" });
+      // 没有用户信息
+      localStorage.removeItem("token");
+      next({ path: "/login" });
       // 进度条结束
       NProgress.done();
     } else {
-      // 如果路由要跳转到其他界面，比如首页
-      // 去vuex仓库获取用户信息
-      const hasGetUserInfo = sessionStorage.getItem("userInfo");
-      // console.log("用户信息：");
-      // console.log(hasGetUserInfo);
-      if (hasGetUserInfo) {
-        // 如果取到了用户的名字信息就直接让它跳转到目标路由
-        next();
-      } else {
-        // 如果取不到则重定向到登录界面
-        next(`/login?redirect=${to.path}`);
+      // 有用户信息
+      if (to.path === "/login") {
+        // 如果路由要跳转到登录页，重定向到主页
+        next({ path: "/" });
+        // 进度条结束
         NProgress.done();
+      } else {
+        next();
       }
     }
   } else {

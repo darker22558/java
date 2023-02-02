@@ -39,7 +39,7 @@
               </el-submenu>
             </template>
             <template v-if="!item.hidden &&(item.children == null || item.children.length === 1)">
-              <el-menu-item :key="index" :index="item.children[0].path">
+              <el-menu-item :key="index" :index="item.path.replace('/', '') + '/' + item.children[0].path">
                 <template slot="title" v-if="item.children[0].meta">
                   <i :class="item.children[0].meta.icon"></i>
                   <span>{{ item.children[0].meta.title }}</span>

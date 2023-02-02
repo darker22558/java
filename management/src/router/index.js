@@ -26,7 +26,7 @@ const routes = [
     name: "首页",
     meta: { title: "首页", icon: "el-icon-set-up" },
     component: Container,
-    redirect: "dashboard",
+    redirect: "/dashboard",
     children: [
       {
         path: "dashboard",
