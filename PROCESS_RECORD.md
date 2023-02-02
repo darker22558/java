@@ -712,8 +712,9 @@ export default service;
 ### 5.3.科研成果相关（achievement）
 + 与`5.1.数据相关（data）`中配置步骤类似
 
-## 6.完善后端功能
+## 6.后端整合
 ### 6.1.整合SwaggerUI
+
 + 添加依赖[pom.xml](./backend/pom.xml)
   ```xml
       <dependencies>
@@ -795,3 +796,117 @@ export default service;
 + 添加[SpringTask](backend/src/main/java/com/geo/integrated/config/SpringTaskConfig.java)的配置，只需要在配置类中添加`@EnableScheduling`注解即可开启SpringTask的定时任务能力。
 
 + 添加[TestCountTask.java](backend/src/main/java/com/geo/integrated/component/TestCountTask.java)来测试定时任务的执行。
+
+
+### 6.3.整合Redis实现缓存功能
+
+> 以登录时获取验证码并做登录校验为例
+> [参考资料](https://www.macrozheng.com/mall/architect/mall_arch_03.html)
+
++ 添加项目依赖[pom.xml](./backend/pom.xml)
+  ```xml
+      <dependencies>
+          <!--Redis依赖配置-->
+          <dependency>
+              <groupId>org.springframework.boot</groupId>
+              <artifactId>spring-boot-starter-data-redis</artifactId>
+          </dependency>
+      </dependencies>
+  ```
+
++ 修改配置文件[application-dev.yml](backend/src/main/resources/application-dev.yml)
+  ```yaml
+  spring:
+    redis:
+      host: localhost # Redis服务器地址
+      database: 0 # Redis数据库索引（默认为0）
+      port: 6379 # Redis服务器连接端口
+      password: # Redis服务器连接密码（默认为空）
+      jedis:
+        pool:
+          max-active: 8 # 连接池最大连接数（使用负值表示没有限制）
+          max-wait: -1ms # 连接池最大阻塞等待时间（使用负值表示没有限制）
+          max-idle: 8 # 连接池中的最大空闲连接
+          min-idle: 0 # 连接池中的最小空闲连接
+      timeout: 3000ms # 连接超时时间（毫秒）
+  
+  # 自定义redis key
+  redis:
+    key:
+      prefix:
+        authCode: "portal:authCode:"
+      expire:
+        authCode: 120 # 验证码超期时间
+  ```
+
++ 添加[RedisService](backend/src/main/java/com/geo/integrated/service/RedisService.java)接口用于定义一些常用Redis操作
+
++ 在[RedisServiceImpl.java](backend/src/main/java/com/geo/integrated/service/impl/RedisServiceImpl.java)中注入StringRedisTemplate，实现RedisService接口
+
++ 在[loginDTO](backend/src/main/java/com/geo/integrated/model/dto/LoginDTO.java)中添加验证码字段
+
++ 在[SysUserController.java](backend/src/main/java/com/geo/integrated/controller/management/SysUserController.java)中添加根据登录用户名生成验证码的接口以及登录时的验证码校验流程
+
++ 在[SysUserService.java](backend/src/main/java/com/geo/integrated/service/SysUserService.java)中添加`生成验证码`和`校验验证码`接口
+
++ 添加[SysUserServiceImpl.java](backend/src/main/java/com/geo/integrated/service/impl/SysUserServiceImpl.java)实现`生成验证码`和`校验验证码`功能
+
+  - 生成验证码时，将自定义的Redis键值加上邮箱生成一个Redis的key，以验证码为value存入到Redis中
+  - 设置过期时间为SpringBoot配置文件中自定义的时间（如120s）
+  - 校验验证码时根据邮箱来获取Redis里面存储的验证码，并与传入的验证码进行比对
+  ```java
+  @Service
+  public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
+      @Autowired
+      private RedisService redisService;
+  
+      @Value("${redis.key.prefix.authCode}")
+      private String redisKeyPrefixAuthCode;
+  
+      @Value("${redis.key.expire.authCode}")
+      private Long authCodeExpireSeconds;
+  
+      /**
+       * 生成验证码
+       *
+       * @param username 用户名
+       * @return 验证码
+       */
+      @Override
+      public Result generateAuthCode(String username) {
+          StringBuilder sb = new StringBuilder();
+          Random random = new Random();
+          int len = 6;
+          for (int i = 0; i < len; i++) {
+              sb.append(random.nextInt(10));
+          }
+          // 验证码绑定用户名并存储到redis
+          redisService.set(redisKeyPrefixAuthCode + username, sb.toString());
+          redisService.expire(redisKeyPrefixAuthCode + username, authCodeExpireSeconds);
+          return Result.success("获取验证码成功", sb.toString());
+      }
+  
+      /**
+       * 对输入的验证码进行校验
+       *
+       * @param username    用户名
+       * @param authCode 验证码
+       * @return 验证码的校验结果
+       */
+      @Override
+      public Result verifyAuthCode(String username, String authCode) {
+          if (StrUtil.isEmpty(authCode)) {
+              return Result.fail("请输入验证码");
+          }
+          String realAuthCode = redisService.get(redisKeyPrefixAuthCode + username);
+          boolean result = authCode.equals(realAuthCode);
+          if (result) {
+              return Result.success("验证码校验成功");
+          } else {
+              return Result.fail("验证码校验失败");
+          }
+      }
+  }
+  ```
+
++ 在[拦截器配置文件](backend/src/main/java/com/geo/integrated/config/InterceptorConfig.java)中放行`生成验证码`的接口，使后端在用户未登录时可以生成验证码

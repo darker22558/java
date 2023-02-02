@@ -7,18 +7,17 @@
           <img class="logo" src="../assets/logo.png" />
         </el-header>
         <el-main>
-          <el-form
-            :model="loginForm"
-            :rules="rules"
-            ref="loginForm"
-            label-width="100px"
-            class="demo-loginForm"
-          >
+          <el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="100px" class="demo-loginForm">
             <el-form-item label="用户名" prop="username">
               <el-input v-model="loginForm.username"></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="password">
               <el-input type="password" v-model="loginForm.password"></el-input>
+            </el-form-item>
+            <el-form-item label="验证码" prop="verificationCode">
+              <el-input type="password" v-model="loginForm.authCode"></el-input>
+              <el-button @click="getAuthCode()"> 生成验证码 </el-button>
+              <el-input v-model="sysAuthCode" disabled></el-input>
             </el-form-item>
 
             <el-form-item>
@@ -36,6 +35,7 @@
 
 <script>
 import { login } from "@/api/login";
+import { generateAuthCode } from "@/api/login";
 
 export default {
   name: "Login",
@@ -44,7 +44,9 @@ export default {
       loginForm: {
         username: "",
         password: "",
+        authCode: "",
       },
+      sysAuthCode: "",
       rules: {
         name: [
           { required: true, message: "请输入用户名", trigger: "blur" },
@@ -85,6 +87,11 @@ export default {
     },
     resetForm() {
       this.$refs.loginForm.resetFields();
+    },
+    getAuthCode() {
+      generateAuthCode(this.loginForm.username).then((res) => {
+        this.sysAuthCode = res.data;
+      });
     },
   },
 };

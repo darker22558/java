@@ -5,9 +5,7 @@ import com.geo.integrated.common.Result;
 import com.geo.integrated.service.TestService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author: whtli
@@ -20,6 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
     @Autowired
     private TestService testService;
+
+    /**
+     * 测试跨域连接情况
+     *
+     * @return 自定义字符串
+     */
     @OperationLogger("测试连接")
     @GetMapping("/hello")
     public Result test() {

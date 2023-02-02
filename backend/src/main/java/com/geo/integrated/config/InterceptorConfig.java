@@ -19,7 +19,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
         // 放行静态文件
         registry.addInterceptor(jwtInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/**/login", "/**/register", "/management/**", "/front/**",
+                .excludePathPatterns("/**/login", "/**/generateAuthCode" , "/**/register", "/management/**", "/front/**",
                         "/swagger-ui.html/**", "/swagger-resources/**", "/v2/", "/api", "/api-docs", "/api-docs/**")
                 .excludePathPatterns("/**/*.html", "/**/*.js", "/**/*.css", "/**/*.woff", "/**/*.ttf");
 

@@ -7,6 +7,7 @@ import com.geo.integrated.service.SysUserService;
 import com.geo.integrated.utils.TokenUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ import java.util.Map;
  * @description: 用户管理控制层
  */
 @Api(tags = "SysUserController")
+@Slf4j
 @RestController
 @RequestMapping("/management/system/user")
 public class SysUserController {
@@ -35,9 +37,14 @@ public class SysUserController {
     @ApiOperation("用户登录")
     @PostMapping("/login")
     public Result login(@Validated @RequestBody LoginDTO loginDTO) {
+        log.info("login DTO =========== {}", loginDTO);
         SysUser user = sysUserService.login(loginDTO);
         if (user == null) {
             return Result.fail("用户不存在或密码不正确");
+        }
+        Result result = sysUserService.verifyAuthCode(loginDTO.getUsername(), loginDTO.getAuthCode());
+        if (result.getCode() != 200) {
+            return Result.fail("验证码校验失败，请刷新");
         }
         String jwt = TokenUtils.generateToken(user.getId(), user.getPassword());
         Map<String, Object> data = new LinkedHashMap<>();
@@ -55,5 +62,17 @@ public class SysUserController {
     @PostMapping("/logout")
     public Result logout() {
         return Result.success("退出登录");
+    }
+
+    /**
+     * 获取验证码
+     *
+     * @param username 用户名
+     * @return 验证码
+     */
+    @ApiOperation("生成验证码")
+    @GetMapping("/generateAuthCode")
+    public Result generateAuthCode(@RequestParam String username) {
+        return sysUserService.generateAuthCode(username);
     }
 }
