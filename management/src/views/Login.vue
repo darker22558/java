@@ -1,25 +1,32 @@
 <template>
   <div>
-    <h2>管理员登录</h2>
     <div>
       <el-container>
         <el-header>
-          <img class="logo" src="../assets/logo.png" />
+          <!--          <img class="logo" src="../assets/logo.png" />-->
+
+          <span style="font-size: 30px; font-weight: bold">地学综合平台管理系统</span>
         </el-header>
         <el-main>
-          <el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="100px" class="demo-loginForm">
-            <el-form-item label="用户名" prop="username">
+          <el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="100px" class="loginForm">
+            <el-form-item label="用户名">
               <el-input v-model="loginForm.username"></el-input>
             </el-form-item>
-            <el-form-item label="密码" prop="password">
-              <el-input type="password" v-model="loginForm.password"></el-input>
+            <el-form-item label="密码">
+              <el-input
+                  type="password"
+                  v-model="loginForm.password"
+              ></el-input>
             </el-form-item>
-            <el-form-item label="验证码" prop="verificationCode">
-              <el-input type="password" v-model="loginForm.authCode"></el-input>
-              <el-button @click="getAuthCode()"> 生成验证码 </el-button>
-              <el-input v-model="sysAuthCode" disabled></el-input>
+            <el-form-item >
+              <div style="display: flex; justify-content: space-around">
+                <el-input v-model="sysAuthCode" disabled></el-input>
+                <el-button @click="getAuthCode()"> 生成验证码 </el-button>
+              </div>
             </el-form-item>
-
+            <el-form-item label="验证码">
+              <el-input v-model="loginForm.authCode" placeholder="请输入系统生成的验证码"></el-input>
+            </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="handleLogin()">
                 登录
@@ -42,8 +49,8 @@ export default {
   data() {
     return {
       loginForm: {
-        username: "",
-        password: "",
+        username: "admin",
+        password: "111111",
         authCode: "",
       },
       sysAuthCode: "",
@@ -100,23 +107,18 @@ export default {
 <style scoped>
 .el-header,
 .el-footer {
-  /*background-color: #B3C0D1;*/
-  color: #333;
+  /*background-color: #b3c0d1;*/
+  color: #000;
+  margin-top: 5%;
+  margin-bottom: 3%;
   text-align: center;
-  line-height: 200px;
-}
-
-.el-aside {
-  background-color: #d3dce6;
-  color: #333;
-  text-align: center;
-  line-height: 200px;
+  line-height: 60px;
 }
 
 .el-main {
   /*background-color: #E9EEF3;*/
   color: #333;
-  margin-top: 100px;
+  /*margin-top: 100px;*/
   text-align: center;
   line-height: 400px;
 }
@@ -135,12 +137,12 @@ body > .el-container {
 }
 
 .logo {
-  height: 200%;
+  height: 100%;
   margin-top: 30px;
 }
 
-.demo-loginForm {
-  max-width: 30%;
-  margin-left: 32%;
+.loginForm {
+  max-width: 40%;
+  margin-left: 26%;
 }
 </style>

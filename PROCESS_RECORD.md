@@ -275,14 +275,26 @@ export default service;
             <b style="color: black; margin-left: 5px; font-size: 18px">地学综合平台</b>
           </div>
           <el-menu
-                  router
-                  class="el-menu-demo"
-                  background-color="#545c64"
-                  text-color="#fff"
-                  active-text-color="#ffd04b"
+            router
+            class="el-menu-demo"
+            background-color="#545c64"
+            text-color="#fff"
+            active-text-color="#ffd04b"
           >
             <template v-for="(item, index) in this.$router.options.routes">
-              <template v-if="!item.hidden && item.children != null && item.children.length > 1">
+              <template v-if="!item.hidden && item.path === '/'">
+                <el-menu-item :key="index" :index="item.path">
+                  <template slot="title" v-if="item.children[0].meta">
+                    <i :class="item.children[0].meta.icon"></i>
+                    <span>{{ item.children[0].meta.title }}</span>
+                  </template>
+                  <template slot="title" v-else>
+                    <i class="el-icon-s-home"></i>
+                    <span>{{ item.children[0].name }}</span>
+                  </template>
+                </el-menu-item>
+              </template>
+              <template v-if="!item.hidden && item.path !== '/'">
                 <el-submenu :key="index" :index="item.path">
                   <template slot="title" v-if="item.meta">
                     <i :class="item.meta.icon"></i>
@@ -305,18 +317,6 @@ export default service;
                     </el-menu-item>
                   </template>
                 </el-submenu>
-              </template>
-              <template v-if="!item.hidden &&(item.children == null || item.children.length === 1)">
-                <el-menu-item :key="index" :index="item.children[0].path">
-                  <template slot="title" v-if="item.children[0].meta">
-                    <i :class="item.children[0].meta.icon"></i>
-                    <span>{{ item.children[0].meta.title }}</span>
-                  </template>
-                  <template slot="title" v-else>
-                    <i class="el-icon-s-home"></i>
-                    <span>{{ item.children[0].name }}</span>
-                  </template>
-                </el-menu-item>
               </template>
             </template>
           </el-menu>

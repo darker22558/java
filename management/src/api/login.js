@@ -19,7 +19,7 @@ export function generateAuthCode(username) {
   return request({
     url: "/system/user/generateAuthCode",
     method: "GET",
-    params: { username }
+    params: { username },
   });
 }
 
@@ -27,6 +27,6 @@ export function verifyAuthCode(verifyForm) {
   return request({
     url: "/system/user/verifyAuthCode",
     method: "GET",
-    params: { ...verifyForm }
+    params: { ...verifyForm },
   });
 }
