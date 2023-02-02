@@ -165,80 +165,6 @@ spring:
 + 自定义服务异常[ServiceException.java](backend/src/main/java/com/geo/integrated/exception/ServiceException.java)，继承自运行时异常RuntimeException
 + 添加全局异常处理[GlobalExceptionHandler.java](backend/src/main/java/com/geo/integrated/exception/GlobalExceptionHandler.java)
 
-### 1.9.整合SwaggerUI
-+ 添加依赖[pom.xml](./backend/pom.xml)
-  ```xml
-      <dependencies>
-          <!--Swagger-UI API文档生产工具-->
-          <dependency>
-              <groupId>io.springfox</groupId>
-              <artifactId>springfox-swagger2</artifactId>
-              <version>2.7.0</version>
-          </dependency>
-          <dependency>
-              <groupId>io.springfox</groupId>
-              <artifactId>springfox-swagger-ui</artifactId>
-              <version>2.7.0</version>
-          </dependency>
-      </dependencies>
-  ```
-+ 添加Swagger-UI配置[Swagger2Config.java](backend/src/main/java/com/geo/integrated/config/Swagger2Config.java)
-
-+ 给Swagger2Config.java添加注解`@Profile({"dev"})`，仅在本地开发环境中支持使用Swagger、生产环境禁用
-
-+ 在配置文件[application.yml](./backend/src/main/resources/application.yml)中添加配置项，解决整合后的报错问题
-  ````bash
-  Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
-  2023-02-01 17:53:40.368 ERROR 10884 --- [           main] o.s.boot.SpringApplication               : Application run failed
-  
-  org.springframework.context.ApplicationContextException: Failed to start bean 'documentationPluginsBootstrapper'; nested exception is java.lang.NullPointerException
-      at org.springframework.context.support.DefaultLifecycleProcessor.doStart(DefaultLifecycleProcessor.java:181)
-      at org.springframework.context.support.DefaultLifecycleProcessor.access$200(DefaultLifecycleProcessor.java:54)
-      at org.springframework.context.support.DefaultLifecycleProcessor$LifecycleGroup.start(DefaultLifecycleProcessor.java:356)
-      at java.lang.Iterable.forEach(Iterable.java:75)
-      at org.springframework.context.support.DefaultLifecycleProcessor.startBeans(DefaultLifecycleProcessor.java:155)
-      at org.springframework.context.support.DefaultLifecycleProcessor.onRefresh(DefaultLifecycleProcessor.java:123)
-      at org.springframework.context.support.AbstractApplicationContext.finishRefresh(AbstractApplicationContext.java:935)
-      at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:586)
-      at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:147)
-      at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:731)
-      at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:408)
-      at org.springframework.boot.SpringApplication.run(SpringApplication.java:307)
-      at org.springframework.boot.SpringApplication.run(SpringApplication.java:1303)
-      at org.springframework.boot.SpringApplication.run(SpringApplication.java:1292)
-      at com.geo.integrated.BackendApplication.main(BackendApplication.java:15)
-  Caused by: java.lang.NullPointerException: null
-      at springfox.documentation.spi.service.contexts.Orderings$8.compare(Orderings.java:113)
-      at springfox.documentation.spi.service.contexts.Orderings$8.compare(Orderings.java:110)
-      at com.google.common.collect.ComparatorOrdering.compare(ComparatorOrdering.java:38)
-      at java.util.TimSort.countRunAndMakeAscending(TimSort.java:355)
-      at java.util.TimSort.sort(TimSort.java:234)
-      at java.util.Arrays.sort(Arrays.java:1438)
-      at com.google.common.collect.Ordering.sortedCopy(Ordering.java:817)
-      at springfox.documentation.spring.web.plugins.WebMvcRequestHandlerProvider.requestHandlers(WebMvcRequestHandlerProvider.java:52)
-      at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper$2.apply(DocumentationPluginsBootstrapper.java:129)
-      at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper$2.apply(DocumentationPluginsBootstrapper.java:126)
-      at com.google.common.collect.Iterators$8.transform(Iterators.java:799)
-      at com.google.common.collect.TransformedIterator.next(TransformedIterator.java:48)
-      at com.google.common.collect.TransformedIterator.next(TransformedIterator.java:48)
-      at com.google.common.collect.Iterators$5.hasNext(Iterators.java:548)
-      at com.google.common.collect.ImmutableList.copyOf(ImmutableList.java:268)
-      at com.google.common.collect.ImmutableList.copyOf(ImmutableList.java:226)
-      at com.google.common.collect.FluentIterable.toList(FluentIterable.java:373)
-      at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper.defaultContextBuilder(DocumentationPluginsBootstrapper.java:100)
-      at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper.buildContext(DocumentationPluginsBootstrapper.java:91)
-      at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper.start(DocumentationPluginsBootstrapper.java:154)
-      at org.springframework.context.support.DefaultLifecycleProcessor.doStart(DefaultLifecycleProcessor.java:178)
-      ... 14 common frames omitted
-  
-  ````
-
-+ 给各个Controller添加Swagger注解
-
-+ 给实体类的属性添加@ApiModelProperty注解
-
-+ 接口地址：http://localhost:9090/swagger-ui.html
-
 ## 2.前端基本配置
 
 ### 2.1.通用配置(以后台管理系统为例)
@@ -630,7 +556,7 @@ export default service;
   [ERR] 1366 - Incorrect string value: '\xD6\xD0\xB9\xFA\xBB\xB4...' for colum
   ```
 
-## 5.初步完善management中各界面的功能
+## 5.初步完善management相关的界面和功能
 ### 5.1.数据相关（data）
 #### 5.1.1.文献数据
 + 实体类[DataPaper.java](backend/src/main/java/com/geo/integrated/model/DataPaper.java)
@@ -652,7 +578,7 @@ export default service;
         hidden: false,
         children: [
           {
-            path: "/paper",
+            path: "paper",
             name: "文献",
             meta: { title: "文献数据", icon: "el-icon-notebook-2" },
             component: PaperData
@@ -686,7 +612,7 @@ export default service;
         hidden: false,
         children: [
           {
-            path: "/coalfield",
+            path: "coalfield",
             name: "煤田",
             meta: { title: "煤田数据", icon: "el-icon-notebook-2" },
             component: PaperData
@@ -767,7 +693,7 @@ export default service;
       hidden: false,
       children: [
         {
-          path: "/operation",
+          path: "operation",
           name: "操作",
           meta: { title: "操作日志", icon: "el-icon-date" },
           component: OperationLog,
@@ -783,3 +709,87 @@ export default service;
 
 ### 5.3.科研成果相关（achievement）
 + 与`5.1.数据相关（data）`中配置步骤类似
+
+## 6.完善后端功能
+### 6.1.整合SwaggerUI
++ 添加依赖[pom.xml](./backend/pom.xml)
+  ```xml
+      <dependencies>
+          <!--Swagger-UI API文档生产工具-->
+          <dependency>
+              <groupId>io.springfox</groupId>
+              <artifactId>springfox-swagger2</artifactId>
+              <version>2.7.0</version>
+          </dependency>
+          <dependency>
+              <groupId>io.springfox</groupId>
+              <artifactId>springfox-swagger-ui</artifactId>
+              <version>2.7.0</version>
+          </dependency>
+      </dependencies>
+  ```
++ 添加Swagger-UI配置[Swagger2Config.java](backend/src/main/java/com/geo/integrated/config/Swagger2Config.java)
+
++ 给Swagger2Config.java添加注解`@Profile({"dev"})`，仅在本地开发环境中支持使用Swagger、生产环境禁用
+
++ 在配置文件[application.yml](./backend/src/main/resources/application.yml)中添加配置项，解决整合后的报错问题
+  ````bash
+  Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+  2023-02-01 17:53:40.368 ERROR 10884 --- [           main] o.s.boot.SpringApplication               : Application run failed
+  
+  org.springframework.context.ApplicationContextException: Failed to start bean 'documentationPluginsBootstrapper'; nested exception is java.lang.NullPointerException
+      at org.springframework.context.support.DefaultLifecycleProcessor.doStart(DefaultLifecycleProcessor.java:181)
+      at org.springframework.context.support.DefaultLifecycleProcessor.access$200(DefaultLifecycleProcessor.java:54)
+      at org.springframework.context.support.DefaultLifecycleProcessor$LifecycleGroup.start(DefaultLifecycleProcessor.java:356)
+      at java.lang.Iterable.forEach(Iterable.java:75)
+      at org.springframework.context.support.DefaultLifecycleProcessor.startBeans(DefaultLifecycleProcessor.java:155)
+      at org.springframework.context.support.DefaultLifecycleProcessor.onRefresh(DefaultLifecycleProcessor.java:123)
+      at org.springframework.context.support.AbstractApplicationContext.finishRefresh(AbstractApplicationContext.java:935)
+      at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:586)
+      at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:147)
+      at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:731)
+      at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:408)
+      at org.springframework.boot.SpringApplication.run(SpringApplication.java:307)
+      at org.springframework.boot.SpringApplication.run(SpringApplication.java:1303)
+      at org.springframework.boot.SpringApplication.run(SpringApplication.java:1292)
+      at com.geo.integrated.BackendApplication.main(BackendApplication.java:15)
+  Caused by: java.lang.NullPointerException: null
+      at springfox.documentation.spi.service.contexts.Orderings$8.compare(Orderings.java:113)
+      at springfox.documentation.spi.service.contexts.Orderings$8.compare(Orderings.java:110)
+      at com.google.common.collect.ComparatorOrdering.compare(ComparatorOrdering.java:38)
+      at java.util.TimSort.countRunAndMakeAscending(TimSort.java:355)
+      at java.util.TimSort.sort(TimSort.java:234)
+      at java.util.Arrays.sort(Arrays.java:1438)
+      at com.google.common.collect.Ordering.sortedCopy(Ordering.java:817)
+      at springfox.documentation.spring.web.plugins.WebMvcRequestHandlerProvider.requestHandlers(WebMvcRequestHandlerProvider.java:52)
+      at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper$2.apply(DocumentationPluginsBootstrapper.java:129)
+      at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper$2.apply(DocumentationPluginsBootstrapper.java:126)
+      at com.google.common.collect.Iterators$8.transform(Iterators.java:799)
+      at com.google.common.collect.TransformedIterator.next(TransformedIterator.java:48)
+      at com.google.common.collect.TransformedIterator.next(TransformedIterator.java:48)
+      at com.google.common.collect.Iterators$5.hasNext(Iterators.java:548)
+      at com.google.common.collect.ImmutableList.copyOf(ImmutableList.java:268)
+      at com.google.common.collect.ImmutableList.copyOf(ImmutableList.java:226)
+      at com.google.common.collect.FluentIterable.toList(FluentIterable.java:373)
+      at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper.defaultContextBuilder(DocumentationPluginsBootstrapper.java:100)
+      at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper.buildContext(DocumentationPluginsBootstrapper.java:91)
+      at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper.start(DocumentationPluginsBootstrapper.java:154)
+      at org.springframework.context.support.DefaultLifecycleProcessor.doStart(DefaultLifecycleProcessor.java:178)
+      ... 14 common frames omitted
+  
+  ````
+
++ 给各个Controller添加Swagger注解
+
++ 给实体类的属性添加@ApiModelProperty注解
+
++ 接口地址：http://localhost:9090/swagger-ui.html
+
+### 6.2.整合SpringTask实现定时任务（功能测试）
+> SpringTask是Spring自主研发的轻量级定时任务工具，相比于Quartz更加简单方便，且不需要引入其他依赖即可使用。
+> 由于SpringTask已经存在于Spring框架中，所以无需添加依赖。
+> [参考资料](https://www.macrozheng.com/mall/architect/mall_arch_06.html)
+
++ 添加[SpringTask](backend/src/main/java/com/geo/integrated/config/SpringTaskConfig.java)的配置，只需要在配置类中添加`@EnableScheduling`注解即可开启SpringTask的定时任务能力。
+
++ 添加[TestCountTask.java](backend/src/main/java/com/geo/integrated/component/TestCountTask.java)来测试定时任务的执行。

@@ -55,4 +55,9 @@ public interface Constant {
      * ipv6本机地址
      */
     String IP_V6_LOCALHOST = "0:0:0:0:0:0:0:1";
+
+    /**
+     * 定时任务测试常量
+     */
+    String TASK_STRING = "定时任务测试常量";
 }
