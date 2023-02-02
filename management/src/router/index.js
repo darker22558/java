@@ -26,10 +26,10 @@ const routes = [
     name: "首页",
     meta: { title: "首页", icon: "el-icon-set-up" },
     component: Container,
-    redirect: "/dashboard",
+    redirect: "dashboard",
     children: [
       {
-        path: "/dashboard",
+        path: "dashboard",
         name: "导航",
         meta: { title: "导航", icon: "el-icon-set-up" },
         component: Dashboard,
@@ -44,23 +44,23 @@ const routes = [
     hidden: false,
     children: [
       {
-        path: "/coalfieldData",
+        path: "coalfieldData",
         name: "煤田",
         meta: { title: "煤田数据", icon: "el-icon-notebook-2" },
         component: CoalfieldData,
       },
       /*      {
-        path: "/remoteSensingData",
+        path: "remoteSensingData",
         name: "遥感",
         meta: { title: "遥感数据", icon: "el-icon-notebook-2" },
       },
       {
-        path: "/earthquakeData",
+        path: "earthquakeData",
         name: "地震",
         meta: { title: "地震数据", icon: "el-icon-notebook-2" },
       },*/
       {
-        path: "/paperData",
+        path: "paperData",
         name: "文献",
         meta: { title: "文献数据", icon: "el-icon-notebook-2" },
         component: PaperData,
@@ -75,39 +75,39 @@ const routes = [
     hidden: false,
     children: [
       {
-        path: "/honor",
+        path: "honor",
         name: "所获荣誉",
         meta: { title: "所获荣誉", icon: "el-icon-collection" },
         component: Honor,
       },
       {
-        path: "/project",
+        path: "project",
         name: "科研项目",
         meta: { title: "科研项目", icon: "el-icon-collection" },
         component: Project,
       },
       {
-        path: "/paper",
+        path: "paper",
         name: "论文发表",
         meta: { title: "论文发表", icon: "el-icon-collection" },
         component: Paper,
       },
       {
-        path: "/patent",
+        path: "patent",
         name: "发明专利",
         meta: { title: "发明专利", icon: "el-icon-collection" },
         component: Patent,
       },
-      {
-        path: "/independent",
+      /*{
+        path: "independent",
         name: "自主",
         meta: { title: "自主课题", icon: "el-icon-collection" },
       },
       {
-        path: "/else",
+        path: "else",
         name: "其他",
         meta: { title: "其他项目", icon: "el-icon-collection" },
-      },
+      },*/
     ],
   },
   {
@@ -118,12 +118,12 @@ const routes = [
     hidden: false,
     children: [
       {
-        path: "/moment",
+        path: "moment",
         name: "动态",
         meta: { title: "最新动态", icon: "el-icon-news" },
       },
       {
-        path: "/notice",
+        path: "notice",
         name: "公告",
         meta: { title: "信息公告", icon: "el-icon-news" },
       },
@@ -137,7 +137,7 @@ const routes = [
     hidden: false,
     children: [
       {
-        path: "/overview",
+        path: "overview",
         name: "概况",
         meta: { title: "平台概况", icon: "el-icon-collection-tag" },
       },
@@ -151,7 +151,7 @@ const routes = [
     hidden: false,
     children: [
       {
-        path: "/dataService",
+        path: "dataService",
         name: "数据服务",
         meta: { title: "数据服务中心", icon: "el-icon-data-analysis" },
       },
@@ -165,19 +165,19 @@ const routes = [
     hidden: false,
     children: [
       {
-        path: "/operation",
+        path: "operation",
         name: "操作",
         meta: { title: "操作日志", icon: "el-icon-date" },
         component: OperationLog,
       },
       {
-        path: "/exception",
+        path: "exception",
         name: "异常",
         meta: { title: "异常日志", icon: "el-icon-date" },
         component: ExceptionLog,
       },
       /*{
-        path: "/visit",
+        path: "visit",
         name: "访问",
         meta: { title: "访问日志", icon: "el-icon-date" },
       },*/

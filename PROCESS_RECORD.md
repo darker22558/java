@@ -265,99 +265,101 @@ export default service;
 
 #### 2.2.1.布局调整
 + 添加界面统一布局[Container](management/src/components/Container.vue)并完善侧边栏导航配置
-```vue
-<template>
-  <div>
-    <el-container style="height: 100%; border: 1px solid #eee" class="container">
-      <el-aside style="width: 20%; background-color: #545c64; height: 100vh">
-        <div style="height: 54px; line-height: 60px; text-align: left; margin-left: 23px; margin-top: 6px">
-          <img src="../assets/logo.png" alt="" style="width: 20px; position: relative; top: 5px"/>
-          <b style="color: black; margin-left: 5px">地学综合平台</b>
-        </div>
-        <el-menu
-            router
-            class="el-menu-demo"
-            background-color="#545c64"
-            text-color="#fff"
-            active-text-color="#ffd04b"
-        >
-          <template v-for="(item, index) in this.$router.options.routes">
-            <template v-if="!item.hidden && item.children != null && item.children.length > 1">
-              <el-submenu :key="index" :index="index + ''" >
-                <template slot="title" v-if="item.meta">
-                  <i :class="item.meta.icon"></i>
-                  <span>{{ item.meta.title }}</span>
-                </template>
-                <template slot="title" v-else>
-                  <i class="el-icon-s-home"></i>
-                  <span>{{ item.name }}</span>
-                </template>
-                <template v-for="(children, indexOfChild) in item.children">
-                  <el-menu-item :key="indexOfChild" :index="children.path">
-                    <template slot="title" v-if="children.meta">
-                      <i :class="children.meta.icon"></i>
-                      <span>{{ children.meta.title }}</span>
-                    </template>
-                    <template slot="title" v-else>
-                      <i class="el-icon-s-home"></i>
-                      <span>{{ children.name }}</span>
-                    </template>
-                  </el-menu-item>
-                </template>
-              </el-submenu>
+  ```vue
+  <template>
+    <div>
+      <el-container style="height: 100%; border: 1px solid #eee" class="container">
+        <el-aside style="width: 18%; background-color: #545c64; height: 100vh">
+          <div style="height: 54px; line-height: 60px; text-align: left; margin-left: 23px; margin-top: 6px">
+            <img src="../assets/logo.png" alt="" style="width: 20px; position: relative; top: 5px"/>
+            <b style="color: black; margin-left: 5px; font-size: 18px">地学综合平台</b>
+          </div>
+          <el-menu
+                  router
+                  class="el-menu-demo"
+                  background-color="#545c64"
+                  text-color="#fff"
+                  active-text-color="#ffd04b"
+          >
+            <template v-for="(item, index) in this.$router.options.routes">
+              <template v-if="!item.hidden && item.children != null && item.children.length > 1">
+                <el-submenu :key="index" :index="item.path">
+                  <template slot="title" v-if="item.meta">
+                    <i :class="item.meta.icon"></i>
+                    <span>{{ item.meta.title }}</span>
+                  </template>
+                  <template slot="title" v-else>
+                    <i class="el-icon-s-home"></i>
+                    <span>{{ item.name }}</span>
+                  </template>
+                  <template v-for="(children, indexOfChild) in item.children">
+                    <el-menu-item :key="indexOfChild" :index="item.path + '/' + children.path">
+                      <template slot="title" v-if="children.meta">
+                        <i :class="children.meta.icon"></i>
+                        <span>{{ children.meta.title }}</span>
+                      </template>
+                      <template slot="title" v-else>
+                        <i class="el-icon-s-home"></i>
+                        <span>{{ children.name }}</span>
+                      </template>
+                    </el-menu-item>
+                  </template>
+                </el-submenu>
+              </template>
+              <template v-if="!item.hidden &&(item.children == null || item.children.length === 1)">
+                <el-menu-item :key="index" :index="item.children[0].path">
+                  <template slot="title" v-if="item.children[0].meta">
+                    <i :class="item.children[0].meta.icon"></i>
+                    <span>{{ item.children[0].meta.title }}</span>
+                  </template>
+                  <template slot="title" v-else>
+                    <i class="el-icon-s-home"></i>
+                    <span>{{ item.children[0].name }}</span>
+                  </template>
+                </el-menu-item>
+              </template>
             </template>
-            <template v-if="!item.hidden && (item.children == null || item.children.length === 1)">
-              <el-menu-item :key="index" :index="item.children[0].path">
-                <template slot="title" v-if="item.children[0].meta">
-                  <i :class="item.children[0].meta.icon"></i>
-                  <span>{{ item.children[0].meta.title }}</span>
-                </template>
-                <template slot="title" v-else>
-                  <i class="el-icon-s-home"></i>
-                  <span>{{ item.children[0].name }}</span>
-                </template>
-              </el-menu-item>
-            </template>
-          </template>
-        </el-menu>
-      </el-aside>
-
-      <el-container>
-        <el-header style="text-align: right; font-size: 12px; background-color: #545c64">
-          <el-avatar :size="25" style="margin-top: 5px; margin-right: 15px" src="http://hexo.li98.cn/img/snail2.png"></el-avatar>
-          <el-dropdown>
-            <span style="color: black; cursor: pointer">
-              <b>
-                {{ userInfo.username || "请登录" }}
-              </b>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>个人主页</el-dropdown-item>
-              <a target="_blank" :href="github">
-                <el-dropdown-item divided>Github</el-dropdown-item>
-              </a>
-              <a target="_blank" :href="docs">
-                <el-dropdown-item>Readme</el-dropdown-item>
-              </a>
-              <el-dropdown-item divided @click.native="handleLogout()">
-                <span style="display: block">退出登录</span>
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </el-header>
-
-        <el-main>
-          <router-view />
-        </el-main>
+          </el-menu>
+        </el-aside>
+  
+        <el-container>
+          <el-header style="text-align: right; font-size: 12px; background-color: #545c64">
+            <el-avatar :size="40" style="margin-top: 5px; margin-right: 15px" :src="logo"></el-avatar>
+            <el-dropdown>
+              <span style="color: black; cursor: pointer">
+                <b>
+                  {{ userInfo.username || "请登录" }}
+                </b>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item>个人主页</el-dropdown-item>
+                <a target="_blank" :href="github">
+                  <el-dropdown-item divided>Github</el-dropdown-item>
+                </a>
+                <a target="_blank" :href="docs">
+                  <el-dropdown-item>Readme</el-dropdown-item>
+                </a>
+                <el-dropdown-item divided @click.native="handleLogout()">
+                  <span style="display: block">退出登录</span>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </el-header>
+  
+          <el-main>
+            <router-view />
+          </el-main>
+        </el-container>
       </el-container>
-    </el-container>
-  </div>
-</template>
-```
+    </div>
+  </template>
+  ```
 
 + 该布局使用的是ElementUI的container组件，Header+Main+Aside的形式
 
-#### 2.2.2.自定义配置，见[vue.config.js](management/vue.config.js)和[settings.js](management/src/settings.js)
+#### 2.2.2.自定义配置
+
++ 见[vue.config.js](management/vue.config.js)和[settings.js](management/src/settings.js)
 
 ### 2.3 地学综合平台
 

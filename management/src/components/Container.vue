@@ -4,7 +4,7 @@
       <el-aside style="width: 18%; background-color: #545c64; height: 100vh">
         <div style="height: 54px; line-height: 60px; text-align: left; margin-left: 23px; margin-top: 6px">
           <img src="../assets/logo.png" alt="" style="width: 20px; position: relative; top: 5px"/>
-          <b style="color: black; margin-left: 5px">地学综合平台</b>
+          <b style="color: black; margin-left: 5px; font-size: 18px">地学综合平台</b>
         </div>
         <el-menu
           router
@@ -15,7 +15,7 @@
         >
           <template v-for="(item, index) in this.$router.options.routes">
             <template v-if="!item.hidden && item.children != null && item.children.length > 1">
-              <el-submenu :key="index" :index="index + ''" >
+              <el-submenu :key="index" :index="item.path">
                 <template slot="title" v-if="item.meta">
                   <i :class="item.meta.icon"></i>
                   <span>{{ item.meta.title }}</span>
@@ -25,7 +25,7 @@
                   <span>{{ item.name }}</span>
                 </template>
                 <template v-for="(children, indexOfChild) in item.children">
-                  <el-menu-item :key="indexOfChild" :index="children.path">
+                  <el-menu-item :key="indexOfChild" :index="item.path + '/' + children.path">
                     <template slot="title" v-if="children.meta">
                       <i :class="children.meta.icon"></i>
                       <span>{{ children.meta.title }}</span>
@@ -38,7 +38,7 @@
                 </template>
               </el-submenu>
             </template>
-            <template v-if="!item.hidden && (item.children == null || item.children.length === 1)">
+            <template v-if="!item.hidden &&(item.children == null || item.children.length === 1)">
               <el-menu-item :key="index" :index="item.children[0].path">
                 <template slot="title" v-if="item.children[0].meta">
                   <i :class="item.children[0].meta.icon"></i>
