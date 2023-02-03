@@ -8,7 +8,7 @@ public interface Constant {
     /**
      * 成功
      */
-    Integer CODE_SUCCESSFUL = 200;
+    Integer CODE_SUCCESS = 200;
 
     /**
      * 参数错误
@@ -42,11 +42,11 @@ public class Result implements Serializable {
     private Object data;
 
     public static Result success(Object data) {
-        return success(Constant.CODE_SUCCESSFUL, "操作成功", data);
+        return success(Constant.CODE_SUCCESS, "操作成功", data);
     }
 
     public static Result success(String message, Object data) {
-        return success(Constant.CODE_SUCCESSFUL, message, data);
+        return success(Constant.CODE_SUCCESS, message, data);
     }
 
     public static Result success(Integer code, String message, Object data) {

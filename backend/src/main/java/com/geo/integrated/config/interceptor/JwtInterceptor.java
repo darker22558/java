@@ -47,7 +47,7 @@ public class JwtInterceptor implements HandlerInterceptor {
         // 根据token中的userid查询数据库
         SysUser user = sysUserService.getById(userId);
         if (user == null) {
-            throw new ServiceException(Constant.CODE_PARAM_ERROR, "用户不存在，请重新登录");
+            throw new ServiceException(Constant.CODE_BAD_REQUEST, "用户不存在，请重新登录");
         }
         // 用户密码加签验证 token
         JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getPassword())).build();

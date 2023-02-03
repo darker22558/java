@@ -57,7 +57,7 @@ public class SysUserController {
             return Result.fail("用户不存在或密码不正确");
         }
         Result verifyResult = sysUserService.verifyAuthCode(username, authCode);
-        if (!verifyResult.getCode().equals(Constant.CODE_SUCCESSFUL)) {
+        if (!verifyResult.getCode().equals(Constant.CODE_SUCCESS)) {
             return Result.fail(verifyResult.getMessage());
         }
         String token = TokenUtils.generateToken(user.getId(), user.getPassword());

@@ -19,11 +19,11 @@ public class Result implements Serializable {
     private Object data;
 
     public static Result success(Object data) {
-        return success(Constant.CODE_SUCCESSFUL, "操作成功", data);
+        return success(Constant.CODE_SUCCESS, "操作成功", data);
     }
 
     public static Result success(String message, Object data) {
-        return success(Constant.CODE_SUCCESSFUL, message, data);
+        return success(Constant.CODE_SUCCESS, message, data);
     }
 
     public static Result success(Integer code, String message, Object data) {
@@ -35,11 +35,11 @@ public class Result implements Serializable {
     }
 
     public static Result fail(String message) {
-        return fail(Constant.CODE_PARAM_ERROR, message, null);
+        return fail(Constant.CODE_BAD_REQUEST, message, null);
     }
 
     public static Result fail(String message, Object data) {
-        return fail(Constant.CODE_PARAM_ERROR, message, data);
+        return fail(Constant.CODE_BAD_REQUEST, message, data);
     }
 
     public static Result fail(Integer code, String message, Object data) {
