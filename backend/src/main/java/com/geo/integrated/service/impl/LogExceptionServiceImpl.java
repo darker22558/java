@@ -25,7 +25,7 @@ public class LogExceptionServiceImpl extends ServiceImpl<LogExceptionMapper, Log
      *
      * @param log 异常日志对象
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void saveExceptionLog(LogException log) {
         int count = logExceptionMapper.insert(log);

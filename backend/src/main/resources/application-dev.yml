@@ -35,3 +35,8 @@ logging:
     com.geo.integrated: debug
   file:
     name: backend/log-dev/log-dev
+
+# Swagger配置
+swagger:
+  # 是否开启swagger
+  enabled: true
