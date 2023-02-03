@@ -36,15 +36,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      * 用户登录匹配
      * 查询是否有与当前表单中的用户名、密码匹配的用户信息
      *
-     * @param loginDTO 登录DTO，包含用户名和密码信息
+     * @param username 用户名
+     * @param password 密码
      * @return 匹配成功返回用户实体类，失败返回null
      */
     @Override
-    public SysUser login(LoginDTO loginDTO) {
+    public SysUser login(String username, String password) {
         QueryWrapper<SysUser> wrapper = new QueryWrapper<SysUser>();
-        wrapper.eq("username", loginDTO.getUsername());
+        wrapper.eq("username", username);
         // 密码通过md5加密后再判断
-        String md5Password = SecureUtil.md5(loginDTO.getPassword());
+        String md5Password = SecureUtil.md5(password);
         wrapper.eq("password", md5Password);
         SysUser one = getOne(wrapper);
         if (one != null) {

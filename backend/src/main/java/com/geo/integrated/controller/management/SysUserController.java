@@ -1,5 +1,6 @@
 package com.geo.integrated.controller.management;
 
+import cn.hutool.core.util.StrUtil;
 import com.geo.integrated.common.Constant;
 import com.geo.integrated.common.Result;
 import com.geo.integrated.model.dto.LoginDTO;
@@ -38,19 +39,31 @@ public class SysUserController {
     @ApiOperation("用户登录")
     @PostMapping("/login")
     public Result login(@Validated @RequestBody LoginDTO loginDTO) {
-        log.info("login DTO =========== {}", loginDTO);
-        SysUser user = sysUserService.login(loginDTO);
+        log.info("login DTO : {}", loginDTO);
+        String username = loginDTO.getUsername();
+        String password = loginDTO.getPassword();
+        String authCode = loginDTO.getAuthCode();
+        if (StrUtil.isBlank(username)) {
+            return Result.fail("请输入用户名");
+        }
+        if (StrUtil.isBlank(password)) {
+            return Result.fail("密码");
+        }
+        if (StrUtil.isBlank(authCode)) {
+            return Result.fail("请输入验证码");
+        }
+        SysUser user = sysUserService.login(username, password);
         if (user == null) {
             return Result.fail("用户不存在或密码不正确");
         }
-        Result result = sysUserService.verifyAuthCode(loginDTO.getUsername(), loginDTO.getAuthCode());
-        if (!result.getCode().equals(Constant.CODE_SUCCESSFUL)) {
-            return Result.fail("验证码校验失败，请刷新");
+        Result verifyResult = sysUserService.verifyAuthCode(username, authCode);
+        if (!verifyResult.getCode().equals(Constant.CODE_SUCCESSFUL)) {
+            return Result.fail(verifyResult.getMessage());
         }
-        String jwt = TokenUtils.generateToken(user.getId(), user.getPassword());
+        String token = TokenUtils.generateToken(user.getId(), user.getPassword());
         Map<String, Object> data = new LinkedHashMap<>();
-        data.put("user", user);
-        data.put("jwt", jwt);
+        data.put("userInfo", user);
+        data.put("token", token);
         return Result.success("登录成功", data);
     }
 

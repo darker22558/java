@@ -1,6 +1,7 @@
 # 项目完善过程记录
 
 ## 1.后端基本配置
+
 ### 1.1.常量接口(先定义好基本常量)
 ```java
 public interface Constant {
@@ -378,6 +379,7 @@ export default service;
 > 后台程序通过对Authorization头中信息的解码及数字签名校验来获取其中的用户信息，从而实现认证和授权。
 
 ### 3.1.后端整合JWT
+
 + 在[pom.xml](./backend/pom.xml)中添加依赖
   ```xml
       <dependencies>

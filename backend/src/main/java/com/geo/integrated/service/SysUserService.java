@@ -15,10 +15,11 @@ public interface SysUserService extends IService<SysUser> {
      * 用户登录匹配
      * 查询是否有与当前表单中的用户名、密码匹配的用户信息
      *
-     * @param loginDTO 登录DTO，包含用户名和密码信息
+     * @param username 用户名
+     * @param password 密码
      * @return 匹配成功返回用户实体类，失败返回null
      */
-    SysUser login(LoginDTO loginDTO);
+    SysUser login(String username, String password);
 
     /**
      * 生成验证码

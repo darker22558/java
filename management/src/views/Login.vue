@@ -4,7 +4,6 @@
       <el-container>
         <el-header>
           <!--          <img class="logo" src="../assets/logo.png" />-->
-
           <span style="font-size: 30px; font-weight: bold">地学综合平台管理系统</span>
         </el-header>
         <el-main>
@@ -18,14 +17,12 @@
                   v-model="loginForm.password"
               ></el-input>
             </el-form-item>
-            <el-form-item >
-              <div style="display: flex; justify-content: space-around">
-                <el-input v-model="sysAuthCode" disabled></el-input>
-                <el-button @click="getAuthCode()"> 生成验证码 </el-button>
-              </div>
-            </el-form-item>
             <el-form-item label="验证码">
-              <el-input v-model="loginForm.authCode" placeholder="请输入系统生成的验证码"></el-input>
+              <div style="display: flex; justify-content: space-around">
+                <el-input v-model="loginForm.authCode" placeholder="请输入验证码"></el-input>
+                <el-button @click="getAuthCode()" class="genAuthCodeBut"> 刷新 </el-button>
+                <el-input v-model="sysAuthCode" disabled class="sysAuthCode"></el-input>
+              </div>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="handleLogin()">
@@ -78,11 +75,11 @@ export default {
           this.loading = true;
           // 登录处理逻辑
           login(this.loginForm).then((res) => {
-            const jwt = res.data.jwt;
-            const userInfo = res.data.user;
-            // 把token和用户信息共享出去
-            this.$store.commit("SET_TOKEN", jwt);
+            const userInfo = res.data.userInfo;
+            const token = res.data.token;
+            // 把用户信息和token共享出去
             this.$store.commit("SET_USERINFO", userInfo);
+            this.$store.commit("SET_TOKEN", token);
             this.$router.push({ path: "/" });
             this.loading = false;
           });
@@ -144,5 +141,13 @@ body > .el-container {
 .loginForm {
   max-width: 40%;
   margin-left: 26%;
+}
+
+.genAuthCodeBut {
+  margin-left: 5px;
+}
+.sysAuthCode {
+  margin-left: 5px;
+  width: 140px;
 }
 </style>
