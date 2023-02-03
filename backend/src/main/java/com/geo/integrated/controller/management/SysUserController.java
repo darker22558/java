@@ -1,5 +1,6 @@
 package com.geo.integrated.controller.management;
 
+import com.geo.integrated.common.Constant;
 import com.geo.integrated.common.Result;
 import com.geo.integrated.model.dto.LoginDTO;
 import com.geo.integrated.entity.SysUser;
@@ -43,7 +44,7 @@ public class SysUserController {
             return Result.fail("用户不存在或密码不正确");
         }
         Result result = sysUserService.verifyAuthCode(loginDTO.getUsername(), loginDTO.getAuthCode());
-        if (result.getCode() != 200) {
+        if (!result.getCode().equals(Constant.CODE_SUCCESSFUL)) {
             return Result.fail("验证码校验失败，请刷新");
         }
         String jwt = TokenUtils.generateToken(user.getId(), user.getPassword());
