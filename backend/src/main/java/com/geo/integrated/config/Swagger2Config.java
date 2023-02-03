@@ -1,5 +1,6 @@
 package com.geo.integrated.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -22,11 +23,16 @@ import java.util.List;
  */
 @Configuration
 @EnableSwagger2
-@Profile({"dev"})
+// @Profile({"dev"})
 public class Swagger2Config {
+
+    @Value("${swagger.enable}")
+    private boolean swaggerEnable;
+
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .enable(swaggerEnable)
                 .apiInfo(apiInfo())
                 .select()
                 //为当前包下controller生成API文档

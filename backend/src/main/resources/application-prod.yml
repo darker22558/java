@@ -39,4 +39,4 @@ logging:
 # Swagger配置
 swagger:
   # 是否开启swagger
-  enabled: false
+  enable: false
