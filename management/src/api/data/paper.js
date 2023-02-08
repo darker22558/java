@@ -31,3 +31,12 @@ export function saveOrUpdate(form) {
     data: form,
   });
 }
+
+export function uploadDataBatch(file) {
+  return request({
+    url: "/blog/uploadDataBatch",
+    method: "post",
+    header: { "Content-Type": "multipart/form-data" },
+    data: file,
+  });
+}

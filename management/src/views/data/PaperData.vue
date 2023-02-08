@@ -6,6 +6,11 @@
       <el-button @click.native.prevent="loadPaperList" style="margin-left: 10px" type="primary">查询</el-button>
       <el-button type="warning" @click="reset">重置</el-button>
       <el-button type="primary" @click="addPaper" class="el-icon-circle-plus-outline">新增</el-button>
+      <el-button type="primary" @click="downloadTemplate"><i class="el-icon-bottom"></i> 下载模板（.xlsx）</el-button>
+      <el-upload action :http-request="importBatch" :on-exceed="handleExceed" :before-upload="beforeExcelUpload" :show-file-list="false">
+        <el-button type="primary"><i class="el-icon-top"></i> 批量导入（.xlsx）</el-button>
+      </el-upload>
+      <el-button type="primary" @click="exportBatch"><i class="el-icon-bottom"></i> 批量导出（.xlsx）</el-button>
       <el-button type="danger" @click="deletePaperBatch" class="el-icon-remove-outline">批量删除</el-button>
     </div>
     <div style="margin: 10px; width: 99%">
@@ -73,7 +78,7 @@ import {
   getPaperList,
   deletePaperById,
   deletePaperBatchByIds,
-  saveOrUpdate,
+  saveOrUpdate, uploadDataBatch,
 } from "@/api/data/paper";
 
 export default {
@@ -95,7 +100,7 @@ export default {
       // 允许上传的文献文件类型
       ExcelFileType: ["xlsx", "xls"],
       // 运行上传文件大小，单位 M
-      ExcelFileSize: 1,
+      ExcelFileSize: 5,
       dialogFormVisible: false,
     };
   },
@@ -202,6 +207,55 @@ export default {
             message: "已取消批量删除操作",
           });
         });
+    },
+    // 下载模板
+    downloadTemplate() {
+
+    },
+    // 超出文件个数的回调
+    handleExceed(files) {
+      this.$message.warning(`超出上传数量限制！最多上传 1 个表格文件，选择了 ${files.length} 个文件`)
+    },
+    // 上传Excel文件之前
+    beforeExcelUpload(file) {
+      if (file.type !== "" || file.type != null || file.type !== undefined) {
+        // 计算文件的大小
+        const fileSize = file.size / 1024 / 1024
+        // 这里做文件大小限制
+        if (fileSize > this.ExcelFileSize) {
+          this.$message("上传文件大小不能超过 5MB!");
+          return false;
+        }
+        // 截取文件的后缀，判断文件类型
+        const suffix = file.name.replace(/.+\./, "").toLowerCase();
+        // 如果文件类型不在允许上传的范围内
+        if (this.ExcelFileType.includes(suffix)) {
+          return true;
+        } else {
+          this.$message.error("批量上传需要使用excel文件!");
+          return false;
+        }
+      }
+    },
+    // 上传文件的事件
+    importBatch(item) {
+      this.$message("数据上传中······");
+      // 上传文件的需要formdata类型
+      const FormDatas = new FormData()
+      FormDatas.append("file", item.file);
+      uploadDataBatch(FormDatas).then((res) => {
+        this.$message.success(res.message)
+        // 成功过后刷新列表，清空上传文件列表
+        this.handleSuccess();
+      });
+    },
+    // 上传成功后的回调
+    handleSuccess() {
+      this.loadPaperList()
+    },
+    // 批量导出数据
+    exportBatch() {
+      // window.open('http://localhost:8080/admin/blog/export')
     },
   },
 };

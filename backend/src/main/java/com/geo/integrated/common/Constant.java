@@ -115,4 +115,14 @@ public interface Constant {
      * 定时任务测试常量
      */
     String TASK_STRING = "定时任务测试常量";
+
+    /**
+     * .xlsx文件
+     */
+    String FILE_TYPE_XLSX = "xlsx";
+
+    /**
+     * .xls文件
+     */
+    String FILE_TYPE_XLS = "xls";
 }
