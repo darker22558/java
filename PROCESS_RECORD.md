@@ -799,7 +799,6 @@ export default service;
 
 + 添加[TestCountTask.java](backend/src/main/java/com/geo/integrated/component/TestCountTask.java)来测试定时任务的执行。
 
-
 ### 6.3.整合Redis实现缓存功能
 
 > 以登录时获取验证码并做登录校验为例
@@ -912,3 +911,28 @@ export default service;
   ```
 
 + 在[拦截器配置文件](backend/src/main/java/com/geo/integrated/config/InterceptorConfig.java)中放行`生成验证码`的接口，使后端在用户未登录时可以生成验证码
+
+### 6.4.整合七牛云对象存储
++ 添加项目依赖[pom.xml](./backend/pom.xml)
+  ```xml
+  <dependencies>
+    <!--七牛云-->
+    <dependency>
+      <groupId>com.qiniu</groupId>
+      <artifactId>qiniu-java-sdk</artifactId>
+      <version>[7.7.0, 7.10.99]</version>
+    </dependency>
+  </dependencies>
+  ```
+
++ 修改配置文件[application.yml](backend/src/main/resources/application.yml)
+```yaml
+# 填入注册后得到的accessKey和accessSecretKey
+qiniu:
+  accessKey: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  accessSecretKey: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  bucketName: geo-integrated
+  domainName: http://xxx.xxx.clouddn.com/
+```
+
++ 添加工具类[QiniuOssUtils.java](backend/src/main/java/com/geo/integrated/utils/QiniuOssUtils.java)

@@ -12,3 +12,10 @@ mybatis-plus:
   type-aliases-package: com.geo.integrated.dao
 #  configuration:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# 填入注册后得到的accessKey和accessSecretKey
+qiniu:
+  accessKey: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  accessSecretKey: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  bucketName: geo-integrated
+  domainName: http://rpppj5gw9.hb-bkt.clouddn.com/
