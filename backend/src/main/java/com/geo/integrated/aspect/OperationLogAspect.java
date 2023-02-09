@@ -8,6 +8,8 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -29,6 +31,14 @@ public class OperationLogAspect {
 
     @Resource
     private UserAgentUtils userAgentUtils;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    @Value("${jwt.tokenHeader}")
+    private String tokenHeader;
+    @Value("${jwt.tokenHead}")
+    private String tokenHead;
 
     ThreadLocal<Long> currentTime = new ThreadLocal<>();
 
@@ -70,13 +80,20 @@ public class OperationLogAspect {
      */
     private LogOperation handleLog(ProceedingJoinPoint joinPoint, OperationLogger operationLogger, int times) {
         // 从token中获取操作用户的名称
-        String username = TokenUtils.getCurrentUser().getUsername();
+        // String username = TokenUtils.getCurrentUser().getUsername();
+        // String username = "admin";
         // 获取操作描述
         String description = operationLogger.value();
         // 获取请求内容中的属性
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         // 获取请求属性
         HttpServletRequest request = attributes.getRequest();
+        // 获取token
+        String authHeader = request.getHeader(this.tokenHeader);
+        // 字符串"Geo "之后的部分是token
+        String authToken = authHeader.substring(this.tokenHead.length());
+        // 根据token获取用户名
+        String username = jwtTokenUtil.getUserNameFromToken(authToken);
         // 获取请求接口
         String uri = request.getRequestURI();
         // 获取请求方式

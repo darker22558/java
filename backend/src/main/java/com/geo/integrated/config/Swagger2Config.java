@@ -23,7 +23,6 @@ import java.util.List;
  */
 @Configuration
 @EnableSwagger2
-// @Profile({"dev"})
 public class Swagger2Config {
 
     @Value("${swagger.enable}")
@@ -63,7 +62,7 @@ public class Swagger2Config {
      * @return 请求头信息列表
      */
     private List<ApiKey> securitySchemes() {
-        //设置请求头信息
+        // 设置请求头信息
         List<ApiKey> result = new ArrayList<>();
         ApiKey apiKey = new ApiKey("Authorization", "Authorization", "header");
         result.add(apiKey);
@@ -71,7 +70,7 @@ public class Swagger2Config {
     }
 
     private List<SecurityContext> securityContexts() {
-        //设置需要登录认证的路径
+        // 设置需要登录认证的路径
         List<SecurityContext> result = new ArrayList<>();
         result.add(getContextByPath("/management/.*"));
         return result;
