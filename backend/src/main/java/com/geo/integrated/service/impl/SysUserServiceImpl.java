@@ -128,7 +128,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      * @return token
      */
     @Override
-    public String generateToken(String username, String password, SysUser user) {
+    public String generateToken(String username, String password) {
         String token = null;
         try {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);

@@ -1,14 +1,11 @@
 package com.geo.integrated.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.date.Month;
 import com.geo.integrated.dao.VisualStatisticMapper;
 import com.geo.integrated.entity.AchievementProject;
 import com.geo.integrated.model.vo.ProjectStatistic;
 import com.geo.integrated.service.VisualStatisticService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -20,7 +17,7 @@ import java.util.stream.Collectors;
 /**
  * @author: whtli
  * @date: 2023/02/09
- * @description:
+ * @description: 网站数据统计服务层实现
  */
 @Slf4j
 @Service
@@ -29,6 +26,11 @@ public class VisualStatisticServiceImpl implements VisualStatisticService {
     @Resource
     private VisualStatisticMapper visualStatisticMapper;
 
+    /**
+     * 获取项目分类及年份统计数据
+     *
+     * @return 项目分类及年份统计数据
+     */
     @Override
     public Map<String, Object> getProjectStatistic() {
         // 查询项目分类数据
@@ -42,21 +44,8 @@ public class VisualStatisticServiceImpl implements VisualStatisticService {
 
         // 获取各年份项目数据
         Map<Integer, Integer> projectYearCount = new LinkedHashMap<>();
-        /* int jan = 0;
-        int feb = 0;
-        int mar = 0;
-        int apr = 0;
-        int may = 0;
-        int june = 0;
-        int july = 0;
-        int aug = 0;
-        int sep = 0;
-        int oct = 0;
-        int nov = 0;
-        int dec = 0;*/
         for (AchievementProject project : projectList) {
             String startDate = project.getStartDate();
-            log.info("startDate =========== : {}", startDate);
             Date date = new Date();
             if (startDate == null) {
                 startDate = "1800";
@@ -69,95 +58,91 @@ public class VisualStatisticServiceImpl implements VisualStatisticService {
 
             int year = DateUtil.year(date);
             projectYearCount.put(year, projectYearCount.getOrDefault(year, 0) + 1);
-            // 只统计当年里每月的项目数（项目无月份信息）
-            /*if (year == DateUtil.year(new Date())) {
-                Month month = DateUtil.monthEnum(startDate);
-                switch (month) {
-                    case JANUARY:
-                        jan += 1;
-                        break;
-                    case FEBRUARY:
-                        feb += 1;
-                        break;
-                    case MARCH:
-                        mar += 1;
-                        break;
-                    case APRIL:
-                        apr += 1;
-                        break;
-                    case MAY:
-                        may += 1;
-                        break;
-                    case JUNE:
-                        june += 1;
-                        break;
-                    case JULY:
-                        july += 1;
-                        break;
-                    case AUGUST:
-                        aug += 1;
-                        break;
-                    case SEPTEMBER:
-                        sep += 1;
-                        break;
-                    case OCTOBER:
-                        oct += 1;
-                        break;
-                    case NOVEMBER:
-                        nov += 1;
-                        break;
-                    case DECEMBER:
-                        dec += 1;
-                        break;
-                    default:
-                        break;
-                }
-            }*/
+
         }
         Map<String, Object> map = new HashMap<>(5);
         map.put("projectCount", blogCount);
         map.put("projectTypeList", projectTypeList);
         map.put("typeName", typeName);
         map.put("projectYearCount", projectYearCount);
-        // map.put("projectMonthList", CollUtil.newArrayList(jan, feb, mar, apr, may, june, july, aug, sep, oct, nov, dec));
         return map;
     }
 
+    /**
+     * 获取总PV
+     *
+     * @return 总PV值
+     */
     @Override
     public int getTotalPageView() {
         return 0;
     }
 
+    /**
+     * 获取当日PV
+     *
+     * @return 日PV值
+     */
     @Override
     public int getTodayPageView() {
         return 0;
     }
 
+    /**
+     * 获取总UV
+     *
+     * @return 总UV值
+     */
     @Override
     public int getTotalUniqueVisitor() {
         return 0;
     }
 
+    /**
+     * 获取日UV
+     *
+     * @return 日UV值
+     */
     @Override
     public int getTodayUniqueVisitor() {
         return 0;
     }
 
+    /**
+     * 获取荣誉总数
+     *
+     * @return 荣誉总数
+     */
     @Override
     public int getHonorCount() {
         return visualStatisticMapper.getHonorCount();
     }
 
+    /**
+     * 获取项目总数
+     *
+     * @return 项目总数
+     */
     @Override
     public int getProjectCount() {
         return visualStatisticMapper.getProjectCount();
     }
 
+    /**
+     * 获取发表的论文总数
+     *
+     * @return 发表的论文总数
+     */
     @Override
     public int getPaperPublishedCount() {
         return visualStatisticMapper.getPaperPublishedCount();
     }
 
+    /**
+     * 获取发明专利总数
+     *
+     * @return 发明专利总数
+     */
     @Override
     public int getPatentCount() {
         return visualStatisticMapper.getPatentCount();

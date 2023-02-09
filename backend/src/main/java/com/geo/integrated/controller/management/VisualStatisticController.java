@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * @author: whtli
  * @date: 2023/02/09
- * @description:
+ * @description: 网站数据统计控制层
  */
 @Slf4j
 @RestController
@@ -53,7 +53,7 @@ public class VisualStatisticController {
         // 科研项目总数
         int totalProject = visualStatisticService.getProjectCount();
         // 发表论文总数
-        // int totalPaperPublished = visualStatisticService.getPaperPublishedCount();
+        /* int totalPaperPublished = visualStatisticService.getPaperPublishedCount();*/
         // 发明专利总数
         int totalPatent = visualStatisticService.getPatentCount();
 
@@ -64,7 +64,7 @@ public class VisualStatisticController {
 
         map.put("totalHonor", totalHonor);
         map.put("totalProject", totalProject);
-        // map.put("totalPaperPublished", totalPaperPublished);
+        /* map.put("totalPaperPublished", totalPaperPublished);*/
         map.put("totalPatent", totalPatent);
 
 

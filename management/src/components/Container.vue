@@ -1,11 +1,11 @@
 <template>
   <div>
-    <el-container style="height: 100%; border: 1px solid #eee" class="container">
-      <el-aside style="width: 18%; background-color: #545c64; height: 100vh">
-        <div style="height: 54px; line-height: 60px; text-align: left; margin-left: 23px; margin-top: 6px">
+    <el-container style="height: 100vh; border: 1px solid #eee" class="container">
+      <el-aside style="width: 18%; background-color: #545c64; ">
+<!--        <div style="height: 54px; line-height: 60px; text-align: left; margin-left: 23px; margin-top: 6px">
           <img src="../assets/logo.png" alt="" style="width: 20px; position: relative; top: 5px"/>
           <b style="color: black; margin-left: 5px; font-size: 18px">地学综合平台</b>
-        </div>
+        </div>-->
         <el-menu
           router
           class="el-menu-demo"
@@ -91,7 +91,7 @@
       </el-aside>
 
       <el-container>
-        <el-header style="text-align: right; font-size: 12px; background-color: #545c64">
+        <el-header style="vertical-align: center; text-align: right; font-size: 12px; background-color: #b3c0d1">
           <el-avatar :size="40" style="margin-top: 5px; margin-right: 15px" :src="logo"></el-avatar>
           <el-dropdown>
             <span style="color: black; cursor: pointer">
@@ -117,6 +117,37 @@
         <el-main>
           <router-view />
         </el-main>
+
+        <el-footer>
+<!--          <div style="display: flex; justify-content: space-around">
+            <div >
+              <img src="../assets/logo.png" alt="" />
+            </div>
+            <div >
+              <p>电话: </p>
+              <p>网址: </p>
+              <p>地址：</p>
+              <p>邮编：</p>
+            </div>
+            <div >
+              <ul>
+                <li>
+                  <h5>微信公众号</h5>
+                </li>
+                <li>
+                  <h5>安全管理</h5>
+                </li>
+                <li>
+                  <h5>会议室预约</h5>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-around">
+            &lt;!&ndash; 版权内容请在本组件"内容配置-版权"处填写 &ndash;&gt;
+            <p>Copyright 2023 地学综合平台管理系统</p>
+          </div>-->
+        </el-footer>
       </el-container>
     </el-container>
   </div>
@@ -151,7 +182,7 @@ export default {
 
 <style scoped>
 .container {
-  /*实现全面布局*/
+  /*!*实现全面布局*!*/
   height: 100vh;
 }
 

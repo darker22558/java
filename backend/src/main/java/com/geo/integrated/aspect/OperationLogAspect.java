@@ -79,18 +79,15 @@ public class OperationLogAspect {
      * @return 操作日志实体类
      */
     private LogOperation handleLog(ProceedingJoinPoint joinPoint, OperationLogger operationLogger, int times) {
-        // 从token中获取操作用户的名称
-        // String username = TokenUtils.getCurrentUser().getUsername();
-        // String username = "admin";
         // 获取操作描述
         String description = operationLogger.value();
         // 获取请求内容中的属性
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         // 获取请求属性
         HttpServletRequest request = attributes.getRequest();
-        // 获取token
+        // 获取authHeader
         String authHeader = request.getHeader(this.tokenHeader);
-        // 字符串"Geo "之后的部分是token
+        // tokenHead之后的部分是token
         String authToken = authHeader.substring(this.tokenHead.length());
         // 根据token获取用户名
         String username = jwtTokenUtil.getUserNameFromToken(authToken);

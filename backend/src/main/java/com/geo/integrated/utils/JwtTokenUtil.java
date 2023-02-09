@@ -24,6 +24,8 @@ import java.util.Map;
 public class JwtTokenUtil {
     private static final String CLAIM_KEY_USERNAME = "sub";
     private static final String CLAIM_KEY_CREATED = "created";
+    private static final Integer TIME_SECOND = 60;
+    private static final Integer TIME_RANGE = 30;
 
     @Value("${jwt.secret}")
     private String secret;
@@ -141,7 +143,7 @@ public class JwtTokenUtil {
             return null;
         }
         //如果token在30分钟之内刚刷新过，返回原token
-        if (tokenRefreshJustBefore(token, 30 * 60)) {
+        if (tokenRefreshJustBefore(token, TIME_RANGE * TIME_SECOND)) {
             return token;
         } else {
             claims.put(CLAIM_KEY_CREATED, new Date());

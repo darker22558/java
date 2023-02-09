@@ -6,7 +6,6 @@ import com.geo.integrated.common.Result;
 import com.geo.integrated.model.dto.LoginDTO;
 import com.geo.integrated.entity.SysUser;
 import com.geo.integrated.service.SysUserService;
-//import com.geo.integrated.utils.TokenUtils;
 import com.geo.integrated.utils.JwtTokenUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -76,8 +75,7 @@ public class SysUserController {
         }
 
         // 生成token
-        // String token = TokenUtils.generateToken(user.getId(), user.getPassword());
-        String token = sysUserService.generateToken(username, password, user);
+        String token = sysUserService.generateToken(username, password);
 
         Map<String, Object> data = new LinkedHashMap<>();
         data.put("userInfo", user);

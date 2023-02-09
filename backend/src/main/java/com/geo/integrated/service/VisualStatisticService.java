@@ -5,13 +5,13 @@ import java.util.Map;
 /**
  * @author: whtli
  * @date: 2023/02/09
- * @description:
+ * @description: 网站数据统计服务层
  */
 public interface VisualStatisticService {
     /**
-     * 调用Mapper层获取统计数据
+     * 获取项目分类及年份统计数据
      *
-     * @return 存放了项目统计数据的Map
+     * @return 项目分类及年份统计数据
      */
     Map<String, Object> getProjectStatistic();
 
@@ -43,11 +43,31 @@ public interface VisualStatisticService {
      */
     int getTodayUniqueVisitor();
 
+    /**
+     * 获取荣誉总数
+     *
+     * @return 荣誉总数
+     */
     int getHonorCount();
 
+    /**
+     * 获取项目总数
+     *
+     * @return 项目总数
+     */
     int getProjectCount();
 
+    /**
+     * 获取发表的论文总数
+     *
+     * @return 发表的论文总数
+     */
     int getPaperPublishedCount();
 
+    /**
+     * 获取发明专利总数
+     *
+     * @return 发明专利总数
+     */
     int getPatentCount();
 }

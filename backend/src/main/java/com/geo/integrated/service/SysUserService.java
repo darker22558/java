@@ -43,8 +43,7 @@ public interface SysUserService extends IService<SysUser> {
      *
      * @param username 用户名
      * @param password 密码
-     * @param user     用户实体
      * @return token
      */
-    String generateToken(String username, String password, SysUser user);
+    String generateToken(String username, String password);
 }
