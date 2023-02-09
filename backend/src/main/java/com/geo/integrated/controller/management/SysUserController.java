@@ -1,12 +1,11 @@
 package com.geo.integrated.controller.management;
 
 import cn.hutool.core.util.StrUtil;
-import com.geo.integrated.common.Constant;
 import com.geo.integrated.common.Result;
 import com.geo.integrated.model.dto.LoginDTO;
 import com.geo.integrated.entity.SysUser;
 import com.geo.integrated.service.SysUserService;
-import com.geo.integrated.utils.JwtTokenUtil;
+import com.geo.integrated.utils.JwtTokenUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +15,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -33,7 +31,7 @@ public class SysUserController {
     @Autowired
     private SysUserService sysUserService;
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private JwtTokenUtils jwtTokenUtils;
     @Value("${jwt.tokenHeader}")
     private String tokenHeader;
     @Value("${jwt.tokenHead}")
@@ -93,7 +91,7 @@ public class SysUserController {
     @GetMapping(value = "/refreshToken")
     public Result refreshToken(HttpServletRequest request) {
         String token = request.getHeader(tokenHeader);
-        String refreshToken = jwtTokenUtil.refreshHeadToken(token);
+        String refreshToken = jwtTokenUtils.refreshHeadToken(token);
         if (refreshToken == null) {
             return Result.fail("token已经过期！");
         }

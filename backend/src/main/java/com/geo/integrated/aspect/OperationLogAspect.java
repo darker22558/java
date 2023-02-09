@@ -33,7 +33,7 @@ public class OperationLogAspect {
     private UserAgentUtils userAgentUtils;
 
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private JwtTokenUtils jwtTokenUtils;
 
     @Value("${jwt.tokenHeader}")
     private String tokenHeader;
@@ -90,7 +90,7 @@ public class OperationLogAspect {
         // tokenHead之后的部分是token
         String authToken = authHeader.substring(this.tokenHead.length());
         // 根据token获取用户名
-        String username = jwtTokenUtil.getUserNameFromToken(authToken);
+        String username = jwtTokenUtils.getUserNameFromToken(authToken);
         // 获取请求接口
         String uri = request.getRequestURI();
         // 获取请求方式

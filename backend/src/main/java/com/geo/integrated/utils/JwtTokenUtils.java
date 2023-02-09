@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @Component
 @Slf4j
-public class JwtTokenUtil {
+public class JwtTokenUtils {
     private static final String CLAIM_KEY_USERNAME = "sub";
     private static final String CLAIM_KEY_CREATED = "created";
     private static final Integer TIME_SECOND = 60;

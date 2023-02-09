@@ -8,7 +8,7 @@ import com.geo.integrated.dao.SysUserMapper;
 import com.geo.integrated.entity.SysUser;
 import com.geo.integrated.service.RedisService;
 import com.geo.integrated.service.SysUserService;
-import com.geo.integrated.utils.JwtTokenUtil;
+import com.geo.integrated.utils.JwtTokenUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,7 +40,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private JwtTokenUtils jwtTokenUtils;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Value("${redis.key.expire.authCode}")
@@ -142,7 +142,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             }
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            token = jwtTokenUtil.generateToken(userDetails);
+            token = jwtTokenUtils.generateToken(userDetails);
         } catch (AuthenticationException e) {
             log.warn("登录异常");
         }
