@@ -49,6 +49,7 @@ export default {
         username: "admin",
         password: "111111",
         authCode: "",
+        uniqueLoginId: "",
       },
       sysAuthCode: "",
       rules: {
@@ -67,6 +68,9 @@ export default {
       },
       loading: false,
     };
+  },
+  created() {
+    this.getAuthCode()
   },
   methods: {
     handleLogin() {
@@ -93,8 +97,9 @@ export default {
       this.$refs.loginForm.resetFields();
     },
     getAuthCode() {
-      generateAuthCode(this.loginForm.username).then((res) => {
-        this.sysAuthCode = res.data;
+      generateAuthCode().then((res) => {
+        this.sysAuthCode = res.data.sysAuthCode;
+        this.loginForm.uniqueLoginId = res.data.uniqueLoginId
       });
     },
   },

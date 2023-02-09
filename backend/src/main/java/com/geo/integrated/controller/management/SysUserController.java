@@ -52,6 +52,7 @@ public class SysUserController {
         String username = loginDTO.getUsername();
         String password = loginDTO.getPassword();
         String authCode = loginDTO.getAuthCode();
+        String uniqueLoginId = loginDTO.getUniqueLoginId();
 
         if (StrUtil.isBlank(username)) {
             return Result.fail("请输入用户名");
@@ -62,6 +63,9 @@ public class SysUserController {
         if (StrUtil.isBlank(authCode)) {
             return Result.fail("请输入验证码");
         }
+        if (StrUtil.isBlank(uniqueLoginId)) {
+            return Result.fail("登录异常，请刷新后重新登录");
+        }
         // 查询是否存在当前登录用户
         SysUser user = sysUserService.login(username, password);
         if (user == null) {
@@ -69,7 +73,7 @@ public class SysUserController {
         }
 
         // 校验登录验证码
-        boolean isVerified = sysUserService.verifyAuthCode(username, authCode);
+        boolean isVerified = sysUserService.verifyAuthCode(uniqueLoginId, authCode);
         if (!isVerified) {
             return Result.fail("验证码校验失败");
         }
@@ -113,12 +117,11 @@ public class SysUserController {
     /**
      * 获取验证码
      *
-     * @param username 用户名
      * @return 验证码
      */
     @ApiOperation("生成验证码")
     @GetMapping("/generateAuthCode")
-    public Result generateAuthCode(@RequestParam String username) {
-        return sysUserService.generateAuthCode(username);
+    public Result generateAuthCode() {
+        return sysUserService.generateAuthCode();
     }
 }

@@ -884,8 +884,6 @@ import * as echarts from 'echarts';
   # 自定义redis key
   redis:
     key:
-      prefix:
-        authCode: "portal:authCode:"
       expire:
         authCode: 120 # 验证码超期时间
   ```
@@ -894,73 +892,126 @@ import * as echarts from 'echarts';
 
 + 在[RedisServiceImpl.java](backend/src/main/java/com/geo/integrated/service/impl/RedisServiceImpl.java)中注入StringRedisTemplate，实现RedisService接口
 
-+ 在[loginDTO](backend/src/main/java/com/geo/integrated/model/dto/LoginDTO.java)中添加验证码字段
++ 改造[loginDTO](backend/src/main/java/com/geo/integrated/model/dto/LoginDTO.java)，在其中添加`验证码`和`唯一登录标识`字段
 
 + 在[SysUserController.java](backend/src/main/java/com/geo/integrated/controller/management/SysUserController.java)中添加根据登录用户名生成验证码的接口以及登录时的验证码校验流程
 
 + 在[SysUserService.java](backend/src/main/java/com/geo/integrated/service/SysUserService.java)中添加`生成验证码`和`校验验证码`接口
 
 + 添加[SysUserServiceImpl.java](backend/src/main/java/com/geo/integrated/service/impl/SysUserServiceImpl.java)实现`生成验证码`和`校验验证码`功能
-
-  - 生成验证码时，将自定义的Redis键值加上邮箱生成一个Redis的key，以验证码为value存入到Redis中
+  - 生成验证码时，将当前时刻的时间戳和生成的验证码拼接后，经过md5转换生成一个唯一登录标识uniqueLoginId并将其作为key；将验证码作为value存入到Redis中
+  - 后端将唯一登录标识和验证码一起返回给前端，前端真正的登录请求发起时需要携带当前的唯一登录标识，这样可以保证验证码刷新后，使用之前生成的且仍在有效期内的验证码无法登录系统
   - 设置过期时间为SpringBoot配置文件中自定义的时间（如120s）
-  - 校验验证码时根据邮箱来获取Redis里面存储的验证码，并与传入的验证码进行比对
+  - 校验验证码时根据唯一登录标识来获取Redis里面存储的验证码，并与传入的验证码进行比对
   ```java
   @Service
   public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
       @Autowired
       private RedisService redisService;
-  
-      @Value("${redis.key.prefix.authCode}")
-      private String redisKeyPrefixAuthCode;
-  
+    
       @Value("${redis.key.expire.authCode}")
       private Long authCodeExpireSeconds;
   
       /**
        * 生成验证码
        *
-       * @param username 用户名
        * @return 验证码
        */
       @Override
-      public Result generateAuthCode(String username) {
-          StringBuilder sb = new StringBuilder();
-          Random random = new Random();
-          int len = 6;
-          for (int i = 0; i < len; i++) {
-              sb.append(random.nextInt(10));
-          }
-          // 验证码绑定用户名并存储到redis
-          redisService.set(redisKeyPrefixAuthCode + username, sb.toString());
-          redisService.expire(redisKeyPrefixAuthCode + username, authCodeExpireSeconds);
-          return Result.success("获取验证码成功", sb.toString());
+      public Result generateAuthCode() {
+        StringBuilder sysAuthCode = new StringBuilder();
+        Random random = new Random();
+        int len = 6;
+        for (int i = 0; i < len; i++) {
+          sysAuthCode.append(random.nextInt(10));
+        }
+        // 生成当前时刻时间戳
+        String timeStamp = String.valueOf(System.currentTimeMillis());
+        try {
+          // 时间戳绑定验证码然后通过md5转换再存储到redis
+          String uniqueLoginId = SecureUtil.md5(timeStamp + sysAuthCode);
+          log.info("Authorization unique key ========== {}", uniqueLoginId);
+          redisService.set(uniqueLoginId, sysAuthCode.toString());
+          redisService.expire(uniqueLoginId, authCodeExpireSeconds);
+    
+          Map<String, String> data = new LinkedHashMap<>();
+          data.put("sysAuthCode", sysAuthCode.toString());
+          data.put("uniqueLoginId", uniqueLoginId);
+          return Result.success("生成验证码成功", data);
+        } catch (Exception e) {
+          return Result.fail("生成验证码失败");
+        }
       }
-  
+    
       /**
        * 对输入的验证码进行校验
        *
-       * @param username    用户名
-       * @param authCode 验证码
+       * @param uniqueLoginId 唯一登录标识
+       * @param authCode      验证码
        * @return 验证码的校验结果
        */
       @Override
-      public Result verifyAuthCode(String username, String authCode) {
-          if (StrUtil.isEmpty(authCode)) {
-              return Result.fail("请输入验证码");
-          }
-          String realAuthCode = redisService.get(redisKeyPrefixAuthCode + username);
-          boolean result = authCode.equals(realAuthCode);
-          if (result) {
-              return Result.success("验证码校验成功");
-          } else {
-              return Result.fail("验证码校验失败");
-          }
+      public boolean verifyAuthCode(String uniqueLoginId, String authCode) {
+        if (StrUtil.isEmpty(authCode)) {
+          return false;
+        }
+        String realAuthCode = redisService.get(uniqueLoginId);
+        boolean result = authCode.equals(realAuthCode);
+        if (result) {
+          return true;
+        } else {
+          return false;
+        }
       }
   }
   ```
 
 + 在[拦截器配置文件](backend/src/main/java/com/geo/integrated/config/InterceptorConfig.java)中放行`生成验证码`的接口，使后端在用户未登录时可以生成验证码
+
++ 前端management中补充登录界面刷新验证码的逻辑以及对应的api
+  - 登录界面[Login.vue](management/src/views/Login.vue)
+  ```javascript
+  <script>
+  import { generateAuthCode } from "@/api/login";
+  
+  export default {
+    name: "Login",
+    data() {
+      return {
+        loginForm: {
+          username: "admin",
+          password: "111111",
+          authCode: "",
+          uniqueLoginId: "",
+        },
+        sysAuthCode: "",
+      };
+    },
+    created() {
+      this.getAuthCode()
+    },
+    methods: {
+      getAuthCode() {
+        generateAuthCode().then((res) => {
+          this.sysAuthCode = res.data.sysAuthCode;
+          this.loginForm.uniqueLoginId = res.data.uniqueLoginId
+        });
+      },
+    },
+  };
+  </script>
+  ```
+  - api
+  ```javascript
+  import request from "@/utils/request";
+  
+  export function generateAuthCode() {
+    return request({
+      url: "/system/user/generateAuthCode",
+      method: "GET",
+    });
+  }
+  ```
 
 ### 6.4.整合七牛云对象存储
 + 添加项目依赖[pom.xml](./backend/pom.xml)

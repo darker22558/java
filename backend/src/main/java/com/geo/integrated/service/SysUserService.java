@@ -24,19 +24,18 @@ public interface SysUserService extends IService<SysUser> {
     /**
      * 生成验证码
      *
-     * @param username 用户名
      * @return 验证码
      */
-    Result generateAuthCode(String username);
+    Result generateAuthCode();
 
     /**
      * 对输入的验证码进行校验
      *
-     * @param username 用户名
-     * @param authCode 验证码
+     * @param uniqueLoginId 唯一登录标识
+     * @param authCode      验证码
      * @return 验证码的校验结果
      */
-    boolean verifyAuthCode(String username, String authCode);
+    boolean verifyAuthCode(String uniqueLoginId, String authCode);
 
     /**
      * 生成token

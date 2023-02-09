@@ -22,6 +22,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -41,10 +43,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private JwtTokenUtil jwtTokenUtil;
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Value("${redis.key.prefix.authCode}")
-    private String redisKeyPrefixAuthCode;
-
     @Value("${redis.key.expire.authCode}")
     private Long authCodeExpireSeconds;
 
@@ -78,22 +76,29 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     /**
      * 生成验证码
      *
-     * @param username 用户名
      * @return 验证码
      */
     @Override
-    public Result generateAuthCode(String username) {
-        StringBuilder sb = new StringBuilder();
+    public Result generateAuthCode() {
+        StringBuilder sysAuthCode = new StringBuilder();
         Random random = new Random();
         int len = 6;
         for (int i = 0; i < len; i++) {
-            sb.append(random.nextInt(10));
+            sysAuthCode.append(random.nextInt(10));
         }
+        // 生成当前时刻时间戳
+        String timeStamp = String.valueOf(System.currentTimeMillis());
         try {
-            // 验证码绑定用户名并存储到redis
-            redisService.set(redisKeyPrefixAuthCode + username, sb.toString());
-            redisService.expire(redisKeyPrefixAuthCode + username, authCodeExpireSeconds);
-            return Result.success("生成验证码成功", sb.toString());
+            // 时间戳绑定验证码然后通过md5转换再存储到redis
+            String uniqueLoginId = SecureUtil.md5(timeStamp + sysAuthCode);
+            log.info("Authorization unique key ========== {}", uniqueLoginId);
+            redisService.set(uniqueLoginId, sysAuthCode.toString());
+            redisService.expire(uniqueLoginId, authCodeExpireSeconds);
+
+            Map<String, String> data = new LinkedHashMap<>();
+            data.put("sysAuthCode", sysAuthCode.toString());
+            data.put("uniqueLoginId", uniqueLoginId);
+            return Result.success("生成验证码成功", data);
         } catch (Exception e) {
             return Result.fail("生成验证码失败");
         }
@@ -102,16 +107,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     /**
      * 对输入的验证码进行校验
      *
-     * @param username 用户名
-     * @param authCode 验证码
+     * @param uniqueLoginId 唯一登录标识
+     * @param authCode      验证码
      * @return 验证码的校验结果
      */
     @Override
-    public boolean verifyAuthCode(String username, String authCode) {
+    public boolean verifyAuthCode(String uniqueLoginId, String authCode) {
         if (StrUtil.isEmpty(authCode)) {
             return false;
         }
-        String realAuthCode = redisService.get(redisKeyPrefixAuthCode + username);
+        String realAuthCode = redisService.get(uniqueLoginId);
         boolean result = authCode.equals(realAuthCode);
         if (result) {
             return true;

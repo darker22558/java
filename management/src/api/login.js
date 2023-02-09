@@ -15,18 +15,10 @@ export function logout() {
   });
 }
 
-export function generateAuthCode(username) {
+export function generateAuthCode() {
   return request({
     url: "/system/user/generateAuthCode",
     method: "GET",
-    params: { username },
   });
 }
 
-export function verifyAuthCode(verifyForm) {
-  return request({
-    url: "/system/user/verifyAuthCode",
-    method: "GET",
-    params: { ...verifyForm },
-  });
-}

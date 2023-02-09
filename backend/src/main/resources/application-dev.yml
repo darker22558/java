@@ -24,8 +24,6 @@ spring:
 # 自定义redis key
 redis:
   key:
-    prefix:
-      authCode: "portal:authCode:"
     expire:
       authCode: 120 # 验证码超期时间
 
