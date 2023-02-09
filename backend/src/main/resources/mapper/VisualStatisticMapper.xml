@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geo.integrated.dao.VisualStatisticMapper">
+    <select id="getProjectTypeList" resultType="com.geo.integrated.model.vo.ProjectStatistic">
+        SELECT t_a.type as name, t_b.id as type_id, COUNT(t_b.id) as value
+        from ach_project t_a LEFT JOIN ach_project_type t_b
+        ON t_a.type = t_b.type_name
+        group by t_b.type_name
+    </select>
+    <select id="getTotalPageView" resultType="java.lang.Integer">
+        SELECT count(*) FROM visit_log
+    </select>
+    <select id="getTodayPageView" resultType="java.lang.Integer">
+        SELECT count(*) FROM visit_log WHERE DATE(create_time)=curdate()
+    </select>
+    <select id="getTotalUniqueVisitor" resultType="java.lang.Integer">
+        SELECT count(DISTINCT ip, to_days(create_time)) FROM visit_log
+    </select>
+    <select id="getTodayUniqueVisitor" resultType="java.lang.Integer">
+        SELECT count(DISTINCT ip) FROM visit_log where to_days(create_time) = to_days(now())
+    </select>
+    <select id="getHonorCount" resultType="java.lang.Integer">
+        SELECT count(*) FROM ach_honor
+    </select>
+    <select id="getProjectCount" resultType="java.lang.Integer">
+        SELECT count(*) FROM ach_project
+    </select>
+    <select id="getPaperPublishedCount" resultType="java.lang.Integer">
+        SELECT count(*) FROM ach_paper
+    </select>
+    <select id="getPatentCount" resultType="java.lang.Integer">
+        SELECT count(*) FROM ach_patent
+    </select>
+    <select id="getProjectList" resultType="com.geo.integrated.entity.AchievementProject">
+        SELECT * FROM ach_project
+    </select>
+</mapper>

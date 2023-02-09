@@ -718,6 +718,51 @@ export default service;
 ### 5.3.科研成果相关（achievement）
 + 与`5.1.数据相关（data）`中配置步骤类似
 
+### 5.4.可视化相关（visualization）
+
+#### 5.4.1.整合ECharts展示网站的各类统计信息
+
++ 下载
+```bash
+npm install echarts --save
+```
+
++ 在组件中引入的方式
+```javascript
+import * as echarts from 'echarts';
+```
+
+#### 5.4.2.前端新增组件，后端新增对应的服务等
++ 前端参考ECharts的官方手册渲染组件
+  - 新增组件[Statistic.vue](management/src/views/visualization/Statistic.vue)
+  - 新增api[statistic.js](management/src/api/visualization/statistic.js)
+  - 添加路由[router/index.js](management/src/router/index.js)
+    ```javascript
+    const routes = [
+      {
+        path: "/visualization",
+        name: "可视化",
+        component: Container,
+        meta: { title: "可视化", icon: "el-icon-data-analysis" },
+        hidden: false,
+        children: [
+          {
+            path: "statistic",
+            name: "网站数据",
+            meta: { title: "网站数据统计", icon: "el-icon-data-analysis" },
+            component: Statistic,
+          },
+        ],
+      },
+    ];
+    ```
++ 后端
+  - 项目分类[VO](backend/src/main/java/com/geo/integrated/model/vo/ProjectStatistic.java)
+  - [Controller](backend/src/main/java/com/geo/integrated/controller/management/VisualStatisticController.java)
+  - [VisualStatisticService.java](backend/src/main/java/com/geo/integrated/service/VisualStatisticService.java)
+  - [VisualStatisticServiceImpl.java](backend/src/main/java/com/geo/integrated/service/impl/VisualStatisticServiceImpl.java)
+  - [VisualStatisticMapper.java](backend/src/main/java/com/geo/integrated/dao/VisualStatisticMapper.java)
+  - [VisualStatisticMapper.xml](backend/src/main/resources/mapper/VisualStatisticMapper.xml)
 
 ## 6.后端整合
 ### 6.1.整合SwaggerUI
