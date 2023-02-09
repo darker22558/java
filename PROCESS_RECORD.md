@@ -166,6 +166,7 @@ spring:
 + 自定义服务异常[ServiceException.java](backend/src/main/java/com/geo/integrated/exception/ServiceException.java)，继承自运行时异常RuntimeException
 + 添加全局异常处理[GlobalExceptionHandler.java](backend/src/main/java/com/geo/integrated/exception/GlobalExceptionHandler.java)
 
+
 ## 2.前端基本配置
 
 ### 2.1.通用配置(以后台管理系统为例)
@@ -371,6 +372,7 @@ export default service;
 
 #### 2.3.2.自定义配置，见[vue.config.js](./front/vue.config.js)和[settings.js](front/src/settings.js)
 
+
 ## 3.management的登录、退出功能
 > 通过整合JWT实现后台用户的登录和授权功能
 > JWT实现认证和授权的原理:
@@ -554,11 +556,13 @@ export default service;
   import "@/permission";
   ```
 
+
 ## 4.设计数据库表并添加对应的后端实体类
 + 数据库导入问题，navicate15导入csv报错以下，把编码选为`936 (ANSI/OEM - Simplified Chinese GBK)`即可
   ```sql
   [ERR] 1366 - Incorrect string value: '\xD6\xD0\xB9\xFA\xBB\xB4...' for colum
   ```
+
 
 ## 5.初步完善management相关的界面和功能
 ### 5.1.数据相关（data）
@@ -713,6 +717,7 @@ export default service;
 
 ### 5.3.科研成果相关（achievement）
 + 与`5.1.数据相关（data）`中配置步骤类似
+
 
 ## 6.后端整合
 ### 6.1.整合SwaggerUI
@@ -936,3 +941,63 @@ qiniu:
 ```
 
 + 添加工具类[QiniuOssUtils.java](backend/src/main/java/com/geo/integrated/utils/QiniuOssUtils.java)
+
+### 6.5.登录功能补充，整合SpringSecurity+JWT实现认证
+
++ 添加项目依赖[pom.xml](./backend/pom.xml)，并注释掉之前的jwt依赖
+```xml
+    <dependencies>
+        <!--SpringSecurity依赖配置-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <!--JWT(Json Web Token)登录支持-->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.0</version>
+        </dependency>
+        <!-- JWT -->
+        <!--<dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>3.10.3</version>
+        </dependency>-->
+    </dependencies>
+```
+
++ 修改配置文件[application.yml](backend/src/main/resources/application.yml)
+```yaml
+spring:
+  main:
+    allow-circular-references: true # 解决循环注入的报错
+
+# 自定义jwt key
+jwt:
+  tokenHeader: Authorization #JWT存储的请求头
+  secret: mySecret #JWT加解密使用的密钥
+  expiration: 604800 #JWT的超期限时间(60*60*24)
+  tokenHead: Geo  #JWT负载中拿到开头
+```
+
++ 添加[JWT token](backend/src/main/java/com/geo/integrated/utils/JwtTokenUtil.java)的工具类
+
++ 添加[SpringSecurity](backend/src/main/java/com/geo/integrated/config/SecurityConfig.java)的配置类
+
++ 添加[RestfulAccessDeniedHandler](backend/src/main/java/com/geo/integrated/component/RestfulAccessDeniedHandler.java)
+
++ 添加[RestAuthenticationEntryPoint](backend/src/main/java/com/geo/integrated/component/RestAuthenticationEntryPoint.java)
+
++ 添加[JwtAuthenticationTokenFilter](backend/src/main/java/com/geo/integrated/component/JwtAuthenticationTokenFilter.java)
+
++ 添加[SysUserDetails](backend/src/main/java/com/geo/integrated/model/dto/SysUserDetails.java)
+
++ 修改登录流程
+  - [Controller](backend/src/main/java/com/geo/integrated/controller/management/SysUserController.java)
+  - [Service](backend/src/main/java/com/geo/integrated/service/SysUserService.java)
+  - [ServiceImpl](backend/src/main/java/com/geo/integrated/service/impl/SysUserServiceImpl.java)
+
++ 管理系统添加与后端相同的tokenHead字段
+  - [request.js](management/src/utils/request.js)
+  - [settings.js](management/src/settings.js)

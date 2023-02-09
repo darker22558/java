@@ -5,12 +5,20 @@ import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.geo.integrated.common.Result;
 import com.geo.integrated.dao.SysUserMapper;
-import com.geo.integrated.model.dto.LoginDTO;
 import com.geo.integrated.entity.SysUser;
 import com.geo.integrated.service.RedisService;
 import com.geo.integrated.service.SysUserService;
+import com.geo.integrated.utils.JwtTokenUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
@@ -22,9 +30,17 @@ import java.util.Random;
  * @description: 用户相关功能服务层实现
  */
 @Service
+@Slf4j
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
     @Autowired
     private RedisService redisService;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Value("${redis.key.prefix.authCode}")
     private String redisKeyPrefixAuthCode;
@@ -42,16 +58,20 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      */
     @Override
     public SysUser login(String username, String password) {
-        QueryWrapper<SysUser> wrapper = new QueryWrapper<SysUser>();
-        wrapper.eq("username", username);
-        // 密码通过md5加密后再判断
-        String md5Password = SecureUtil.md5(password);
-        wrapper.eq("password", md5Password);
-        SysUser one = getOne(wrapper);
-        if (one != null) {
-            return one;
-        } else {
-            return null;
+        try {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            if (userDetails == null) {
+                return null;
+            }
+            if (!passwordEncoder.matches(password, userDetails.getPassword())) {
+                throw new BadCredentialsException("密码不正确");
+            }
+            QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
+            wrapper.eq("username", username);
+            SysUser user = getOne(wrapper);
+            return user;
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -87,16 +107,40 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      * @return 验证码的校验结果
      */
     @Override
-    public Result verifyAuthCode(String username, String authCode) {
+    public boolean verifyAuthCode(String username, String authCode) {
         if (StrUtil.isEmpty(authCode)) {
-            return Result.fail("请输入验证码");
+            return false;
         }
         String realAuthCode = redisService.get(redisKeyPrefixAuthCode + username);
         boolean result = authCode.equals(realAuthCode);
         if (result) {
-            return Result.success("验证码校验成功");
+            return true;
         } else {
-            return Result.fail("验证码校验失败");
+            return false;
         }
+    }
+
+    /**
+     * 生成token
+     *
+     * @param username 用户名
+     * @param password 密码
+     * @return token
+     */
+    @Override
+    public String generateToken(String username, String password, SysUser user) {
+        String token = null;
+        try {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            if (!passwordEncoder.matches(password, userDetails.getPassword())) {
+                throw new BadCredentialsException("密码不正确");
+            }
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            token = jwtTokenUtil.generateToken(userDetails);
+        } catch (AuthenticationException e) {
+            log.warn("登录异常");
+        }
+        return token;
     }
 }

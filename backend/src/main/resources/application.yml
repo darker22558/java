@@ -6,6 +6,8 @@ spring:
       matching-strategy: ANT_PATH_MATCHER
   application:
     name: boot-swagger-starter
+  main:
+    allow-circular-references: true
 
 mybatis-plus:
   mapper-locations: classpath*:mapper/*.xml
@@ -19,3 +21,10 @@ qiniu:
   accessSecretKey: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   bucketName: geo-integrated
   domainName: http://rpppj5gw9.hb-bkt.clouddn.com/
+
+# 自定义jwt key
+jwt:
+  tokenHeader: Authorization #JWT存储的请求头
+  secret: mySecret #JWT加解密使用的密钥
+  expiration: 604800 #JWT的超期限时间(60*60*24)
+  tokenHead: Geo  #JWT负载中拿到开头

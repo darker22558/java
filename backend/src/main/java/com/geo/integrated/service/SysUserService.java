@@ -36,5 +36,15 @@ public interface SysUserService extends IService<SysUser> {
      * @param authCode 验证码
      * @return 验证码的校验结果
      */
-    Result verifyAuthCode(String username, String authCode);
+    boolean verifyAuthCode(String username, String authCode);
+
+    /**
+     * 生成token
+     *
+     * @param username 用户名
+     * @param password 密码
+     * @param user     用户实体
+     * @return token
+     */
+    String generateToken(String username, String password, SysUser user);
 }
