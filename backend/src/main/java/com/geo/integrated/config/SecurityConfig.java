@@ -57,8 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js",
                         "/swagger-resources/**",
                         "/v2/api-docs/**",
-                        "/**/generateAuthCode",
-                        "/**/management/**"
+                        "/**/generateAuthCode"
                 )
                 .permitAll()
                 .antMatchers("/management/system/user/login", "/management/system/user/register", "/management/system/user/logput")// 对登录注册要允许匿名访问

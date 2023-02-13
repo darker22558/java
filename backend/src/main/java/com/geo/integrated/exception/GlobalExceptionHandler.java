@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public Result handler(MethodArgumentNotValidException e) {
-        log.error("实体校验异常：----------------{}", e);
+        log.error("实体校验异常：----------------{}", e.getMessage());
         BindingResult bindingResult = e.getBindingResult();
         ObjectError objectError = bindingResult.getAllErrors().stream().findFirst().get();
         /*return Result.fail(objectError.getDefaultMessage());*/
@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = RuntimeException.class)
     public Result handler(RuntimeException e) {
-        log.error("运行时异常：----------------{}", e);
+        log.error("运行时异常：----------------{}", e.getMessage());
         /*return Result.fail(e.getMessage());*/
         return Result.fail("运行时异常");
     }
