@@ -764,6 +764,7 @@ import * as echarts from 'echarts';
   - [VisualStatisticMapper.java](backend/src/main/java/com/geo/integrated/dao/VisualStatisticMapper.java)
   - [VisualStatisticMapper.xml](backend/src/main/resources/mapper/VisualStatisticMapper.xml)
 
+
 ## 6.后端整合
 ### 6.1.整合SwaggerUI
 
@@ -1097,3 +1098,178 @@ jwt:
 + 管理系统添加与后端相同的tokenHead字段
   - [request.js](management/src/utils/request.js)
   - [settings.js](management/src/settings.js)
+
+### 6.6.整合EasyExcel数据的导入导出（以`文献数据DataPaper信息的导入导出`为例）
+
++ 添加依赖[pom.xml](./backend/pom.xml)
+  ```xml
+      <dependencies>
+          <!--文档工具-->
+          <dependency>
+              <groupId>org.apache.poi</groupId>
+              <artifactId>poi-ooxml</artifactId>
+              <version>4.1.2</version>
+          </dependency>
+      </dependencies>
+  ```
+
++ 前端[组件PaperData.vue](management/src/views/data/PaperData.vue)中新增`下载模板`、`批量导入`、`批量导出`的按钮和接口
+  ```vue
+  <template>
+    <div>
+      <div style="margin-left: 10px; display: flex; justify-content: space-between ">
+        <el-button type="primary" @click="downloadTemplate()">下载模板</el-button>
+        <el-button type="primary" @click="exportBatch()">批量导出</el-button>
+        <el-upload action :http-request="importBatch" :on-exceed="handleExceed" :before-upload="beforeExcelUpload" :show-file-list="false">
+          <el-button type="primary">批量导入</el-button>
+        </el-upload>
+      </div>
+    </div>
+  </template>
+  ```
+  
+  ```javascript
+  <script>
+  import {
+    importDataBatch,
+  } from "@/api/data/paper";
+  import axios from "axios";
+  import {tokenHead} from "@/settings";
+  
+  export default {
+    name: "PaperData",
+    data() {
+      return {
+        queryInfo: {
+          title: "",
+          issn: "",
+          pageNum: 1,
+          pageSize: 10,
+        },
+        // 允许上传的文献文件类型
+        ExcelFileType: ["xlsx", "xls"],
+        // 运行上传文件大小，单位 M
+        ExcelFileSize: 5,
+      };
+    },
+    created() {
+      this.loadPaperList();
+    },
+    methods: {
+      // 查询文献列表
+      loadPaperList() {
+        this.loading = true;
+        getPaperList(this.queryInfo).then((res) => {
+          this.paperList = res.data.paperList;
+          this.total = res.data.total;
+          this.loading = false;
+        });
+      },
+      // 下载模板
+      downloadTemplate() {
+        const url = `http://localhost:9090/management/data/paper/exportDataTemplate`;
+        const token = localStorage.getItem("token");
+        const filename = "文献数据模板.xlsx";
+        axios({
+          method: "GET",
+          url: url,
+          responseType: "blob",
+          headers: {
+            Authorization: `${tokenHead}${token}`,
+          },
+        }).then((res) => {
+          const blob = new Blob([res.data]);
+          const url = window.URL.createObjectURL(blob);
+          const aLink = document.createElement("a");
+          aLink.style.display = "none";
+          aLink.href = url;
+          aLink.setAttribute("download", decodeURI(filename));
+          document.body.appendChild(aLink);
+          aLink.click();
+          document.body.removeChild(aLink);
+          window.URL.revokeObjectURL(url);
+        });
+      },
+      // 超出文件个数的回调
+      handleExceed(files) {
+        this.$message.warning(`超出上传数量限制！最多上传 1 个表格文件，选择了 ${files.length} 个文件`)
+      },
+      // 上传Excel文件之前
+      beforeExcelUpload(file) {
+        if (file.type !== "" || file.type != null || file.type !== undefined) {
+          // 计算文件的大小
+          const fileSize = file.size / 1024 / 1024
+          // 这里做文件大小限制
+          if (fileSize > this.ExcelFileSize) {
+            this.$message("上传文件大小不能超过 5MB!");
+            return false;
+          }
+          // 截取文件的后缀，判断文件类型
+          const suffix = file.name.replace(/.+\./, "").toLowerCase();
+          // 如果文件类型不在允许上传的范围内
+          if (this.ExcelFileType.includes(suffix)) {
+            return true;
+          } else {
+            this.$message.error("批量上传需要使用excel文件!");
+            return false;
+          }
+        }
+      },
+      // 上传文件的事件
+      importBatch(item) {
+        this.$message("数据上传中······");
+        // 上传文件的需要formdata类型
+        const FormDatas = new FormData();
+        FormDatas.append("file", item.file);
+        importDataBatch(FormDatas).then((res) => {
+          this.$message.success(res.message);
+          // 成功过后刷新列表，清空上传文件列表
+          this.handleSuccess();
+        });
+      },
+      // 上传成功后的回调
+      handleSuccess() {
+        this.loadPaperList()
+      },
+      // 批量导出数据
+      exportBatch() {
+        const title = this.queryInfo.title;
+        const issn = this.queryInfo.issn;
+        const url = `http://localhost:9090/management/data/paper/exportDataBatch?title=${title}&issn=${issn}`;
+        const token = localStorage.getItem("token");
+        const filename = "文献数据信息.xlsx";
+        axios({
+          method: "GET",
+          url: url,
+          responseType: "blob",
+          // 这里在写一些关于请求的配置，比如携带cookie等
+          headers: {
+            Authorization: `${tokenHead}${token}`,
+          },
+        }).then((res) => {
+          const blob = new Blob([res.data]);
+          const url = window.URL.createObjectURL(blob);
+          const aLink = document.createElement("a");
+          aLink.style.display = "none";
+          aLink.href = url;
+          aLink.setAttribute("download", decodeURI(filename));
+          document.body.appendChild(aLink);
+          aLink.click();
+          document.body.removeChild(aLink);
+          window.URL.revokeObjectURL(url);
+        });
+      },
+    },
+  };
+  </script>
+  
+  ```
+
++ 后端封装借助EasyExcel实现excel表格处理（导入和导出）的工具类，参考EasyExcel的[web读写案例代码](https://github.com/alibaba/easyexcel/blob/master/easyexcel-test/src/test/java/com/alibaba/easyexcel/test/demo/web/WebTest.java)
+  - exportDataBatch 借助EasyExcel实现数据导出，可以导出模板文件，或者导出查询后得到的数据列表
+  - importDataBatch 借助EasyExcel实现数据导入
+
++ 后端添加对应的接口和服务[DataPaperController.java](backend/src/main/java/com/geo/integrated/controller/management/DataPaperController.java)
+  - exportDataTemplate 导出模板
+  - importDataBatch 批量导入数据
+  - exportDataBatch 批量导出数据

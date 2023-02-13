@@ -1,20 +1,20 @@
 <template>
   <div>
-    <div style="padding: 10px">
-      <el-input placeholder="请输入标题" v-model="queryInfo.title" clearable style="width: 220px" suffix-icon="el-icon-document-remove"></el-input>
-      <el-input placeholder="请输入标准国际刊号（issn）" v-model="queryInfo.issn" clearable style="width: 220px; margin-left: 10px" suffix-icon="el-icon-document-remove"></el-input>
-      <el-button @click.native.prevent="loadPaperList" style="margin-left: 10px" type="primary">查询</el-button>
+    <div style="margin-left: 10px; display: flex; justify-content: space-between ">
+      <el-input placeholder="请输入标题(模糊)" v-model="queryInfo.title" clearable style="width: 160px"></el-input>
+      <el-input placeholder="请输入issn" v-model="queryInfo.issn" clearable style="width: 120px; margin-left: 5px"></el-input>
+      <el-button @click.native.prevent="loadPaperList" style="margin-left: 5px" type="primary">查询</el-button>
       <el-button type="warning" @click="reset">重置</el-button>
-      <el-button type="primary" @click="addPaper" class="el-icon-circle-plus-outline">新增</el-button>
-      <el-button type="primary" @click="downloadTemplate"><i class="el-icon-bottom"></i> 下载模板（.xlsx）</el-button>
+      <el-button type="primary" @click="addPaper">新增</el-button>
+      <el-button type="danger" @click="deletePaperBatch">批量删除</el-button>
+      <el-button type="primary" @click="downloadTemplate">下载模板</el-button>
+      <el-button type="primary" @click="exportBatch">批量导出</el-button>
       <el-upload action :http-request="importBatch" :on-exceed="handleExceed" :before-upload="beforeExcelUpload" :show-file-list="false">
-        <el-button type="primary"><i class="el-icon-top"></i> 批量导入（.xlsx）</el-button>
+        <el-button type="primary">批量导入</el-button>
       </el-upload>
-      <el-button type="primary" @click="exportBatch"><i class="el-icon-bottom"></i> 批量导出（.xlsx）</el-button>
-      <el-button type="danger" @click="deletePaperBatch" class="el-icon-remove-outline">批量删除</el-button>
     </div>
     <div style="margin: 10px; width: 99%">
-      <el-table :data="paperList" border stripe v-loading="loading" :height="400" @selection-change="handleSelectionChange">
+      <el-table id="papers" :data="paperList" border stripe v-loading="loading" :height="400" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="40"> </el-table-column>
 <!--        <el-table-column label="序号" prop="id" width="50"> </el-table-column>-->
         <el-table-column label="eid" prop="eid" width="160"> </el-table-column>
@@ -24,7 +24,7 @@
             <el-date-picker disabled v-model="scope.row.publicDate" size="small"></el-date-picker>
           </template>
         </el-table-column>
-        <el-table-column label="标准国际刊号" prop="issn" width="110"></el-table-column>
+        <el-table-column label="issn" prop="issn" width="100"></el-table-column>
         <el-table-column label="备注" prop="remark" width="50" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column label="操作" fixed="right">
           <template v-slot="scope">
@@ -78,8 +78,12 @@ import {
   getPaperList,
   deletePaperById,
   deletePaperBatchByIds,
-  saveOrUpdate, uploadDataBatch,
+  saveOrUpdate,
+  importDataBatch,
+  // exportDataBatch,
 } from "@/api/data/paper";
+import axios from "axios";
+import {tokenHead} from "@/settings";
 
 export default {
   name: "PaperData",
@@ -210,7 +214,28 @@ export default {
     },
     // 下载模板
     downloadTemplate() {
-
+      const url = `http://localhost:9090/management/data/paper/exportDataTemplate`;
+      const token = localStorage.getItem("token");
+      const filename = "文献数据模板.xlsx";
+      axios({
+        method: "GET",
+        url: url,
+        responseType: "blob",
+        headers: {
+          Authorization: `${tokenHead}${token}`,
+        },
+      }).then((res) => {
+        const blob = new Blob([res.data]);
+        const url = window.URL.createObjectURL(blob);
+        const aLink = document.createElement("a");
+        aLink.style.display = "none";
+        aLink.href = url;
+        aLink.setAttribute("download", decodeURI(filename));
+        document.body.appendChild(aLink);
+        aLink.click();
+        document.body.removeChild(aLink);
+        window.URL.revokeObjectURL(url);
+      });
     },
     // 超出文件个数的回调
     handleExceed(files) {
@@ -241,10 +266,10 @@ export default {
     importBatch(item) {
       this.$message("数据上传中······");
       // 上传文件的需要formdata类型
-      const FormDatas = new FormData()
+      const FormDatas = new FormData();
       FormDatas.append("file", item.file);
-      uploadDataBatch(FormDatas).then((res) => {
-        this.$message.success(res.message)
+      importDataBatch(FormDatas).then((res) => {
+        this.$message.success(res.message);
         // 成功过后刷新列表，清空上传文件列表
         this.handleSuccess();
       });
@@ -255,7 +280,48 @@ export default {
     },
     // 批量导出数据
     exportBatch() {
-      // window.open('http://localhost:8080/admin/blog/export')
+      /*const query = {
+        title: this.queryInfo.title,
+        issn: this.queryInfo.issn,
+      };
+      const filename = "文献数据信息.xlsx";
+      exportDataBatch(query).then((res) => {
+        const blob = new Blob([res.data]);
+        const url = window.URL.createObjectURL(blob);
+        const aLink = document.createElement("a");
+        aLink.style.display = "none";
+        aLink.href = url;
+        aLink.setAttribute("download", decodeURI(filename));
+        document.body.appendChild(aLink);
+        aLink.click();
+        document.body.removeChild(aLink);
+        window.URL.revokeObjectURL(url);
+      });*/
+      const title = this.queryInfo.title;
+      const issn = this.queryInfo.issn;
+      const url = `http://localhost:9090/management/data/paper/exportDataBatch?title=${title}&issn=${issn}`;
+      const token = localStorage.getItem("token");
+      const filename = "文献数据信息.xlsx";
+      axios({
+        method: "GET",
+        url: url,
+        responseType: "blob",
+        // 这里在写一些关于请求的配置，比如携带cookie等
+        headers: {
+          Authorization: `${tokenHead}${token}`,
+        },
+      }).then((res) => {
+        const blob = new Blob([res.data]);
+        const url = window.URL.createObjectURL(blob);
+        const aLink = document.createElement("a");
+        aLink.style.display = "none";
+        aLink.href = url;
+        aLink.setAttribute("download", decodeURI(filename));
+        document.body.appendChild(aLink);
+        aLink.click();
+        document.body.removeChild(aLink);
+        window.URL.revokeObjectURL(url);
+      });
     },
   },
 };

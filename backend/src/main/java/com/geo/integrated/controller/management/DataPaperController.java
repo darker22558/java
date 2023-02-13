@@ -1,8 +1,6 @@
 package com.geo.integrated.controller.management;
 
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.poi.excel.ExcelReader;
-import cn.hutool.poi.excel.ExcelUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -11,14 +9,15 @@ import com.geo.integrated.common.Constant;
 import com.geo.integrated.common.Result;
 import com.geo.integrated.entity.DataPaper;
 import com.geo.integrated.service.DataPaperService;
+import com.geo.integrated.utils.EasyExcelUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.InputStream;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +28,7 @@ import java.util.Map;
  * @description: 文献信息数据管理控制层
  */
 @Api(tags = "DataPaperController")
+@Slf4j
 @RestController
 @RequestMapping("/management/data/paper")
 public class DataPaperController {
@@ -126,47 +126,68 @@ public class DataPaperController {
     }
 
     /**
-     * 下载模板
+     * 导出文献数据模板
      *
-     * @return 批量导入时可用的excel模板文件
+     * @param response 响应信息
+     * @return 文献数据模板
      */
-    @ApiOperation("下载模板")
-    @OperationLogger("下载模板")
-    @GetMapping("/downloadTemplate")
-    public Result downloadTemplate() {
-        return Result.success("");
+    @ApiOperation("导出文献数据模板")
+    @OperationLogger("导出文献数据模板")
+    @GetMapping("/exportDataTemplate")
+    public void exportDataTemplate(HttpServletResponse response) {
+        String fileName = "文献数据模板";
+        String sheetName = "sheet1";
+        EasyExcelUtils.exportDataBatch(response, fileName, sheetName, null, DataPaper.class);
     }
 
     /**
-     * 批量导入文献数据
+     * 批量导入文献数据信息
      *
      * @param file 携带多条文献信息的excel文件
-     * @return 批量导入结果，若中途导入失败，则报错并返回
-     * @throws IOException
+     * @return 导入结果
      */
     @ApiOperation("批量导入文献数据")
     @OperationLogger("批量导入文献数据")
-    @PostMapping("/uploadDataBatch")
-    public Result uploadDataBatch(@RequestParam MultipartFile file) throws IOException {
-        String originalFilename = file.getOriginalFilename();
-        String type = FileUtil.extName(originalFilename);
+    @PostMapping("/importDataBatch")
+    public Result importDataBatch(@RequestPart(value = "file") MultipartFile file) {
+        String fileName = file.getOriginalFilename();
+        String fileType = FileUtil.extName(fileName);
+        if (Constant.FILE_TYPE_XLSX.equals(fileType) || Constant.FILE_TYPE_XLS.equals(fileType)) {
+            List<DataPaper> list = EasyExcelUtils.importDataBatch(file, fileName, DataPaper.class);
+            log.info("Data to import === {}", list);
 
-        if (Constant.FILE_TYPE_XLSX.equals(type) || Constant.FILE_TYPE_XLS.equals(type)) {
-            // 逐行读取记录，每行是一个博客，列名对应数据库字段名
-            InputStream inputStream = file.getInputStream();
-            ExcelReader reader = ExcelUtil.getReader(inputStream);
-            // 通过javabean的方式读取Excel内的对象，但是要求表头必须是英文，跟javabean的属性要对应起来
-            List<DataPaper> list = reader.readAll(DataPaper.class);
-            for (int i = 0; i < list.size(); i++) {
-                try {
-                    dataPaperService.save(list.get(i));
-                } catch (Exception e) {
-                    return Result.fail("批量导入失败，停止继续导入，失败行数为：" + i, e.getMessage());
-                }
+            boolean upload = dataPaperService.saveBatch(list);
+            if (upload) {
+                return Result.success("easy excel 导入成功", list);
+            } else {
+                return Result.fail("easy excel 导入失败", list);
             }
         } else {
             return Result.fail("文件类型错误，应为.xlsx或.xls文件");
         }
-        return Result.success("文献信息批量导入成功", originalFilename);
+    }
+
+    /**
+     * 批量导出文献数据信息
+     *
+     * @param response 响应信息
+     * @return 文献数据信息列表
+     */
+    @ApiOperation("批量导出文献数据")
+    @OperationLogger("批量导出文献数据")
+    @GetMapping("/exportDataBatch")
+    public void exportDataBatch(@RequestParam(value = "title", defaultValue = "") String title,
+                                @RequestParam(value = "issn", defaultValue = "") String issn,
+                                HttpServletResponse response) {
+        // 设置查询条件然后获取数据
+        QueryWrapper<DataPaper> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("title", title);
+        queryWrapper.like("issn", issn);
+        List<DataPaper> list = dataPaperService.list(queryWrapper);
+        log.info("Data size to export === {}", list.size());
+
+        String fileName = "文献数据信息";
+        String sheetName = "sheet1";
+        EasyExcelUtils.exportDataBatch(response, fileName, sheetName, list, DataPaper.class);
     }
 }

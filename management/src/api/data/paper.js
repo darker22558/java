@@ -26,16 +26,16 @@ export function deletePaperBatchByIds(ids) {
 
 export function saveOrUpdate(form) {
   return request({
-    url: "/paper/saveOrUpdate",
+    url: "/data/paper/saveOrUpdate",
     method: "POST",
     data: form,
   });
 }
 
-export function uploadDataBatch(file) {
+export function importDataBatch(file) {
   return request({
-    url: "/blog/uploadDataBatch",
-    method: "post",
+    url: "/data/paper/importDataBatch",
+    method: "POST",
     header: { "Content-Type": "multipart/form-data" },
     data: file,
   });
