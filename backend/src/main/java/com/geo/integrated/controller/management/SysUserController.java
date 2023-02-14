@@ -50,12 +50,14 @@ public class SysUserController {
     public Result getUserList(@RequestParam(value = "username", defaultValue = "") String username,
                               @RequestParam(value = "nickname", defaultValue = "") String nickname,
                               @RequestParam(value = "email", defaultValue = "") String email,
+                              @RequestParam(value = "role", defaultValue = "") String role,
                               @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                               @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         queryWrapper.like("username", username);
         queryWrapper.like("nickname", nickname);
         queryWrapper.like("email", email);
+        queryWrapper.like("role", role);
         queryWrapper.orderByDesc("create_time");
         // 新建一个分页规则，pageNum代表当前页码，pageSize代表每页数量
         Page<SysUser> page = new Page<>(pageNum, pageSize);

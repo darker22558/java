@@ -4,6 +4,11 @@
       <el-input placeholder="请输入用户名" v-model="queryInfo.username" clearable style="width: 180px" suffix-icon="el-icon-document-remove"></el-input>
       <el-input placeholder="请输入昵称" v-model="queryInfo.nickname" clearable style="width: 180px; margin-left: 10px" suffix-icon="el-icon-document-remove"></el-input>
       <el-input placeholder="请输入邮箱" v-model="queryInfo.email" clearable style="width: 180px; margin-left: 10px" suffix-icon="el-icon-document-remove"></el-input>
+      <el-select v-model="queryInfo.role" clearable placeholder="请选择角色" class="select">
+        <el-option v-for="item in roleList" :key="item.id" :label="item.name" :value="item.flag">
+          {{ item.name }}
+        </el-option>
+      </el-select>
       <el-button @click.native.prevent="loadUserList" style="margin-left: 10px" type="primary">查询</el-button>
       <el-button type="warning" @click="reset">重置</el-button>
       <el-button type="primary" @click="addUser">新增</el-button>
@@ -15,7 +20,7 @@
         <!--        <el-table-column label="序号" prop="id" width="50"></el-table-column>-->
         <el-table-column label="用户名" prop="username" width="80"></el-table-column>
         <el-table-column label="昵称" prop="nickname" width="80"></el-table-column>
-        <el-table-column label="头像地址" prop="avatar" width="120"></el-table-column>
+        <el-table-column label="头像地址" prop="avatar" width="120" show-overflow-tooltip></el-table-column>
         <el-table-column label="邮箱" prop="email" width="140"></el-table-column>
         <el-table-column label="创建时间" width="150">
           <template v-slot="scope">
@@ -92,7 +97,9 @@ import {
   saveUser,
   updateUser
 } from "@/api/system/user";
-
+import {
+  getRoleList,
+} from "@/api/system/role";
 export default {
   name: "User",
   data() {
@@ -101,12 +108,14 @@ export default {
         username: "",
         nickname: "",
         email: "",
+        role: "",
         pageNum: 1,
         pageSize: 10,
       },
       userForm: {},
       total: 0,
       userList: [],
+      roleList: [],
       loading: false,
       // 复选框选中的值列表
       selected: [],
@@ -118,6 +127,7 @@ export default {
     };
   },
   created() {
+    this.loadRoleList();
     this.loadUserList();
   },
   methods: {
@@ -137,6 +147,17 @@ export default {
     handleSelectionChange(selected) {
       this.selected = selected;
       // console.log('选中的值', selected.map((item) => item.id))
+    },
+    // 查询角色列表
+    loadRoleList() {
+      const queryInfo = {
+        name: "",
+        description: "",
+        flag: "",
+      }
+      getRoleList(queryInfo).then((res) => {
+        this.roleList = res.data.roleList;
+      });
     },
     // 查询用户列表
     loadUserList() {

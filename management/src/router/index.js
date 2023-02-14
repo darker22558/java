@@ -13,6 +13,7 @@ import Paper from "@/views/achievement/Paper.vue";
 import ExceptionLog from "@/views/log/ExceptionLog.vue";
 import Statistic from "@/views/visualization/Statistic.vue";
 import User from "@/views/system/User.vue";
+import Role from "@/views/system/Role.vue";
 
 Vue.use(VueRouter);
 
@@ -172,6 +173,12 @@ const routes = [
     meta: { title: "系统管理", icon: "el-icon-setting" },
     hidden: false,
     children: [
+      {
+        path: "role",
+        name: "角色",
+        meta: { title: "系统角色", icon: "el-icon-setting" },
+        component: Role,
+      },
       {
         path: "user",
         name: "用户",

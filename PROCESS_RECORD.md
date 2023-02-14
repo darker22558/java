@@ -765,7 +765,10 @@ import * as echarts from 'echarts';
   - [VisualStatisticMapper.xml](backend/src/main/resources/mapper/VisualStatisticMapper.xml)
 
 ### 5.5.系统相关（system）
-+ 新增[用户管理](management/src/views/system/User.vue)界面，与`5.1.数据相关（data）`中配置步骤类似
+
++ 新增角色管理[界面](management/src/views/system/User.vue)与[接口](management/src/api/system/role.js)，与`5.1.数据相关（data）`中配置步骤类似
+
++ 新增用户管理[管理界面](management/src/views/system/Role.vue)界面与[接口](management/src/api/system/role.js)，与`5.1.数据相关（data）`中配置步骤类似
 
 
 ## 6.后端整合
