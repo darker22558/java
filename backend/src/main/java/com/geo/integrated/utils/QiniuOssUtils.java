@@ -55,7 +55,7 @@ public class QiniuOssUtils {
      * @return Map<String, String>
      */
     public Map<String, String> uploadImage(MultipartFile multipartFile) {
-        log.info("开始上传到七牛云");
+        log.info("oss工具 === 开始上传到七牛云");
         try {
             // 1.获取文件上传的流
             byte[] fileBytes = multipartFile.getBytes();
@@ -82,7 +82,7 @@ public class QiniuOssUtils {
             uploadManager.put(fileBytes, filename, upToken);
 
             // 6.上传成功返回地址
-            log.info("成功上传到七牛云");
+            log.info("oss工具 === 成功上传到七牛云");
             String imageUrl = domainName + filename;
             Map<String, String> map = new HashMap<>(1);
             map.put("imageUrl", imageUrl);
@@ -101,21 +101,20 @@ public class QiniuOssUtils {
      * @return true:删除成功; false:删除失败
      */
     public boolean delete(String url) {
-        log.info("url : " + url);
+        log.info("待删除的图片链接 === {}", url);
         //创建凭证
         Auth auth = Auth.create(accessKey, accessSecretKey);
         BucketManager bucketManager = new BucketManager(auth, new Configuration(Region.huabei()));
         // 此时pos为全路径，需要将外链域名去掉，七牛云云端删除时只需要提供文件名即可
         // 截取最后一个指定字符串(此处为"/")之后的字符串。 此处fileName="9cb077ef572f49948f0dda60ed850a9d.jpg"
         String fileName = url.split(domainName)[1];
-        log.info("file to delete : " + fileName);
+        log.info("待删除的文件名 === {}", fileName);
         try {
             bucketManager.delete(bucketName, fileName);
             return true;
         } catch (QiniuException e) {
             // 如果遇到异常，说明删除失败
-            log.error(String.valueOf(e.code()));
-            log.error(e.response.toString());
+            log.error("图片删除失败 === 错误码：{}，错误信息：{}", e.code(), e.response);
         }
         return false;
     }

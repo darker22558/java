@@ -66,7 +66,7 @@ public class JwtTokenUtils {
                     .getBody();
             return claims;
         } catch (Exception e) {
-            log.info("JWT格式验证失败 === {}", e.getMessage());
+            log.info("JWT验证失败 === {}", e.getMessage());
             return null;
         }
     }

@@ -21,7 +21,7 @@ public class TestCountTask {
     @Scheduled(cron = "0/10 * * ? * ?")
     public String countTask() {
         String countString = Constant.TASK_STRING + " : " +  count;
-        log.info(countString);
+        log.info("定时任务 === {}", countString);
         count ++;
         return countString;
     }

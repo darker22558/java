@@ -57,7 +57,7 @@ public class IpAddressUtils {
                 try {
                     inet = InetAddress.getLocalHost();
                 } catch (UnknownHostException e) {
-                    log.error("getIpAddress exception:", e);
+                    log.error("获取IP地址异常 === {}", e.getMessage());
                 }
                 ip = inet.getHostAddress();
             }
@@ -93,7 +93,7 @@ public class IpAddressUtils {
      */
     public static String getCityInfo(String ip) {
         if (ip == null || !Util.isIpAddress(ip)) {
-            log.error("Error: Invalid ip address");
+            log.error("错误 === 无效的IP地址");
             return "";
         }
         try {
@@ -105,7 +105,7 @@ public class IpAddressUtils {
                 return ipInfo;
             }
         } catch (Exception e) {
-            log.error("getCityInfo exception:", e);
+            log.error("获取城市信息异常 === {}", e.getMessage());
         }
         return "";
     }

@@ -154,7 +154,7 @@ public class DataPaperController {
         String fileType = FileUtil.extName(fileName);
         if (Constant.FILE_TYPE_XLSX.equals(fileType) || Constant.FILE_TYPE_XLS.equals(fileType)) {
             List<DataPaper> list = EasyExcelUtils.importDataBatch(file, fileName, DataPaper.class);
-            log.info("Data to import === {}", list);
+            log.info("待导入的数据 === {}", list);
 
             boolean upload = dataPaperService.saveBatch(list);
             if (upload) {
@@ -184,7 +184,7 @@ public class DataPaperController {
         queryWrapper.like("title", title);
         queryWrapper.like("issn", issn);
         List<DataPaper> list = dataPaperService.list(queryWrapper);
-        log.info("Data size to export === {}", list.size());
+        log.info("待下载的数据量 === {}条", list.size());
 
         String fileName = "文献数据信息";
         String sheetName = "sheet1";

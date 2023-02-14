@@ -46,7 +46,7 @@ public class SysUserController {
     @ApiOperation("用户登录")
     @PostMapping("/login")
     public Result login(@Validated @RequestBody LoginDTO loginDTO) {
-        log.info("Login info : {}", loginDTO);
+        log.info("Login info === {}", loginDTO);
         String username = loginDTO.getUsername();
         String password = loginDTO.getPassword();
         String authCode = loginDTO.getAuthCode();

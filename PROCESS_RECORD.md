@@ -931,7 +931,7 @@ import * as echarts from 'echarts';
         try {
           // 时间戳绑定验证码然后通过md5转换再存储到redis
           String uniqueLoginId = SecureUtil.md5(timeStamp + sysAuthCode);
-          log.info("Authorization unique key ========== {}", uniqueLoginId);
+          log.info("Authorization unique key === {}", uniqueLoginId);
           redisService.set(uniqueLoginId, sysAuthCode.toString());
           redisService.expire(uniqueLoginId, authCodeExpireSeconds);
     

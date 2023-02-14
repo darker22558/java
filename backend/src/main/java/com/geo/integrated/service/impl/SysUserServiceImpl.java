@@ -66,7 +66,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         try {
             // 时间戳绑定验证码然后通过md5转换再存储到redis
             String uniqueLoginId = SecureUtil.md5(timeStamp + sysAuthCode);
-            log.info("Authorization unique key ========== {}", uniqueLoginId);
+            log.info("授权密钥 === {}", uniqueLoginId);
             redisService.set(uniqueLoginId, sysAuthCode.toString());
             redisService.expire(uniqueLoginId, authCodeExpireSeconds);
 

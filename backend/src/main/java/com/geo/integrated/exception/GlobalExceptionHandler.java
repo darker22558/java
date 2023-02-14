@@ -1,5 +1,7 @@
 package com.geo.integrated.exception;
 
+import com.alibaba.druid.sql.visitor.functions.Concat;
+import com.geo.integrated.common.Constant;
 import com.geo.integrated.common.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,14 +28,14 @@ public class GlobalExceptionHandler {
      * @param e 前端传入的实体不满足@Validate规则触发异常
      * @return 异常信息
      */
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    // @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public Result handler(MethodArgumentNotValidException e) {
-        log.error("实体校验异常：----------------{}", e.getMessage());
+        log.error("实体校验异常 === {}", e.getMessage());
         BindingResult bindingResult = e.getBindingResult();
         ObjectError objectError = bindingResult.getAllErrors().stream().findFirst().get();
         /*return Result.fail(objectError.getDefaultMessage());*/
-        return Result.fail("实体校验异常");
+        return Result.fail(Constant.CODE_BAD_REQUEST, "实体校验异常", null);
     }
 
     /**
@@ -42,12 +44,12 @@ public class GlobalExceptionHandler {
      * @param e 运行时异常
      * @return 异常信息
      */
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    // @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = RuntimeException.class)
     public Result handler(RuntimeException e) {
-        log.error("运行时异常：----------------{}", e.getMessage());
+        log.error("运行时异常 === {}", e.getMessage());
         /*return Result.fail(e.getMessage());*/
-        return Result.fail("运行时异常");
+        return Result.fail(Constant.CODE_SYSTEM_ERROR, e.getMessage(), null);
     }
 
     /**
