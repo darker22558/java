@@ -1,6 +1,6 @@
 <template>
-  <div style="margin: 20px">
-<!--    <el-row :gutter="20" style="margin: 20px">
+  <div style="margin: 2px">
+    <el-row :gutter="10" style="margin: 2px">
       <el-col :span="6">
         <el-card style="color: #409eff">
           <div class="el-icon-s-management">总PV</div>
@@ -33,8 +33,8 @@
           </div>
         </el-card>
       </el-col>
-    </el-row>-->
-    <el-row :gutter="20" style="margin: 20px">
+    </el-row>
+    <el-row :gutter="10" style="margin: 2px">
       <el-col :span="6">
         <el-card style="color: #409eff">
           <div class="el-icon-s-management">荣誉总数</div>
@@ -68,7 +68,7 @@
         </el-card>
       </el-col>
     </el-row>
-    <el-row :gutter="20" style="margin: 20px">
+    <el-row :gutter="10" style="margin: 2px">
       <el-col :span="12">
         <el-card>
           <div ref="projectYear" style="height: 400px"></div>

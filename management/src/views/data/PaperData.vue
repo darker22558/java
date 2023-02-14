@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="margin-left: 10px; display: flex; justify-content: space-between ">
+    <div style="margin-left: 2px; display: flex; justify-content: space-between">
       <el-input placeholder="请输入标题(模糊)" v-model="queryInfo.title" clearable style="width: 160px"></el-input>
       <el-input placeholder="请输入issn" v-model="queryInfo.issn" clearable style="width: 120px; margin-left: 5px"></el-input>
       <el-button @click.native.prevent="loadPaperList" style="margin-left: 5px" type="primary">查询</el-button>
@@ -13,7 +13,7 @@
         <el-button type="primary">批量导入</el-button>
       </el-upload>
     </div>
-    <div style="margin: 10px; width: 99%">
+    <div style="margin-left: 2px; margin-top: 3px">
       <el-table id="papers" :data="paperList" border stripe v-loading="loading" :height="400" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="40"> </el-table-column>
 <!--        <el-table-column label="序号" prop="id" width="50"> </el-table-column>-->
@@ -241,7 +241,7 @@ export default {
         }
       }
     },
-    // 上传文件的事件
+    // 上传文件
     importBatch(item) {
       this.$message("数据上传中······");
       // 上传文件的需要formdata类型

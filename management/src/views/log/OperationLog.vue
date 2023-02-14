@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--搜索-->
-    <div style="padding: 10px">
+    <div style="margin-left: 2px; display: flex; justify-content: space-between">
       <!--<el-form-item label="操作时间">
         <DateTimeRangePicker :date="queryInfo.date" :set-date="setDate" />
       </el-form-item>-->
@@ -9,7 +9,7 @@
       <el-button type="primary" style="margin-left: 10px" @click="loadOperationLog">搜索</el-button>
       <el-button type="warning" @click="reset">重置</el-button>
     </div>
-    <div style="margin: 10px; width: 99%">
+    <div style="margin-left: 2px; margin-top: 3px">
       <el-table :data="logList" border stripe :height="400">
         <el-table-column label="详情" type="expand" width="50">
           <template v-slot="props">

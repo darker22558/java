@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="padding: 10px">
+    <div style="margin-left: 2px; display: flex; justify-content: space-between">
       <el-input placeholder="请输入煤田名称" v-model="queryInfo.coalfieldName" clearable style="width: 220px" suffix-icon="el-icon-document-remove"></el-input>
       <el-select v-model="queryInfo.coalCoveringArea" clearable placeholder="请选择聚煤区" class="select">
         <el-option v-for="item in allCoalCoveringArea" :key="item.areaId" :label="item.areaName" :value="item.areaName">
@@ -9,10 +9,10 @@
       </el-select>
       <el-button @click.native.prevent="loadCoalfieldList" style="margin-left: 10px" type="primary">查询</el-button>
       <el-button type="warning" @click="reset">重置</el-button>
-      <el-button type="primary" @click="addCoalfield" class="el-icon-circle-plus-outline"> 新增</el-button>
-      <el-button type="danger" @click="deleteCoalfieldBatch" class="el-icon-remove-outline"> 批量删除</el-button>
+      <el-button type="primary" @click="addCoalfield">新增</el-button>
+      <el-button type="danger" @click="deleteCoalfieldBatch">批量删除</el-button>
     </div>
-    <div style="margin: 10px; width: 99%">
+    <div style="margin-left: 2px; margin-top: 3px">
       <el-table :data="coalfieldList" border stripe v-loading="loading" :height="400" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="40"> </el-table-column>
 <!--        <el-table-column label="序号" prop="id" width="50"> </el-table-column>-->

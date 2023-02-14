@@ -52,6 +52,8 @@ service.interceptors.response.use(
         store.commit("RESET_STATE");
         router.push("/login");
       }
+      console.log("code : " + res.code)
+      console.log("message : " + res.message)
       return Promise.reject(new Error(res.message || "Error"));
     } else {
       return res;

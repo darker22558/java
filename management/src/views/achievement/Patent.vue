@@ -1,15 +1,15 @@
 <template>
   <div>
-    <div style="padding: 10px">
+    <div style="margin-left: 2px; display: flex; justify-content: space-between">
       <el-input placeholder="请输入专利编号" v-model="queryInfo.number" clearable style="width: 180px" suffix-icon="el-icon-document-remove"></el-input>
       <el-input placeholder="请输入专利名称" v-model="queryInfo.title" clearable style="width: 180px; margin-left: 10px" suffix-icon="el-icon-document-remove"></el-input>
       <el-input placeholder="请输入完成人" v-model="queryInfo.finisher" clearable style="width: 180px; margin-left: 10px" suffix-icon="el-icon-document-remove"></el-input>
       <el-button @click.native.prevent="loadPatentList" style="margin-left: 10px" type="primary">查询</el-button>
       <el-button type="warning" @click="reset">重置</el-button>
-      <el-button type="primary" @click="addPatent" class="el-icon-circle-plus-outline"> 新增</el-button>
-      <el-button type="danger" @click="deletePatentBatch" class="el-icon-remove-outline"> 批量删除</el-button>
+      <el-button type="primary" @click="addPatent">新增</el-button>
+      <el-button type="danger" @click="deletePatentBatch">批量删除</el-button>
     </div>
-    <div style="margin: 10px; width: 99%">
+    <div style="margin-left: 2px; margin-top: 3px">
       <el-table :data="patentList" border stripe v-loading="loading" :height="400" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="40"></el-table-column>
         <el-table-column label="序号" prop="id" width="50"></el-table-column>
@@ -82,7 +82,7 @@ export default {
       loading: false,
       // 复选框选中的值列表
       selected: [],
-      // 允许上传的文献文件类型
+      // 允许上传的专利文件类型
       ExcelFileType: ["xlsx", "xls"],
       // 运行上传文件大小，单位 M
       ExcelFileSize: 1,
@@ -110,7 +110,7 @@ export default {
       this.selected = selected;
       // console.log('选中的值', selected.map((item) => item.id))
     },
-    // 查询文献列表
+    // 查询专利列表
     loadPatentList() {
       this.loading = true;
       getPatentList(this.queryInfo).then((res) => {
@@ -119,7 +119,7 @@ export default {
         this.loading = false;
       });
     },
-    // 清空查询条件查询所有文献
+    // 清空查询条件查询所有专利
     reset() {
       this.queryInfo.number = "";
       this.queryInfo.title = "";
@@ -147,9 +147,9 @@ export default {
           this.$message.error("保存失败");
         });
     },
-    // 根据id删除文献
+    // 根据id删除专利
     deletePatent(id) {
-      this.$confirm("此操作将永久删除该文献,是否删除?", "提示", {
+      this.$confirm("此操作将永久删除该专利,是否删除?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
@@ -168,14 +168,14 @@ export default {
           });
         });
     },
-    // 根据id批量删除文献
+    // 根据id批量删除专利
     deletePatentBatch() {
       const ids = this.selected.map((item) => item.id).join();
       /* 根据后台想要的参数格式选择
       console.log(ids.join(",")); // string:1,2,3,4
       console.log(ids); // object:[1,2,3,4]
       */
-      this.$confirm("此操作将永久删除所选的文献,是否删除?", "提示", {
+      this.$confirm("此操作将永久删除所选的专利,是否删除?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
