@@ -46,45 +46,23 @@ public class SysUserController {
     @ApiOperation("用户登录")
     @PostMapping("/login")
     public Result login(@Validated @RequestBody LoginDTO loginDTO) {
-        log.info("login DTO : {}", loginDTO);
+        log.info("Login info : {}", loginDTO);
         String username = loginDTO.getUsername();
         String password = loginDTO.getPassword();
         String authCode = loginDTO.getAuthCode();
         String uniqueLoginId = loginDTO.getUniqueLoginId();
-
-        if (StrUtil.isBlank(username)) {
-            return Result.fail("请输入用户名");
-        }
-        if (StrUtil.isBlank(password)) {
-            return Result.fail("密码");
-        }
-        if (StrUtil.isBlank(authCode)) {
-            return Result.fail("请输入验证码");
-        }
-        if (StrUtil.isBlank(uniqueLoginId)) {
-            return Result.fail("登录异常，请刷新后重新登录");
-        }
-        // 查询是否存在当前登录用户
-        SysUser user = sysUserService.login(username, password);
-        if (user == null) {
-            return Result.fail("用户不存在或密码不正确");
-        }
-
         // 校验登录验证码
         boolean isVerified = sysUserService.verifyAuthCode(uniqueLoginId, authCode);
         if (!isVerified) {
             return Result.fail("验证码校验失败");
         }
-
-        // 生成token
-        String token = sysUserService.generateToken(username, password);
-
-        Map<String, Object> data = new LinkedHashMap<>();
-        data.put("userInfo", user);
-        data.put("token", token);
-        data.put("tokenHead", tokenHead);
-
-        return Result.success("登录成功", data);
+        // 校验登录信息
+        Map<String, Object> loginData = sysUserService.handleLogin(username, password);
+        // 返回登录结果
+        if (loginData != null) {
+            return Result.success("登录成功！", loginData);
+        }
+        return Result.fail("登录失败，请刷新后重试！");
     }
 
     @ApiOperation(value = "刷新token")

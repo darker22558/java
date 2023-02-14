@@ -47,7 +47,7 @@ service.interceptors.response.use(
         type: "error",
         duration: 3 * 1000,
       });
-      // 如果是401说明没有token，需要重新登陆，直接跳转到重新登录界面
+      // 如果是401说明token无效，需要重新登陆，直接跳转到重新登录界面
       if (res.code === 401) {
         store.commit("RESET_STATE");
         router.push("/login");

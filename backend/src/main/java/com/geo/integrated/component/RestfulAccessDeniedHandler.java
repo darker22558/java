@@ -1,6 +1,7 @@
 package com.geo.integrated.component;
 
 import cn.hutool.json.JSONUtil;
+import com.geo.integrated.common.Constant;
 import com.geo.integrated.common.Result;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -24,7 +25,7 @@ public class RestfulAccessDeniedHandler implements AccessDeniedHandler {
                        AccessDeniedException e) throws IOException, ServletException {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
-        response.getWriter().println(JSONUtil.parse(Result.fail(e.getMessage())));
+        response.getWriter().println(JSONUtil.parse(Result.fail(Constant.CODE_FORBIDDEN, e.getMessage(), null)));
         response.getWriter().flush();
     }
 }

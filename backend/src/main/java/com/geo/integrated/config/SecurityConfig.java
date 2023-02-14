@@ -1,7 +1,7 @@
 package com.geo.integrated.config;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.geo.integrated.component.JwtAuthenticationTokenFilter;
+import com.geo.integrated.component.JwtAuthenticationFilter;
 import com.geo.integrated.component.RestAuthenticationEntryPoint;
 import com.geo.integrated.component.RestfulAccessDeniedHandler;
 import com.geo.integrated.entity.SysUser;
@@ -56,11 +56,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.css",
                         "/**/*.js",
                         "/swagger-resources/**",
-                        "/v2/api-docs/**",
-                        "/**/generateAuthCode"
+                        "/v2/api-docs/**"
                 )
                 .permitAll()
-                .antMatchers("/management/system/user/login", "/management/system/user/register", "/management/system/user/logput")// 对登录注册要允许匿名访问
+                .antMatchers("/management/system/user/login",
+                        "/management/system/user/generateAuthCode",
+                        "/management/system/user/register")// 对登录、注册、获取验证码要允许匿名访问
                 .permitAll()
                 .antMatchers(HttpMethod.OPTIONS)    // 跨域请求会先进行一次options请求
                 .permitAll()
@@ -71,7 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 禁用缓存
         httpSecurity.headers().cacheControl();
         // 添加JWT filter
-        httpSecurity.addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         // 添加自定义未授权和未登录结果返回
         httpSecurity.exceptionHandling()
                 .accessDeniedHandler(restfulAccessDeniedHandler)
@@ -105,8 +106,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter() {
-        return new JwtAuthenticationTokenFilter();
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter();
     }
 
     @Bean

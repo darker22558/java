@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.geo.integrated.common.Result;
 import com.geo.integrated.dao.SysUserMapper;
 import com.geo.integrated.entity.SysUser;
+import com.geo.integrated.model.dto.SysUserDetails;
 import com.geo.integrated.service.RedisService;
 import com.geo.integrated.service.SysUserService;
 import com.geo.integrated.utils.JwtTokenUtils;
@@ -36,7 +37,6 @@ import java.util.Random;
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
     @Autowired
     private RedisService redisService;
-
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
@@ -45,33 +45,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private PasswordEncoder passwordEncoder;
     @Value("${redis.key.expire.authCode}")
     private Long authCodeExpireSeconds;
-
-    /**
-     * 用户登录匹配
-     * 查询是否有与当前表单中的用户名、密码匹配的用户信息
-     *
-     * @param username 用户名
-     * @param password 密码
-     * @return 匹配成功返回用户实体类，失败返回null
-     */
-    @Override
-    public SysUser login(String username, String password) {
-        try {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            if (userDetails == null) {
-                return null;
-            }
-            if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-                throw new BadCredentialsException("密码不正确");
-            }
-            QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
-            wrapper.eq("username", username);
-            SysUser user = getOne(wrapper);
-            return user;
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
-    }
+    @Value("${jwt.tokenHead}")
+    private String tokenHead;
 
     /**
      * 生成验证码
@@ -126,26 +101,43 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     /**
-     * 生成token
+     * 用户登录匹配
+     * 查询是否有与当前表单中的用户名、密码匹配的用户信息
+     * 若有则生成token并返回用户信息和token
      *
      * @param username 用户名
      * @param password 密码
-     * @return token
+     * @return 用户信息和token信息
      */
     @Override
-    public String generateToken(String username, String password) {
-        String token = null;
+    public Map<String, Object> handleLogin(String username, String password) {
         try {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
+            wrapper.eq("username", username);
+            SysUser user = getOne(wrapper);
+            if (user == null) {
+                throw new BadCredentialsException("用户不存在");
+            }
+            // UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            SysUserDetails userDetails = new SysUserDetails(user);
             if (!passwordEncoder.matches(password, userDetails.getPassword())) {
                 throw new BadCredentialsException("密码不正确");
             }
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            token = jwtTokenUtils.generateToken(userDetails);
+            String token = jwtTokenUtils.generateTokenByUserDetails(userDetails);
+            if (token == null) {
+                log.warn("token生成失败 === {}", username);
+                throw new RuntimeException("未知错误，请刷新后重新登陆");
+            }
+            Map<String, Object> data = new LinkedHashMap<>();
+            data.put("userInfo", user);
+            data.put("token", token);
+            data.put("tokenHead", tokenHead);
+            return data;
         } catch (AuthenticationException e) {
-            log.warn("登录异常");
+            log.warn("登录异常 === {}", e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
-        return token;
     }
 }

@@ -35,90 +35,85 @@ public class JwtTokenUtils {
     private String tokenHead;
 
     /**
+     * 根据用户信息填充负载，调用生成token的方法
+     */
+    public String generateTokenByUserDetails(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>(2);
+        claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
+        claims.put(CLAIM_KEY_CREATED, new Date());
+        return generateToken(claims);
+    }
+
+    /**
      * 根据负载生成JWT的token
      */
     private String generateToken(Map<String, Object> claims) {
         return Jwts.builder()
                 .setClaims(claims)
-                .setExpiration(generateExpirationDate())
+                .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
 
     /**
-     * 生成token的过期时间
-     */
-    private Date generateExpirationDate() {
-        return new Date(System.currentTimeMillis() + expiration * 1000);
-    }
-
-
-    /**
-     * 从token中获取JWT中的负载
+     * 从token中获取JWT中的负载（校验Token）
      */
     private Claims getClaimsFromToken(String token) {
-        Claims claims = null;
         try {
-            claims = Jwts.parser()
+            Claims claims = Jwts.parser()
                     .setSigningKey(secret)
                     .parseClaimsJws(token)
                     .getBody();
+            return claims;
         } catch (Exception e) {
-            log.info("JWT格式验证失败:{}", token);
+            log.info("JWT格式验证失败 === {}", e.getMessage());
+            return null;
         }
-        return claims;
     }
 
     /**
      * 从token中获取登录用户名
      */
     public String getUserNameFromToken(String token) {
-        String username;
         try {
             Claims claims = getClaimsFromToken(token);
-            username = claims.getSubject();
+            return claims.getSubject();
         } catch (Exception e) {
-            username = null;
+            log.info("获取登录用户名失败 === {}", e.getMessage());
+            return null;
         }
-        return username;
     }
 
     /**
-     * 验证token是否还有效
+     * 验证token是否有效
      *
      * @param token       客户端传入的token
      * @param userDetails 从数据库中查询出来的用户信息
      */
     public boolean validateToken(String token, UserDetails userDetails) {
         String username = getUserNameFromToken(token);
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        if (username == null) {
+            return false;
+        } else {
+            // 如果token中解析出的用户名与数据库中查询出的用户名相同，且token未过期，则token有效
+            return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        }
     }
 
     /**
-     * 判断token是否已经失效
+     * 判断token是否已经过期失效
      */
     private boolean isTokenExpired(String token) {
-        Date expiredDate = getExpiredDateFromToken(token);
-        return expiredDate.before(new Date());
-    }
-
-    /**
-     * 从token中获取过期时间
-     */
-    private Date getExpiredDateFromToken(String token) {
+        // 从token中获取过期时间
         Claims claims = getClaimsFromToken(token);
-        return claims.getExpiration();
+        if (claims == null) {
+            return false;
+        } else {
+            Date expiredDate = claims.getExpiration();
+            return expiredDate.before(new Date());
+        }
     }
 
-    /**
-     * 根据用户信息生成token
-     */
-    public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>(2);
-        claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
-        claims.put(CLAIM_KEY_CREATED, new Date());
-        return generateToken(claims);
-    }
 
     /**
      * 当原来的token没过期时是可以刷新的
@@ -133,16 +128,16 @@ public class JwtTokenUtils {
         if (StrUtil.isEmpty(token)) {
             return null;
         }
-        //token校验不通过
+        // token校验不通过
         Claims claims = getClaimsFromToken(token);
         if (claims == null) {
             return null;
         }
-        //如果token已经过期，不支持刷新
+        // 如果token已经过期，不支持刷新
         if (isTokenExpired(token)) {
             return null;
         }
-        //如果token在30分钟之内刚刷新过，返回原token
+        // 如果token在30分钟之内刚刷新过，返回原token
         if (tokenRefreshJustBefore(token, TIME_RANGE * TIME_SECOND)) {
             return token;
         } else {
