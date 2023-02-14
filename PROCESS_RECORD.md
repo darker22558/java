@@ -380,7 +380,7 @@ export default service;
 > 之后用户每次调用接口都在http的header中添加一个叫Authorization的头，值为token； 
 > 后台程序通过对Authorization头中信息的解码及数字签名校验来获取其中的用户信息，从而实现认证和授权。
 
-### 3.1.后端整合JWT
+### 3.1.后端整合JWT（6.5中有调整）
 
 + 在[pom.xml](./backend/pom.xml)中添加依赖
   ```xml
@@ -1180,9 +1180,9 @@ jwt:
 + 添加[SysUserDetails](backend/src/main/java/com/geo/integrated/model/dto/SysUserDetails.java)
 
 + 修改登录流程
-  - [Controller](backend/src/main/java/com/geo/integrated/controller/management/SysUserController.java)
-  - [Service](backend/src/main/java/com/geo/integrated/service/SysUserService.java)
-  - [ServiceImpl](backend/src/main/java/com/geo/integrated/service/impl/SysUserServiceImpl.java)
+  - [Controller](backend/src/main/java/com/geo/integrated/controller/management/AccountController.java)
+  - [Service](backend/src/main/java/com/geo/integrated/service/AccountService.java)
+  - [ServiceImpl](backend/src/main/java/com/geo/integrated/service/impl/AccountServiceImpl.java)
 
 + 管理系统添加与后端相同的tokenHead字段
   - [request.js](management/src/utils/request.js)

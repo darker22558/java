@@ -1,16 +1,13 @@
 package com.geo.integrated.exception;
 
-import com.alibaba.druid.sql.visitor.functions.Concat;
 import com.geo.integrated.common.Constant;
 import com.geo.integrated.common.Result;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
