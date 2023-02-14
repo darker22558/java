@@ -764,6 +764,9 @@ import * as echarts from 'echarts';
   - [VisualStatisticMapper.java](backend/src/main/java/com/geo/integrated/dao/VisualStatisticMapper.java)
   - [VisualStatisticMapper.xml](backend/src/main/resources/mapper/VisualStatisticMapper.xml)
 
+### 5.5.系统相关（system）
++ 新增[用户管理](management/src/views/system/User.vue)界面，与`5.1.数据相关（data）`中配置步骤类似
+
 
 ## 6.后端整合
 ### 6.1.整合SwaggerUI
@@ -1014,7 +1017,8 @@ import * as echarts from 'echarts';
   }
   ```
 
-### 6.4.整合七牛云对象存储
+### 6.4.整合七牛云对象存储，以用户管理中上传头像为例
+
 + 添加项目依赖[pom.xml](./backend/pom.xml)
   ```xml
   <dependencies>
@@ -1027,17 +1031,102 @@ import * as echarts from 'echarts';
   </dependencies>
   ```
 
-+ 修改配置文件[application.yml](backend/src/main/resources/application.yml)
-```yaml
-# 填入注册后得到的accessKey和accessSecretKey
-qiniu:
-  accessKey: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-  accessSecretKey: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-  bucketName: geo-integrated
-  domainName: http://xxx.xxx.clouddn.com/
-```
++ 修改配置文件[application.yml](backend/src/main/resources/application.yml)，填写七牛云oss的配置信息
+  ```yaml
+  # 填入注册后得到的accessKey和accessSecretKey
+  qiniu:
+    accessKey: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    accessSecretKey: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    bucketName: geo-integrated
+    domainName: http://xxx.xxx.clouddn.com/
+  ```
+
++ 在配置文件[application.yml](backend/src/main/resources/application.yml)修改上传文件的大小限制，因为 SpringBoot 默认单个文件上传大小是1MB，默认多个文件上传总大小是10MB，大小超出限制时会报错
+  > Maximum upload size exceeded; nested exception is java.lang.IllegalStateException: org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException: The field file exceeds its maximum permitted size of 1048576 bytes.
+  ```yaml
+  # 设置上传文件的大小
+  spring:
+    servlet:
+      multipart:
+        max-file-size: 2MB
+        max-request-size: 10MB
+  ```
 
 + 添加工具类[QiniuOssUtils.java](backend/src/main/java/com/geo/integrated/utils/QiniuOssUtils.java)
+
++ 在[Controller](backend/src/main/java/com/geo/integrated/controller/management/SysUserController.java)的接口中调用工具类
+  - uploadAvatar 借助七牛云工具类上传头像
+
++ 在前端界面中添加上传框以及对应的api
+  ```vue
+      <el-dialog title="用户信息" :visible.sync="dialogFormVisible" width="40%">
+        <el-form label-width="80px" size="small">
+          <el-form-item label="头像">
+            <el-input v-model="userForm.avatar"></el-input>
+          </el-form-item>
+          <el-form-item label="头像">
+            <el-upload class="avatar-uploader" action :http-request="uploadAvatar" :on-exceed="handleExceed" :before-upload="beforeAvatarUpload" :show-file-list="false">
+              <img v-if="userForm.avatar" :src="userForm.avatar" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon" style="line-height: 100px;"></i>
+            </el-upload>
+          </el-form-item>
+          <el-form-item label="用户名">
+            <el-input v-model="userForm.username"></el-input>
+          </el-form-item>
+          <el-form-item label="昵称">
+            <el-input v-model="userForm.nickname"></el-input>
+          </el-form-item>
+          <el-form-item label="邮箱">
+            <el-input v-model="userForm.email"></el-input>
+          </el-form-item>
+          <el-form-item label="密码">
+            <el-input v-model="userForm.password"></el-input>
+          </el-form-item>
+          <el-form-item label="角色权限">
+            <el-input v-model="userForm.role"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="saveOrUpdateUser">确 定</el-button>
+        </div>
+      </el-dialog>
+  ```
+  ```javascript
+  // 超出文件个数的回调
+  handleExceed(files) {
+    this.$message.warning(`超出上传数量限制！最多上传 1 个表格文件，选择了 ${files.length} 个文件`)
+  },
+  beforeAvatarUpload(file) {
+    const isJPG = file.type === "image/jpeg";
+    const isLt2M = file.size / 1024 / 1024 < 2;
+  
+    if (!isJPG) {
+      this.$message.error("上传头像图片只能是 JPG 格式!");
+    }
+    if (!isLt2M) {
+      this.$message.error("上传头像图片大小不能超过 2MB!");
+    }
+    return isJPG && isLt2M;
+  },
+  // 上传头像
+  uploadAvatar(item) {
+    this.$message("头像上传中······");
+    // 上传文件的需要formdata类型
+    const FormDatas = new FormData();
+    FormDatas.append("file", item.file);
+    uploadAvatar(FormDatas).then((res) => {
+      this.$message.success(res.message);
+      this.userForm.avatar = res.data;
+      // 成功过后刷新列表，清空上传文件列表
+      this.handleSuccess();
+    });
+  },
+  // 上传成功后的回调
+  handleSuccess() {
+    this.loadUserList()
+  },
+  ```
 
 ### 6.5.登录功能补充，整合SpringSecurity+JWT实现认证
 

@@ -125,4 +125,13 @@ public interface Constant {
      * .xls文件
      */
     String FILE_TYPE_XLS = "xls";
+
+    /**
+     * .jpg文件
+     */
+    String FILE_TYPE_JPG = "jpg";
+    /**
+     * .jpeg文件
+     */
+    String FILE_TYPE_JPEG = "jpeg";
 }

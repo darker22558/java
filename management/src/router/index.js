@@ -12,6 +12,7 @@ import Honor from "@/views/achievement/Honor.vue";
 import Paper from "@/views/achievement/Paper.vue";
 import ExceptionLog from "@/views/log/ExceptionLog.vue";
 import Statistic from "@/views/visualization/Statistic.vue";
+import User from "@/views/system/User.vue";
 
 Vue.use(VueRouter);
 
@@ -161,6 +162,21 @@ const routes = [
         path: "dataService",
         name: "数据服务",
         meta: { title: "数据服务中心", icon: "el-icon-data-analysis" },
+      },
+    ],
+  },
+  {
+    path: "/system",
+    name: "系统",
+    component: Container,
+    meta: { title: "系统管理", icon: "el-icon-setting" },
+    hidden: false,
+    children: [
+      {
+        path: "user",
+        name: "用户",
+        meta: { title: "系统用户", icon: "el-icon-setting" },
+        component: User,
       },
     ],
   },

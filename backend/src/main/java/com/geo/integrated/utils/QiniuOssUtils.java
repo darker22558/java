@@ -14,8 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -51,20 +49,21 @@ public class QiniuOssUtils {
     /**
      * 上传图片到七牛云
      *
-     * @param multipartFile
-     * @return Map<String, String>
+     * @param file 图片文件
+     * @return 图片上传成功后的地址
      */
-    public Map<String, String> uploadImage(MultipartFile multipartFile) {
-        log.info("oss工具 === 开始上传到七牛云");
+    public String uploadImage(MultipartFile file) {
         try {
             // 1.获取文件上传的流
-            byte[] fileBytes = multipartFile.getBytes();
+            byte[] fileBytes = file.getBytes();
+
             // 2.创建日期目录分隔
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
             String datePath = dateFormat.format(new Date());
 
             // 3.获取文件名
-            String originalFilename = multipartFile.getOriginalFilename();
+            String originalFilename = file.getOriginalFilename();
+            log.info("oss工具-图片开始上传-文件名 === {}", file.getOriginalFilename());
             String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
             String filename = datePath + "/" + UUID.randomUUID().toString().replace("-", "") + suffix;
 
@@ -82,12 +81,9 @@ public class QiniuOssUtils {
             uploadManager.put(fileBytes, filename, upToken);
 
             // 6.上传成功返回地址
-            log.info("oss工具 === 成功上传到七牛云");
             String imageUrl = domainName + filename;
-            Map<String, String> map = new HashMap<>(1);
-            map.put("imageUrl", imageUrl);
-
-            return map;
+            log.info("oss工具-图片成功上传-地址为 === {}", imageUrl);
+            return imageUrl;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -105,12 +101,13 @@ public class QiniuOssUtils {
         //创建凭证
         Auth auth = Auth.create(accessKey, accessSecretKey);
         BucketManager bucketManager = new BucketManager(auth, new Configuration(Region.huabei()));
-        // 此时pos为全路径，需要将外链域名去掉，七牛云云端删除时只需要提供文件名即可
+        // 此时pos为全路径，需要将外链域名去掉，七牛云的云端删除时只需要提供文件名即可
         // 截取最后一个指定字符串(此处为"/")之后的字符串。 此处fileName="9cb077ef572f49948f0dda60ed850a9d.jpg"
         String fileName = url.split(domainName)[1];
         log.info("待删除的文件名 === {}", fileName);
         try {
             bucketManager.delete(bucketName, fileName);
+            log.info("图片删除成功 === {}", fileName);
             return true;
         } catch (QiniuException e) {
             // 如果遇到异常，说明删除失败

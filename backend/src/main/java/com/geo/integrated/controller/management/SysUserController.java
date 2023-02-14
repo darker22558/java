@@ -1,22 +1,23 @@
 package com.geo.integrated.controller.management;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.io.FileUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.geo.integrated.annotation.OperationLogger;
+import com.geo.integrated.common.Constant;
 import com.geo.integrated.common.Result;
-import com.geo.integrated.model.dto.LoginDTO;
 import com.geo.integrated.entity.SysUser;
 import com.geo.integrated.service.SysUserService;
-import com.geo.integrated.utils.JwtTokenUtils;
+import com.geo.integrated.utils.QiniuOssUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author: whtli
@@ -31,73 +32,130 @@ public class SysUserController {
     @Autowired
     private SysUserService sysUserService;
     @Autowired
-    private JwtTokenUtils jwtTokenUtils;
-    @Value("${jwt.tokenHeader}")
-    private String tokenHeader;
-    @Value("${jwt.tokenHead}")
-    private String tokenHead;
+    private QiniuOssUtils qiniuOssUtils;
 
     /**
-     * 用户登录
+     * 查询用户信息
      *
-     * @param loginDTO 登录DTO，包含用户名和密码信息
-     * @return 登录成功返回用户信息和jwt，登录失败返回错误信息
+     * @param username 所获用户名称
+     * @param nickname 昵称
+     * @param email    邮箱
+     * @param pageNum  页码
+     * @param pageSize 页内数量
+     * @return 用户信息列表
      */
-    @ApiOperation("用户登录")
-    @PostMapping("/login")
-    public Result login(@Validated @RequestBody LoginDTO loginDTO) {
-        log.info("Login info === {}", loginDTO);
-        String username = loginDTO.getUsername();
-        String password = loginDTO.getPassword();
-        String authCode = loginDTO.getAuthCode();
-        String uniqueLoginId = loginDTO.getUniqueLoginId();
-        // 校验登录验证码
-        boolean isVerified = sysUserService.verifyAuthCode(uniqueLoginId, authCode);
-        if (!isVerified) {
-            return Result.fail("验证码校验失败");
-        }
-        // 校验登录信息
-        Map<String, Object> loginData = sysUserService.handleLogin(username, password);
-        // 返回登录结果
-        if (loginData != null) {
-            return Result.success("登录成功！", loginData);
-        }
-        return Result.fail("登录失败，请刷新后重试！");
-    }
+    @ApiOperation("获取用户信息列表")
+    @OperationLogger("获取用户信息列表")
+    @GetMapping("/getUserList")
+    public Result getUserList(@RequestParam(value = "username", defaultValue = "") String username,
+                              @RequestParam(value = "nickname", defaultValue = "") String nickname,
+                              @RequestParam(value = "email", defaultValue = "") String email,
+                              @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                              @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("username", username);
+        queryWrapper.like("nickname", nickname);
+        queryWrapper.like("email", email);
+        queryWrapper.orderByDesc("create_time");
+        // 新建一个分页规则，pageNum代表当前页码，pageSize代表每页数量
+        Page<SysUser> page = new Page<>(pageNum, pageSize);
+        // 借助Page实现分页查询，借助QueryWrapper实现多参数查询
+        IPage<SysUser> pageData = sysUserService.page(page, queryWrapper);
 
-    @ApiOperation(value = "刷新token")
-    @GetMapping(value = "/refreshToken")
-    public Result refreshToken(HttpServletRequest request) {
-        String token = request.getHeader(tokenHeader);
-        String refreshToken = jwtTokenUtils.refreshHeadToken(token);
-        if (refreshToken == null) {
-            return Result.fail("token已经过期！");
+        Map<String, Object> data = new HashMap<>(2);
+        data.put("userList", pageData.getRecords());
+        data.put("total", pageData.getTotal());
+        if (pageData.getTotal() == 0 && pageData.getRecords().isEmpty()) {
+            return Result.success("未查找到相应用户数据", data);
+        } else {
+            return Result.success("查询成功", data);
         }
-        Map<String, String> tokenMap = new LinkedHashMap<>();
-        tokenMap.put("token", refreshToken);
-        tokenMap.put("tokenHead", tokenHead);
-        return Result.success(tokenMap);
     }
 
     /**
-     * 用户退出
+     * 删除用户信息
      *
-     * @return 成功退出登录的信息
+     * @param id 指定用户信息id
+     * @return 删除操作的结果
      */
-    @ApiOperation("用户退出")
-    @PostMapping("/logout")
-    public Result logout() {
-        return Result.success("退出登录");
+    @ApiOperation("删除指定用户信息")
+    @OperationLogger("删除指定用户信息")
+    @DeleteMapping("deleteUserById")
+    public Result deleteUserById(@RequestParam Long id) {
+        boolean delete = sysUserService.removeById(id);
+        if (delete) {
+            return Result.success("用户信息删除成功", id);
+        } else {
+            return Result.fail("用户信息删除失败", id);
+        }
     }
 
     /**
-     * 获取验证码
+     * 批量删除用户信息
      *
-     * @return 验证码
+     * @param ids 多个指定用户信息id组成的列表
+     * @return 删除操作的结果
      */
-    @ApiOperation("生成验证码")
-    @GetMapping("/generateAuthCode")
-    public Result generateAuthCode() {
-        return sysUserService.generateAuthCode();
+    @ApiOperation("批量删除指定用户信息")
+    @OperationLogger("批量删除指定用户信息")
+    @DeleteMapping("/deleteUserBatchByIds")
+    public Result deleteUserBatchByIds(@RequestBody List<Long> ids) {
+        boolean delete = sysUserService.removeByIds(ids);
+        if (delete) {
+            return Result.success("用户信息批量删除成功", ids);
+        } else {
+            return Result.fail("用户信息批量删除失败", ids);
+        }
+    }
+
+    /**
+     * 新增用户信息
+     *
+     * @param user 用户信息实体类
+     * @return 新增结果
+     */
+    @ApiOperation("新增用户信息")
+    @OperationLogger("新增用户信息")
+    @PostMapping("/saveUser")
+    public Result saveUser(@RequestBody SysUser user) {
+        Result result = sysUserService.saveUserInfo(user);
+        return result;
+    }
+
+    /**
+     * 编辑用户信息
+     *
+     * @param user 用户信息实体类
+     * @return 编辑结果
+     */
+    @ApiOperation("编辑用户信息")
+    @OperationLogger("编辑用户信息")
+    @PostMapping("/updateUser")
+    public Result updateUser(@RequestBody SysUser user) {
+        Result result = sysUserService.updateUserInfo(user);
+        return result;
+    }
+
+    /**
+     * 上传头像
+     * 借助七牛云工具类
+     *
+     * @param file 图片文件
+     * @return 上传成功后返回的头像地址
+     */
+    @OperationLogger("向七牛云服务器中上传图片")
+    @PostMapping("/uploadAvatar")
+    public Result uploadAvatar(@RequestPart(value = "file") MultipartFile file) {
+        if (file.isEmpty()) {
+            return Result.fail("请选择图片");
+        }
+        String fileName = file.getOriginalFilename();
+        String fileType = FileUtil.extName(fileName);
+        if (Constant.FILE_TYPE_JPG.equals(fileType) || Constant.FILE_TYPE_JPEG.equals(fileType)) {
+            String imageUrl = qiniuOssUtils.uploadImage(file);
+            return Result.success("头像上传成功", imageUrl);
+        } else {
+            return Result.fail("图片类型错误，应为.png或.jpg或.jpeg");
+        }
     }
 }
