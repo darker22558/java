@@ -80,10 +80,8 @@ import {
   deletePaperBatchByIds,
   saveOrUpdate,
   importDataBatch,
-  // exportDataBatch,
 } from "@/api/data/paper";
-import axios from "axios";
-import {tokenHead} from "@/settings";
+import {downloadMethod} from "@/utils/request";
 
 export default {
   name: "PaperData",
@@ -215,27 +213,8 @@ export default {
     // 下载模板
     downloadTemplate() {
       const url = `http://localhost:9090/management/data/paper/exportDataTemplate`;
-      const token = localStorage.getItem("token");
       const filename = "文献数据模板.xlsx";
-      axios({
-        method: "GET",
-        url: url,
-        responseType: "blob",
-        headers: {
-          Authorization: `${tokenHead}${token}`,
-        },
-      }).then((res) => {
-        const blob = new Blob([res.data]);
-        const url = window.URL.createObjectURL(blob);
-        const aLink = document.createElement("a");
-        aLink.style.display = "none";
-        aLink.href = url;
-        aLink.setAttribute("download", decodeURI(filename));
-        document.body.appendChild(aLink);
-        aLink.click();
-        document.body.removeChild(aLink);
-        window.URL.revokeObjectURL(url);
-      });
+      downloadMethod(url, filename)
     },
     // 超出文件个数的回调
     handleExceed(files) {
@@ -280,48 +259,13 @@ export default {
     },
     // 批量导出数据
     exportBatch() {
-      /*const query = {
+      const url = `http://localhost:9090/management/data/paper/exportDataBatch`;
+      const filename = "文献数据信息.xlsx";
+      const query = {
         title: this.queryInfo.title,
         issn: this.queryInfo.issn,
       };
-      const filename = "文献数据信息.xlsx";
-      exportDataBatch(query).then((res) => {
-        const blob = new Blob([res.data]);
-        const url = window.URL.createObjectURL(blob);
-        const aLink = document.createElement("a");
-        aLink.style.display = "none";
-        aLink.href = url;
-        aLink.setAttribute("download", decodeURI(filename));
-        document.body.appendChild(aLink);
-        aLink.click();
-        document.body.removeChild(aLink);
-        window.URL.revokeObjectURL(url);
-      });*/
-      const title = this.queryInfo.title;
-      const issn = this.queryInfo.issn;
-      const url = `http://localhost:9090/management/data/paper/exportDataBatch?title=${title}&issn=${issn}`;
-      const token = localStorage.getItem("token");
-      const filename = "文献数据信息.xlsx";
-      axios({
-        method: "GET",
-        url: url,
-        responseType: "blob",
-        // 这里在写一些关于请求的配置，比如携带cookie等
-        headers: {
-          Authorization: `${tokenHead}${token}`,
-        },
-      }).then((res) => {
-        const blob = new Blob([res.data]);
-        const url = window.URL.createObjectURL(blob);
-        const aLink = document.createElement("a");
-        aLink.style.display = "none";
-        aLink.href = url;
-        aLink.setAttribute("download", decodeURI(filename));
-        document.body.appendChild(aLink);
-        aLink.click();
-        document.body.removeChild(aLink);
-        window.URL.revokeObjectURL(url);
-      });
+      downloadMethod(url, filename, query)
     },
   },
 };

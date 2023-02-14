@@ -2,7 +2,7 @@ import axios from "axios";
 import { Message } from "element-ui";
 import store from "@/store";
 import router from "@/router/index";
-import {tokenHead} from "@/settings";
+import { tokenHead } from "@/settings";
 
 // create an axios instance
 const service = axios.create({
@@ -67,5 +67,31 @@ service.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+// 专用于文件下载的function
+export const downloadMethod = (url, filename, params = {}) => {
+  const token = localStorage.getItem("token");
+  axios({
+    method: "GET",
+    url: url,
+    responseType: "blob",
+    // 此处可写一些关于请求的配置，比如携带token等
+    headers: {
+      Authorization: `${tokenHead}${token}`,
+    },
+    params: { ...params },
+  }).then((res) => {
+    const blob = new Blob([res.data]);
+    const url = window.URL.createObjectURL(blob);
+    const aLink = document.createElement("a");
+    aLink.style.display = "none";
+    aLink.href = url;
+    aLink.setAttribute("download", decodeURI(filename));
+    document.body.appendChild(aLink);
+    aLink.click();
+    document.body.removeChild(aLink);
+    window.URL.revokeObjectURL(url);
+  });
+};
 
 export default service;

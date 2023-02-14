@@ -1113,7 +1113,7 @@ jwt:
       </dependencies>
   ```
 
-+ 前端[组件PaperData.vue](management/src/views/data/PaperData.vue)中新增`下载模板`、`批量导入`、`批量导出`的按钮和接口
++ 前端[组件PaperData.vue](management/src/views/data/PaperData.vue)中新增`下载模板`、`批量导入`、`批量导出`的按钮
   ```vue
   <template>
     <div>
@@ -1168,27 +1168,8 @@ jwt:
       // 下载模板
       downloadTemplate() {
         const url = `http://localhost:9090/management/data/paper/exportDataTemplate`;
-        const token = localStorage.getItem("token");
         const filename = "文献数据模板.xlsx";
-        axios({
-          method: "GET",
-          url: url,
-          responseType: "blob",
-          headers: {
-            Authorization: `${tokenHead}${token}`,
-          },
-        }).then((res) => {
-          const blob = new Blob([res.data]);
-          const url = window.URL.createObjectURL(blob);
-          const aLink = document.createElement("a");
-          aLink.style.display = "none";
-          aLink.href = url;
-          aLink.setAttribute("download", decodeURI(filename));
-          document.body.appendChild(aLink);
-          aLink.click();
-          document.body.removeChild(aLink);
-          window.URL.revokeObjectURL(url);
-        });
+        downloadMethod(url, filename)
       },
       // 超出文件个数的回调
       handleExceed(files) {
@@ -1233,36 +1214,46 @@ jwt:
       },
       // 批量导出数据
       exportBatch() {
-        const title = this.queryInfo.title;
-        const issn = this.queryInfo.issn;
-        const url = `http://localhost:9090/management/data/paper/exportDataBatch?title=${title}&issn=${issn}`;
-        const token = localStorage.getItem("token");
+        const url = `http://localhost:9090/management/data/paper/exportDataBatch`;
         const filename = "文献数据信息.xlsx";
-        axios({
-          method: "GET",
-          url: url,
-          responseType: "blob",
-          // 这里在写一些关于请求的配置，比如携带cookie等
-          headers: {
-            Authorization: `${tokenHead}${token}`,
-          },
-        }).then((res) => {
-          const blob = new Blob([res.data]);
-          const url = window.URL.createObjectURL(blob);
-          const aLink = document.createElement("a");
-          aLink.style.display = "none";
-          aLink.href = url;
-          aLink.setAttribute("download", decodeURI(filename));
-          document.body.appendChild(aLink);
-          aLink.click();
-          document.body.removeChild(aLink);
-          window.URL.revokeObjectURL(url);
-        });
+        const query = {
+          title: this.queryInfo.title,
+          issn: this.queryInfo.issn,
+        };
+        downloadMethod(url, filename, query)
       },
     },
   };
   </script>
   
+  ```
+
++ 前端[request.js](management/src/utils/request.js)中封装专用于文件下载的function
+  ```javascript
+  export const downloadMethod = (url, filename, params = {}) => {
+    const token = localStorage.getItem("token");
+    axios({
+      method: "GET",
+      url: url,
+      responseType: "blob",
+      // 此处可写一些关于请求的配置，比如携带token等
+      headers: {
+        Authorization: `${tokenHead}${token}`,
+      },
+      params: { ...params },
+    }).then((res) => {
+      const blob = new Blob([res.data]);
+      const url = window.URL.createObjectURL(blob);
+      const aLink = document.createElement("a");
+      aLink.style.display = "none";
+      aLink.href = url;
+      aLink.setAttribute("download", decodeURI(filename));
+      document.body.appendChild(aLink);
+      aLink.click();
+      document.body.removeChild(aLink);
+      window.URL.revokeObjectURL(url);
+    });
+  };
   ```
 
 + 后端封装借助EasyExcel实现excel表格处理（导入和导出）的工具类，参考EasyExcel的[web读写案例代码](https://github.com/alibaba/easyexcel/blob/master/easyexcel-test/src/test/java/com/alibaba/easyexcel/test/demo/web/WebTest.java)
