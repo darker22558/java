@@ -13,13 +13,13 @@
         <el-table-column type="selection" width="40"></el-table-column>
 <!--        <el-table-column label="序号" prop="id" width="50"></el-table-column>-->
         <el-table-column label="编号" prop="number" width="140"></el-table-column>
-        <el-table-column label="项目名称" prop="title" width="160" :show-overflow-tooltip="true"> </el-table-column>
+        <el-table-column label="项目名称" prop="title" width="160" show-overflow-tooltip> </el-table-column>
         <el-table-column label="负责人" prop="chargePerson" width="70"></el-table-column>
-        <el-table-column label="类别" prop="type" width="90" :show-overflow-tooltip="true"> </el-table-column>
+        <el-table-column label="类别" prop="type" width="90" show-overflow-tooltip> </el-table-column>
         <el-table-column label="开始日期" prop="startDate" width="80"></el-table-column>
         <el-table-column label="终止日期" prop="endDate" width="80"></el-table-column>
         <el-table-column label="经费(万元)" prop="funds" width="90"> </el-table-column>
-        <el-table-column label="经费来源" prop="fundsSource" width="80" :show-overflow-tooltip="true"> </el-table-column>
+        <el-table-column label="经费来源" prop="fundsSource" width="80" show-overflow-tooltip> </el-table-column>
         <el-table-column label="操作" fixed="right">
           <template v-slot="scope">
             <el-button size="mini" type="success" icon="el-icon-edit" @click="editProject(scope.row)"></el-button>

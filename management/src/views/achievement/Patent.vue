@@ -14,7 +14,7 @@
         <el-table-column type="selection" width="40"></el-table-column>
         <el-table-column label="序号" prop="id" width="50"></el-table-column>
         <el-table-column label="编号" prop="number" width="180"></el-table-column>
-        <el-table-column label="专利名称" prop="title" width="260" :show-overflow-tooltip="true"> </el-table-column>
+        <el-table-column label="专利名称" prop="title" width="260" show-overflow-tooltip> </el-table-column>
         <el-table-column label="完成人(固定人员)" prop="finisher" width="140"></el-table-column>
         <el-table-column label="操作" fixed="right">
           <template v-slot="scope">

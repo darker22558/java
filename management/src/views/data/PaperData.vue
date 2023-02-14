@@ -18,14 +18,14 @@
         <el-table-column type="selection" width="40"> </el-table-column>
 <!--        <el-table-column label="序号" prop="id" width="50"> </el-table-column>-->
         <el-table-column label="eid" prop="eid" width="160"> </el-table-column>
-        <el-table-column label="标题" prop="title" width="200" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column label="标题" prop="title" width="200" show-overflow-tooltip></el-table-column>
         <el-table-column label="发表时间" width="260">
           <template v-slot="scope">
             <el-date-picker disabled v-model="scope.row.publicDate" size="small"></el-date-picker>
           </template>
         </el-table-column>
         <el-table-column label="issn" prop="issn" width="100"></el-table-column>
-        <el-table-column label="备注" prop="remark" width="50" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column label="备注" prop="remark" width="50" show-overflow-tooltip></el-table-column>
         <el-table-column label="操作" fixed="right">
           <template v-slot="scope">
             <el-button size="mini" type="success" icon="el-icon-edit" @click="editPaper(scope.row)"></el-button>

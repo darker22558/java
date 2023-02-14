@@ -14,7 +14,7 @@
         <el-table-column type="selection" width="40"></el-table-column>
 <!--        <el-table-column label="序号" prop="id" width="50"></el-table-column>-->
         <el-table-column label="荣誉名称" prop="honorName" width="200"></el-table-column>
-        <el-table-column label="成果名称" prop="achievementName" width="300" :show-overflow-tooltip="true"> </el-table-column>
+        <el-table-column label="成果名称" prop="achievementName" width="300" show-overflow-tooltip> </el-table-column>
         <el-table-column label="实验室人员排名" prop="participantsRank" width="180"></el-table-column>
         <el-table-column label="操作" fixed="right">
           <template v-slot="scope">
