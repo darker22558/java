@@ -59,9 +59,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/v2/api-docs/**"
                 )
                 .permitAll()
-                .antMatchers("/management/system/user/login",
-                        "/management/system/user/generateAuthCode",
-                        "/management/system/user/register")// 对登录、注册、获取验证码要允许匿名访问
+                .antMatchers("/management/account/login",
+                        "/management/account/generateAuthCode",
+                        "/management/account/register") // 对登录、注册、获取验证码要允许匿名访问
                 .permitAll()
                 .antMatchers(HttpMethod.OPTIONS)    // 跨域请求会先进行一次options请求
                 .permitAll()

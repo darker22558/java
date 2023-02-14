@@ -1,31 +1,18 @@
 package com.geo.integrated.service.impl;
 
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.geo.integrated.common.Result;
 import com.geo.integrated.dao.SysUserMapper;
 import com.geo.integrated.entity.SysUser;
-import com.geo.integrated.model.dto.SysUserDetails;
-import com.geo.integrated.service.RedisService;
 import com.geo.integrated.service.SysUserService;
-import com.geo.integrated.utils.JwtTokenUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Random;
+import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * @author: whtli
@@ -35,109 +22,66 @@ import java.util.Random;
 @Service
 @Slf4j
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
-    @Autowired
-    private RedisService redisService;
-    @Autowired
-    private UserDetailsService userDetailsService;
-    @Autowired
-    private JwtTokenUtils jwtTokenUtils;
+    @Resource
+    private SysUserMapper sysUserMapper;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Value("${redis.key.expire.authCode}")
-    private Long authCodeExpireSeconds;
-    @Value("${jwt.tokenHead}")
-    private String tokenHead;
 
-    /**
-     * 生成验证码
-     *
-     * @return 验证码
-     */
     @Override
-    public Result generateAuthCode() {
-        StringBuilder sysAuthCode = new StringBuilder();
-        Random random = new Random();
-        int len = 6;
-        for (int i = 0; i < len; i++) {
-            sysAuthCode.append(random.nextInt(10));
-        }
-        // 生成当前时刻时间戳
-        String timeStamp = String.valueOf(System.currentTimeMillis());
-        try {
-            // 时间戳绑定验证码然后通过md5转换再存储到redis
-            String uniqueLoginId = SecureUtil.md5(timeStamp + sysAuthCode);
-            log.info("授权密钥 === {}", uniqueLoginId);
-            redisService.set(uniqueLoginId, sysAuthCode.toString());
-            redisService.expire(uniqueLoginId, authCodeExpireSeconds);
-
-            Map<String, String> data = new LinkedHashMap<>();
-            data.put("sysAuthCode", sysAuthCode.toString());
-            data.put("uniqueLoginId", uniqueLoginId);
-            return Result.success("生成验证码成功", data);
-        } catch (Exception e) {
-            return Result.fail("生成验证码失败");
-        }
-    }
-
-    /**
-     * 对输入的验证码进行校验
-     *
-     * @param uniqueLoginId 唯一登录标识
-     * @param authCode      验证码
-     * @return 验证码的校验结果
-     */
-    @Override
-    public boolean verifyAuthCode(String uniqueLoginId, String authCode) {
-        if (StrUtil.isEmpty(authCode)) {
-            return false;
-        }
-        String realAuthCode = redisService.get(uniqueLoginId);
-        boolean result = authCode.equals(realAuthCode);
-        if (result) {
-            return true;
+    public Result saveUserInfo(SysUser user) {
+        // 查询是否存在同名用户信息
+        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", user.getUsername());
+        SysUser example = sysUserMapper.selectOne(queryWrapper);
+        if (example != null) {
+            return Result.fail("已经存在用户名为" + user.getUsername() + "的用户，请重新填写用户名");
         } else {
-            return false;
+            // 新用户和创建时间和更新时间相同
+            Date date = new Date();
+            user.setUpdateTime(date);
+            user.setCreateTime(date);
+            // 对密码做加密
+            String encodePassword = passwordEncoder.encode(user.getPassword());
+            user.setPassword(encodePassword);
+            // 用户信息保存到数据库
+            int flag = sysUserMapper.insert(user);
+            if (flag == 1) {
+                return Result.success("新增用户成功");
+            } else {
+                return Result.fail("新增用户失败");
+            }
         }
     }
 
-    /**
-     * 用户登录匹配
-     * 查询是否有与当前表单中的用户名、密码匹配的用户信息
-     * 若有则生成token并返回用户信息和token
-     *
-     * @param username 用户名
-     * @param password 密码
-     * @return 用户信息和token信息
-     */
     @Override
-    public Map<String, Object> handleLogin(String username, String password) {
-        try {
-            QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
-            wrapper.eq("username", username);
-            SysUser user = getOne(wrapper);
-            if (user == null) {
-                throw new BadCredentialsException("用户不存在");
+    public Result updateUserInfo(SysUser user) {
+        // 从数据库中获取修改前的用户信息
+        SysUser originUserInfo = sysUserMapper.selectById(user.getId());
+        // 验证密码的修改情况，如果传入的密码与数据库中密码的明文不同
+        if (!user.getPassword().equals(originUserInfo.getPassword())) {
+            // 将传入的密码加密后，再与数据库中的密码对比
+            if (!passwordEncoder.matches(user.getPassword(), originUserInfo.getPassword())) {
+                // 加密后不同则是修改了密码，数据库中需要修改
+                log.info("管理系统中修改了用户 === {} 的密码，加密后不同，数据库中需要修改", user.getUsername());
+                String encodePassword = passwordEncoder.encode(user.getPassword());
+                user.setPassword(encodePassword);
+            } else {
+                log.info("管理系统中修改了用户 === {} 的密码，加密后相同，数据库中不需要修改", user.getUsername());
+                // 加密后相同，则数据库中不需要修改
+                user.setPassword(originUserInfo.getPassword());
             }
-            // UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            SysUserDetails userDetails = new SysUserDetails(user);
-            if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-                throw new BadCredentialsException("密码不正确");
-            }
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            String token = jwtTokenUtils.generateTokenByUserDetails(userDetails);
-            if (token == null) {
-                log.warn("token生成失败 === {}", username);
-                throw new RuntimeException("未知错误，请刷新后重新登陆");
-            }
-            Map<String, Object> data = new LinkedHashMap<>();
-            data.put("userInfo", user);
-            data.put("token", token);
-            data.put("tokenHead", tokenHead);
-            return data;
-        } catch (AuthenticationException e) {
-            log.warn("登录异常 === {}", e.getMessage());
-            throw new RuntimeException(e.getMessage());
+        } else {
+            log.info("管理系统中未修改用户 === {} 的密码", user.getUsername());
+        }
+        // 更新用户信息的`更新时间`
+        Date date = new Date();
+        user.setUpdateTime(date);
+        // 用户信息保存到数据库
+        int flag = sysUserMapper.updateById(user);
+        if (flag == 1) {
+            return Result.success("用户信息更新成功");
+        } else {
+            return Result.fail("用户信息更新失败");
         }
     }
 }

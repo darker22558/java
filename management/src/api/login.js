@@ -2,7 +2,7 @@ import request from "@/utils/request";
 
 export function login(loginForm) {
   return request({
-    url: "/system/user/login",
+    url: "/account/login",
     method: "POST",
     data: loginForm,
   });
@@ -10,14 +10,14 @@ export function login(loginForm) {
 
 export function logout() {
   return request({
-    url: "/system/user/logout",
+    url: "/account/logout",
     method: "POST",
   });
 }
 
 export function generateAuthCode() {
   return request({
-    url: "/system/user/generateAuthCode",
+    url: "/account/generateAuthCode",
     method: "GET",
   });
 }
