@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-container style="height: 100vh; border: 1px solid #eee" class="container">
+    <el-container style="height: 100vh;" class="container">
       <el-aside style="width: 18%; background-color: #545c64; ">
 <!--        <div style="height: 54px; line-height: 60px; text-align: left; margin-left: 23px; margin-top: 6px">
           <img src="../assets/logo.png" alt="" style="width: 20px; position: relative; top: 5px"/>
@@ -14,42 +14,6 @@
           active-text-color="#ffd04b"
         >
           <template v-for="(item, index) in this.$router.options.routes">
-            <!-- <template v-if="!item.hidden && item.children != null && item.children.length > 1">
-              <el-submenu :key="index" :index="item.path">
-                <template slot="title" v-if="item.meta">
-                  <i :class="item.meta.icon"></i>
-                  <span>{{ item.meta.title }}</span>
-                </template>
-                <template slot="title" v-else>
-                  <i class="el-icon-s-home"></i>
-                  <span>{{ item.name }}</span>
-                </template>
-                <template v-for="(children, indexOfChild) in item.children">
-                  <el-menu-item :key="indexOfChild" :index="item.path + '/' + children.path">
-                    <template slot="title" v-if="children.meta">
-                      <i :class="children.meta.icon"></i>
-                      <span>{{ children.meta.title }}</span>
-                    </template>
-                    <template slot="title" v-else>
-                      <i class="el-icon-s-home"></i>
-                      <span>{{ children.name }}</span>
-                    </template>
-                  </el-menu-item>
-                </template>
-              </el-submenu>
-            </template>
-            <template v-if="!item.hidden &&(item.children == null || item.children.length === 1)">
-              <el-menu-item :key="index" :index="item.path.replace('/', '') + '/' + item.children[0].path">
-                <template slot="title" v-if="item.children[0].meta">
-                  <i :class="item.children[0].meta.icon"></i>
-                  <span>{{ item.children[0].meta.title }}</span>
-                </template>
-                <template slot="title" v-else>
-                  <i class="el-icon-s-home"></i>
-                  <span>{{ item.children[0].name }}</span>
-                </template>
-              </el-menu-item>
-            </template>-->
             <template v-if="!item.hidden && item.path === '/'">
               <el-menu-item :key="index" :index="item.path">
                 <template slot="title" v-if="item.children[0].meta">
@@ -92,14 +56,14 @@
 
       <el-container>
         <el-header style="vertical-align: center; text-align: right; font-size: 12px; background-color: #b3c0d1">
-          <el-avatar :size="40" style="margin-top: 5px; margin-right: 15px" :src="logo"></el-avatar>
-          <el-dropdown>
+          <el-avatar :size="40" style="margin-top: 10px; margin-right: 40px" :src="logo"></el-avatar>
+          <el-dropdown style="position: absolute; right: 10px">
             <span style="color: black; cursor: pointer">
               <b>
                 {{ userInfo.username || "请登录" }}
               </b>
             </span>
-            <el-dropdown-menu slot="dropdown">
+            <el-dropdown-menu slot="dropdown" >
               <el-dropdown-item>个人主页</el-dropdown-item>
               <a target="_blank" :href="github">
                 <el-dropdown-item divided>Github</el-dropdown-item>
