@@ -1,6 +1,11 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { removeToken, setToken } from "@/utils/auth";
+import {
+  removeToken,
+  removeUserInfo,
+  setToken,
+  setUserInfo,
+} from "@/utils/auth";
 
 Vue.use(Vuex);
 
@@ -13,21 +18,18 @@ export default new Vuex.Store({
     // 设置token
     SET_TOKEN: (state, token) => {
       state.token = token;
-      // localStorage.setItem("token", token);
       setToken(token);
     },
     // 设置用户信息
     SET_USERINFO: (state, userInfo) => {
       state.userInfo = userInfo;
-      sessionStorage.setItem("userInfo", JSON.stringify(userInfo));
+      setUserInfo(userInfo);
     },
     // 移除token和用户信息
     REMOVE_INFO: (state) => {
       state.token = "";
       state.userInfo = "";
-      // localStorage.removeItem("token");
-      // sessionStorage.removeItem("userInfo");
-      sessionStorage.clear();
+      removeUserInfo();
       removeToken();
     },
   },

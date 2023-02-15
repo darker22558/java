@@ -448,42 +448,9 @@ export default service;
   }
   ```
 
-+ 在[store/index.js](management/src/store/index.js)中添加关于登录和退出时设置token和userInfo的方法
-  ```javascript
-  export default new Vuex.Store({
-    state: {
-      token: "",
-      userInfo: JSON.parse(sessionStorage.getItem("userInfo")),
-    },
-    mutations: {
-      // 设置token
-      SET_TOKEN: (state, token) => {
-        state.token = token;
-        localStorage.setItem("token", token);
-      },
-      // 设置用户信息
-      SET_USERINFO: (state, userInfo) => {
-        state.userInfo = userInfo;
-        sessionStorage.setItem("userInfo", JSON.stringify(userInfo));
-      },
-      // 移除token和用户信息
-      REMOVE_INFO: (state) => {
-        state.token = "";
-        state.userInfo = "";
-        localStorage.removeItem("token");
-        sessionStorage.removeItem("userInfo");
-      },
-    },
-    getters: {
-      // 获取用户信息
-      getUserInfo: (state) => {
-        return state.userInfo;
-      },
-    },
-    actions: {},
-    modules: {},
-  });
-  ```
++ 参考[vue-admin-template](github.com/PanJiaChen/vue-admin-template)新增[auth.js](management/src/utils/auth.js)实现token和用户信息的存储、获取与删除
+
++ 在[store/index.js](management/src/store/index.js)中添加关于登录和退出时调用设置、删除token和用户信息的方法
 
 + 配置路由权限拦截，见[permission.js](management/src/permission.js)
   ```javascript
@@ -518,7 +485,7 @@ export default service;
       } else {
         // 如果路由要跳转到其他界面，比如首页
         // 去vuex仓库获取用户信息
-        const hasGetUserInfo = sessionStorage.getItem("userInfo");
+        const hasGetUserInfo = getUserInfo();
         // console.log("用户信息：");
         // console.log(hasGetUserInfo);
         if (hasGetUserInfo) {

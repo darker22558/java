@@ -19,7 +19,7 @@ public class Result implements Serializable {
     private Object data;
 
     public static Result success(Object data) {
-        return success(Constant.CODE_SUCCESS, "操作成功", data);
+        return success(Constant.CODE_SUCCESS, "请求成功", data);
     }
 
     public static Result success(String message, Object data) {

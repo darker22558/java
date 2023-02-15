@@ -3,7 +3,7 @@ import router from "./router";
 import NProgress from "nprogress"; // progress bar
 import "nprogress/nprogress.css"; // progress bar style
 import getPageTitle from "@/utils/get-page-title";
-import { getToken, removeToken, setToken } from "@/utils/auth";
+import {getToken, getUserInfo, removeToken, setToken} from "@/utils/auth";
 import { isTokenNeedToBeRefreshed, refreshToken } from "@/api/login";
 NProgress.configure({ showSpinner: false }); // NProgress Configuration
 
@@ -27,7 +27,8 @@ router.beforeEach((to, from, next) => {
   // console.log("判断用户是否登录: " + hasToken);
   if (hasToken) {
     // 有token
-    const hasUserInfo = sessionStorage.getItem("userInfo");
+    // 获取用户信息
+    const hasUserInfo = getUserInfo();
     if (!hasUserInfo) {
       // 没有用户信息
       // localStorage.removeItem("token");

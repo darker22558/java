@@ -83,34 +83,7 @@
         </el-main>
 
         <el-footer>
-<!--          <div style="display: flex; justify-content: space-around">
-            <div >
-              <img src="../assets/logo.png" alt="" />
-            </div>
-            <div >
-              <p>电话: </p>
-              <p>网址: </p>
-              <p>地址：</p>
-              <p>邮编：</p>
-            </div>
-            <div >
-              <ul>
-                <li>
-                  <h5>微信公众号</h5>
-                </li>
-                <li>
-                  <h5>安全管理</h5>
-                </li>
-                <li>
-                  <h5>会议室预约</h5>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div style="display: flex; justify-content: space-around">
-            &lt;!&ndash; 版权内容请在本组件"内容配置-版权"处填写 &ndash;&gt;
-            <p>Copyright 2023 地学综合平台管理系统</p>
-          </div>-->
+
         </el-footer>
       </el-container>
     </el-container>
@@ -119,13 +92,15 @@
 
 <script>
 import { logout } from "@/api/login";
+import {getUserInfo} from "@/utils/auth";
 export default {
   name: "Container",
   data() {
     return {
-      userInfo: sessionStorage.getItem("userInfo")
+      /*userInfo: sessionStorage.getItem("userInfo")
         ? JSON.parse(sessionStorage.getItem("userInfo"))
-        : [],
+        : [],*/
+      userInfo: getUserInfo() ? JSON.parse(getUserInfo()) : [],
       github: "https://github.com/whtli/geo-integrated",
       docs: "https://github.com/whtli/geo-integrated/blob/master/README.md",
       logo: "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80",
