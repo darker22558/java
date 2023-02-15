@@ -22,3 +22,18 @@ export function generateAuthCode() {
   });
 }
 
+export function isTokenNeedToBeRefreshed(token) {
+  return request({
+    url: "/account/isTokenNeedToBeRefreshed",
+    method: "GET",
+    params: { token }
+  });
+}
+
+export function refreshToken() {
+  return request({
+    url: "/account/refreshToken",
+    method: "GET",
+  });
+}
+

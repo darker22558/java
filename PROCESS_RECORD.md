@@ -1183,13 +1183,19 @@ jwt:
 + 添加[SysUserDetails](backend/src/main/java/com/geo/integrated/model/dto/SysUserDetails.java)
 
 + 修改登录流程
-  - [Controller](backend/src/main/java/com/geo/integrated/controller/management/AccountController.java)
-  - [Service](backend/src/main/java/com/geo/integrated/service/AccountService.java)
-  - [ServiceImpl](backend/src/main/java/com/geo/integrated/service/impl/AccountServiceImpl.java)
+  - [AccountController](backend/src/main/java/com/geo/integrated/controller/management/AccountController.java)
+  - [AccountService](backend/src/main/java/com/geo/integrated/service/AccountService.java)
+  - [AccountServiceImpl](backend/src/main/java/com/geo/integrated/service/impl/AccountServiceImpl.java)
 
 + 管理系统添加与后端相同的tokenHead字段
   - [request.js](management/src/utils/request.js)
   - [settings.js](management/src/settings.js)
+
++ 管理系统中添加主动询问是否需要刷新token以及申请刷新token的[接口](management/src/api/login.js)
+  - isTokenNeedToBeRefreshed(token)
+  - refreshToken()
+
++ 每次进行带token的[路由跳转](management/src/permission.js)时前端主动询问是否需要刷新token
 
 ### 6.6.整合EasyExcel数据的导入导出（以`文献数据DataPaper信息的导入导出`为例）
 

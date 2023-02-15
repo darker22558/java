@@ -1,5 +1,6 @@
 package com.geo.integrated.controller.management;
 
+import com.geo.integrated.common.Constant;
 import com.geo.integrated.common.Result;
 import com.geo.integrated.model.dto.LoginDTO;
 import com.geo.integrated.service.AccountService;
@@ -82,18 +83,32 @@ public class AccountController {
     }
 
     /**
+     * 判断token是否需要刷新
+     *
+     * @param token token
+     * @return token是否需要刷新的判断结果
+     */
+    @ApiOperation(value = "判断token是否过期")
+    @GetMapping("/isTokenNeedToBeRefreshed")
+    public Result isTokenNeedToBeRefreshed(@RequestParam String token) {
+        log.info("判断token是否需要刷新 === {}", token);
+        boolean flag = jwtTokenUtils.isTokenNeedToBeRefreshed(token);
+        return Result.success(flag);
+    }
+
+    /**
      * 刷新token
      *
      * @param request 请求头
      * @return token信息
      */
     @ApiOperation(value = "刷新token")
-    @GetMapping(value = "/refreshToken")
+    @GetMapping("/refreshToken")
     public Result refreshToken(HttpServletRequest request) {
         String token = request.getHeader(tokenHeader);
         String refreshToken = jwtTokenUtils.refreshHeadToken(token);
         if (refreshToken == null) {
-            return Result.fail("token已经过期！");
+            return Result.fail(Constant.CODE_UNAUTHORIZED,"token无效！", null);
         }
         Map<String, String> tokenMap = new LinkedHashMap<>();
         tokenMap.put("token", refreshToken);

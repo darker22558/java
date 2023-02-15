@@ -3,7 +3,8 @@ import router from "./router";
 import NProgress from "nprogress"; // progress bar
 import "nprogress/nprogress.css"; // progress bar style
 import getPageTitle from "@/utils/get-page-title";
-import {getToken, removeToken} from "@/utils/auth";
+import { getToken, removeToken, setToken } from "@/utils/auth";
+import { isTokenNeedToBeRefreshed, refreshToken } from "@/api/login";
 NProgress.configure({ showSpinner: false }); // NProgress Configuration
 
 const whiteList = ["/login"]; // no redirect whitelist
@@ -13,8 +14,8 @@ const whiteList = ["/login"]; // no redirect whitelist
 // from: Route: 当前导航正要离开的路由
 // next: Function: 一定要调用该方法来 resolve 这个钩子。执行效果依赖 next 方法的调用参数。
 router.beforeEach((to, from, next) => {
-  console.log("to ========= ")
-  console.log(to)
+  console.log("to ========= ");
+  console.log(to);
   // 开始加载进度条
   NProgress.start();
   // 设置页面标题
@@ -25,11 +26,12 @@ router.beforeEach((to, from, next) => {
   const hasToken = getToken();
   // console.log("判断用户是否登录: " + hasToken);
   if (hasToken) {
+    // 有token
     const hasUserInfo = sessionStorage.getItem("userInfo");
     if (!hasUserInfo) {
       // 没有用户信息
       // localStorage.removeItem("token");
-      removeToken()
+      removeToken();
       next({ path: "/login" });
       // 进度条结束
       NProgress.done();
@@ -41,6 +43,17 @@ router.beforeEach((to, from, next) => {
         // 进度条结束
         NProgress.done();
       } else {
+        isTokenNeedToBeRefreshed(hasToken).then((res) => {
+          const flag = res.data;
+          if (flag) {
+            console.log("token 需要刷新了");
+            refreshToken().then((res) => {
+              const token = res.data.token;
+              console.log("新token === ", token);
+              setToken(token);
+            });
+          }
+        })
         next();
       }
     }

@@ -114,6 +114,27 @@ public class JwtTokenUtils {
         }
     }
 
+    /**
+     * 判断token是否到达需要刷新的时间范围
+     */
+    public boolean isTokenNeedToBeRefreshed(String token) {
+        // 从token中获取过期时间
+        Claims claims = getClaimsFromToken(token);
+        Date created = claims.get(CLAIM_KEY_CREATED, Date.class);
+        Date now = new Date();
+        Date exp = claims.getExpiration();
+        // 当前时间在失效时间之前的30分钟内
+        log.info("创建时间 === {}", created);
+        log.info("当前时间 === {}", now);
+        log.info("过期时间 === {}", exp);
+        log.info("刷新范围 === {}", DateUtil.offsetSecond(exp, - TIME_RANGE * TIME_SECOND));
+        // 判断当前时间是否在[过期时间前30分钟，过期时间]的区间范围内
+        if (now.after(DateUtil.offsetSecond(exp, - TIME_RANGE * TIME_SECOND)) && now.before(exp)) {
+            log.info("需要刷新 === token");
+            return true;
+        }
+        return false;
+    }
 
     /**
      * 当原来的token没过期时是可以刷新的
@@ -121,10 +142,13 @@ public class JwtTokenUtils {
      * @param oldToken 带tokenHead的token
      */
     public String refreshHeadToken(String oldToken) {
+        // 空串
         if (StrUtil.isEmpty(oldToken)) {
             return null;
         }
+        // 获取token
         String token = oldToken.substring(tokenHead.length());
+        // token是空
         if (StrUtil.isEmpty(token)) {
             return null;
         }
@@ -156,10 +180,11 @@ public class JwtTokenUtils {
         Claims claims = getClaimsFromToken(token);
         Date created = claims.get(CLAIM_KEY_CREATED, Date.class);
         Date refreshDate = new Date();
-        //刷新时间在创建时间的指定时间内
+        // 当前时间在token创建后的30分钟之内
         if (refreshDate.after(created) && refreshDate.before(DateUtil.offsetSecond(created, time))) {
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
 }
