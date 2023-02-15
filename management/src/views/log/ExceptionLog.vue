@@ -1,14 +1,14 @@
 <template>
   <div>
     <!--搜索-->
-    <div style="margin-left: 2px; display: flex; justify-content: space-between">
+    <div style="margin-left: 2px;">
       <el-input placeholder="请输入操作描述" v-model="queryInfo.description" clearable style="width: 220px" suffix-icon="el-icon-document-remove"></el-input>
       <el-input placeholder="请输入异常信息" v-model="queryInfo.error" clearable style="margin-left: 10px; width: 220px" suffix-icon="el-icon-document-remove"></el-input>
       <el-button type="primary" style="margin-left: 10px" @click="loadExceptionLog">搜索</el-button>
       <el-button type="warning" @click="reset">重置</el-button>
     </div>
     <div style="margin-left: 2px; margin-top: 3px">
-      <el-table :data="logList" border stripe :height="400">
+      <el-table :data="logList" border stripe :height="420">
         <el-table-column label="详情" type="expand" width="50">
           <template v-slot="props">
             <el-form label-position="left" inline class="table-expand">

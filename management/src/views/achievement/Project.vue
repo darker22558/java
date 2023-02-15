@@ -9,7 +9,7 @@
       <el-button type="danger" @click="deleteProjectBatch">批量删除</el-button>
     </div>
     <div style="margin-left: 2px; margin-top: 3px">
-      <el-table :data="projectList" border stripe v-loading="loading" :height="400" @selection-change="handleSelectionChange">
+      <el-table :data="projectList" border stripe v-loading="loading" :height="420" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="40"></el-table-column>
 <!--        <el-table-column label="序号" prop="id" width="50"></el-table-column>-->
         <el-table-column label="编号" prop="number" width="140"></el-table-column>

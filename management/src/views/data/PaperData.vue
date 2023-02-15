@@ -14,14 +14,14 @@
       </el-upload>
     </div>
     <div style="margin-left: 2px; margin-top: 3px">
-      <el-table id="papers" :data="paperList" border stripe v-loading="loading" :height="400" @selection-change="handleSelectionChange">
+      <el-table id="papers" :data="paperList" border stripe v-loading="loading" :height="420" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="40"> </el-table-column>
 <!--        <el-table-column label="序号" prop="id" width="50"> </el-table-column>-->
         <el-table-column label="eid" prop="eid" width="160"> </el-table-column>
-        <el-table-column label="标题" prop="title" width="200" show-overflow-tooltip></el-table-column>
-        <el-table-column label="发表时间" width="260">
+        <el-table-column label="标题" prop="title" width="340" show-overflow-tooltip></el-table-column>
+        <el-table-column label="发表时间" width="150">
           <template v-slot="scope">
-            <el-date-picker disabled v-model="scope.row.publicDate" size="small"></el-date-picker>
+            <el-date-picker style="width: 100%" disabled v-model="scope.row.publicDate" size="small"></el-date-picker>
           </template>
         </el-table-column>
         <el-table-column label="issn" prop="issn" width="100"></el-table-column>

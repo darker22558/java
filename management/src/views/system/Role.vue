@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="margin-left: 2px; display: flex; justify-content: space-between">
+    <div style="margin-left: 2px;">
       <el-input placeholder="请输入名称" v-model="queryInfo.name" clearable style="width: 180px" suffix-icon="el-icon-document-remove"></el-input>
       <el-input placeholder="请输入描述" v-model="queryInfo.description" clearable style="width: 180px; margin-left: 10px" suffix-icon="el-icon-document-remove"></el-input>
       <el-input placeholder="请输入唯一标识" v-model="queryInfo.flag" clearable style="width: 180px; margin-left: 10px" suffix-icon="el-icon-document-remove"></el-input>
@@ -9,7 +9,7 @@
       <el-button type="primary" @click="addRole">新增</el-button>
     </div>
     <div style="margin-left: 2px; margin-top: 3px">
-      <el-table :data="roleList" border stripe v-loading="loading" :height="400">
+      <el-table :data="roleList" border stripe v-loading="loading" :height="420">
         <!--        <el-table-column type="selection" width="40"></el-table-column>-->
         <!--        <el-table-column label="序号" prop="id" width="50"></el-table-column>-->
         <el-table-column label="名称" prop="name" width="200"></el-table-column>

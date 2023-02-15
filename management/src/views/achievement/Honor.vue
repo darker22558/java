@@ -10,7 +10,7 @@
       <el-button type="danger" @click="deleteHonorBatch">批量删除</el-button>
     </div>
     <div style="margin-left: 2px; margin-top: 3px">
-      <el-table :data="honorList" border stripe v-loading="loading" :height="400" @selection-change="handleSelectionChange">
+      <el-table :data="honorList" border stripe v-loading="loading" :height="420" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="40"></el-table-column>
 <!--        <el-table-column label="序号" prop="id" width="50"></el-table-column>-->
         <el-table-column label="荣誉名称" prop="honorName" width="200"></el-table-column>

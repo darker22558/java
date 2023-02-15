@@ -15,7 +15,7 @@
       <el-button type="danger" @click="deleteUserBatch">批量删除</el-button>
     </div>
     <div style="margin-left: 2px; margin-top: 3px">
-      <el-table :data="userList" border stripe v-loading="loading" :height="400" @selection-change="handleSelectionChange">
+      <el-table :data="userList" border stripe v-loading="loading" :height="420" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="40"></el-table-column>
         <!--        <el-table-column label="序号" prop="id" width="50"></el-table-column>-->
         <el-table-column label="用户名" prop="username" width="80"></el-table-column>

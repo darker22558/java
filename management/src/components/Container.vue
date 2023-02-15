@@ -1,21 +1,21 @@
 <template>
   <div>
     <el-container style="height: 100vh;" class="container">
-      <el-aside style="width: 18%; background-color: #545c64; ">
-<!--        <div style="height: 54px; line-height: 60px; text-align: left; margin-left: 23px; margin-top: 6px">
+      <el-aside style="width: 230px; background-color: #545c64; ">
+        <div style="height: 54px; line-height: 60px; text-align: left; margin-left: 23px; margin-top: 6px">
           <img src="../assets/logo.png" alt="" style="width: 20px; position: relative; top: 5px"/>
           <b style="color: black; margin-left: 5px; font-size: 18px">地学综合平台</b>
-        </div>-->
+        </div>
         <el-menu
           router
-          class="el-menu-demo"
+          class="el-menu-vertical-demo"
           background-color="#545c64"
           text-color="#fff"
           active-text-color="#ffd04b"
         >
           <template v-for="(item, index) in this.$router.options.routes">
             <template v-if="!item.hidden && item.path === '/'">
-              <el-menu-item :key="index" :index="item.path">
+              <el-menu-item :key="index" :index="item.path" style="width: 230px">
                 <template slot="title" v-if="item.children[0].meta">
                   <i :class="item.children[0].meta.icon"></i>
                   <span>{{ item.children[0].meta.title }}</span>
@@ -27,7 +27,7 @@
               </el-menu-item>
             </template>
             <template v-if="!item.hidden && item.path !== '/'">
-              <el-submenu :key="index" :index="item.path">
+              <el-submenu :key="index" :index="item.path" style="width: 230px">
                 <template slot="title" v-if="item.meta">
                   <i :class="item.meta.icon"></i>
                   <span>{{ item.meta.title }}</span>
@@ -56,7 +56,7 @@
 
       <el-container>
         <el-header style="vertical-align: center; text-align: right; font-size: 12px; background-color: #b3c0d1">
-          <el-avatar :size="40" style="margin-top: 10px; margin-right: 40px" :src="logo"></el-avatar>
+          <el-avatar :size="40" style="margin-top: 10px; margin-right: 70px" :src="userInfo.avatar.toString().startsWith('http') ? userInfo.avatar : logo"></el-avatar>
           <el-dropdown style="position: absolute; right: 10px">
             <span style="color: black; cursor: pointer">
               <b>
