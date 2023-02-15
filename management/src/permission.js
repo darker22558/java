@@ -3,6 +3,7 @@ import router from "./router";
 import NProgress from "nprogress"; // progress bar
 import "nprogress/nprogress.css"; // progress bar style
 import getPageTitle from "@/utils/get-page-title";
+import {getToken, removeToken} from "@/utils/auth";
 NProgress.configure({ showSpinner: false }); // NProgress Configuration
 
 const whiteList = ["/login"]; // no redirect whitelist
@@ -19,14 +20,16 @@ router.beforeEach((to, from, next) => {
   // 设置页面标题
   document.title = getPageTitle(to.meta.title);
   // 判断用户是否登录，有token值就意味着已经登录了
-  const hasToken = localStorage.getItem("token");
   // const hasToken = store.state.token;
+  // const hasToken = localStorage.getItem("token");
+  const hasToken = getToken();
   // console.log("判断用户是否登录: " + hasToken);
   if (hasToken) {
     const hasUserInfo = sessionStorage.getItem("userInfo");
     if (!hasUserInfo) {
       // 没有用户信息
-      localStorage.removeItem("token");
+      // localStorage.removeItem("token");
+      removeToken()
       next({ path: "/login" });
       // 进度条结束
       NProgress.done();

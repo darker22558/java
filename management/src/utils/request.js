@@ -3,6 +3,7 @@ import { Message } from "element-ui";
 import store from "@/store";
 import router from "@/router/index";
 import { tokenHead } from "@/settings";
+import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
@@ -18,7 +19,7 @@ const service = axios.create({
 service.interceptors.request.use(
   (config) => {
     // do something before request is sent
-    const token = localStorage.getItem("token");
+    const token = getToken();
     // console.log("token ========== {}", token)
     if (token) {
       // let each request carry token
@@ -72,7 +73,8 @@ service.interceptors.response.use(
 
 // 专用于文件下载的function
 export const downloadMethod = (url, filename, params = {}) => {
-  const token = localStorage.getItem("token");
+  // const token = localStorage.getItem("token");
+  const token = getToken();
   axios({
     method: "GET",
     url: url,
