@@ -9,12 +9,12 @@
       <el-button type="primary" @click="addRole">新增</el-button>
     </div>
     <div style="margin-left: 2px; margin-top: 3px">
-      <el-table :data="roleList" border stripe v-loading="loading" :height="400" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="40"></el-table-column>
+      <el-table :data="roleList" border stripe v-loading="loading" :height="400">
+        <!--        <el-table-column type="selection" width="40"></el-table-column>-->
         <!--        <el-table-column label="序号" prop="id" width="50"></el-table-column>-->
         <el-table-column label="名称" prop="name" width="200"></el-table-column>
-        <el-table-column label="描述" prop="description" width="200"></el-table-column>
-        <el-table-column label="唯一标识" prop="flag" width="200"></el-table-column>
+        <el-table-column label="描述" prop="description" width="300"></el-table-column>
+        <el-table-column label="唯一标识" prop="flag" width="300"></el-table-column>
         <el-table-column label="操作" fixed="right">
           <template v-slot="scope">
             <el-button size="mini" type="success" icon="el-icon-edit" @click="editRole(scope.row)"></el-button>
@@ -43,10 +43,7 @@
     <div style="padding: 10px 0">
       <el-pagination
         background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :page-sizes="[5, 10, 15, 20]"
-        layout="total, sizes, prev, pager, next, jumper"
+        layout="total, prev, pager, next"
         :total="total">
       </el-pagination>
     </div>

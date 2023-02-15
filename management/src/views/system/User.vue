@@ -32,7 +32,7 @@
             <el-date-picker style="width: 100%" disabled v-model="scope.row.updateTime" size="small"></el-date-picker>
           </template>
         </el-table-column>
-        <el-table-column label="角色权限" prop="role" width="120"></el-table-column>
+        <el-table-column label="角色权限" prop="role" width="80" :formatter="formType"></el-table-column>
         <el-table-column label="操作" fixed="right">
           <template v-slot="scope">
             <el-button size="mini" type="success" icon="el-icon-edit" @click="editUser(scope.row)"></el-button>
@@ -65,7 +65,11 @@
           <el-input v-model="userForm.password"></el-input>
         </el-form-item>
         <el-form-item label="角色权限">
-          <el-input v-model="userForm.role"></el-input>
+          <el-select v-model="userForm.role" placeholder="请选择角色" style="width: 100%">
+            <el-option v-for="item in roleList" :key="item.id" :label="item.name" :value="item.flag">
+              {{ item.name }}
+            </el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -176,6 +180,13 @@ export default {
       this.queryInfo.pageNum = 1;
       this.queryInfo.pageSize = 10;
       this.loadUserList();
+    },
+    formType(cellValue){
+      for(let i = 0; i< this.roleList.length; i++){
+        if (cellValue.role === this.roleList[i].flag) {
+          return this.roleList[i].name
+        }
+      }
     },
     addUser() {
       this.userForm = {};

@@ -9,7 +9,7 @@ import OperationLog from "@/views/log/OperationLog.vue";
 import Patent from "@/views/achievement/Patent.vue";
 import Project from "@/views/achievement/Project.vue";
 import Honor from "@/views/achievement/Honor.vue";
-import Paper from "@/views/achievement/Paper.vue";
+// import Paper from "@/views/achievement/Paper.vue";
 import ExceptionLog from "@/views/log/ExceptionLog.vue";
 import Statistic from "@/views/visualization/Statistic.vue";
 import User from "@/views/system/User.vue";
@@ -89,12 +89,12 @@ const routes = [
         meta: { title: "科研项目", icon: "el-icon-collection" },
         component: Project,
       },
-      {
+      /*{
         path: "paper",
         name: "论文发表",
         meta: { title: "论文发表", icon: "el-icon-collection" },
         component: Paper,
-      },
+      },*/
       {
         path: "patent",
         name: "发明专利",
@@ -113,7 +113,7 @@ const routes = [
       },*/
     ],
   },
-  {
+  /*{
     path: "/news",
     name: "新闻",
     component: Container,
@@ -131,7 +131,7 @@ const routes = [
         meta: { title: "信息公告", icon: "el-icon-news" },
       },
     ],
-  },
+  },*/
   {
     path: "/about",
     name: "相关信息",
