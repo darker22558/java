@@ -21,8 +21,8 @@ mybatis-plus:
 
 # 填入注册后得到的accessKey和accessSecretKey
 qiniu:
-  accessKey: wTX9kW-E_esb7jKODHzulGonErVrle_LhR5_r8fU
-  accessSecretKey: M4Fpizzp_gu13a-EXQfsu078ptHdkAM48x2-kfi3
+  accessKey: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  accessSecretKey: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   bucketName: geo-integrated
   domainName: http://rpppj5gw9.hb-bkt.clouddn.com/
 
