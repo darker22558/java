@@ -17,13 +17,13 @@
         <img src="https://img.shields.io/badge/Element-%3E2.15.12-brightgreen" alt="element">
     </a>
     <a href="https://github.com/dromara/hutool" target="_blank">
-        <img src="https://img.shields.io/badge/Hutool-5.8.11-orange" alt="element">
+        <img src="https://img.shields.io/badge/Hutool-5.8.11-blue" alt="element">
     </a>
     <a href="https://github.com/alibaba/easyexcel" target="_blank">
-        <img src="https://img.shields.io/badge/EasyExcel-3.1.3-orange" alt="element">
+        <img src="https://img.shields.io/badge/EasyExcel-3.1.3-blue" alt="element">
     </a>
     <a href="https://github.com/alibaba/druid" target="_blank">
-        <img src="https://img.shields.io/badge/Druid-1.2.6-orange" alt="element">
+        <img src="https://img.shields.io/badge/Druid-1.2.6-blue" alt="element">
     </a>
 </p>
 
