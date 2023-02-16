@@ -1329,3 +1329,124 @@ jwt:
   - exportDataTemplate 导出模板
   - importDataBatch 批量导入数据
   - exportDataBatch 批量导出数据
+
+
+### 6.7.整合Druid
+
+
+#### 6.7.1.加密数据库密码
+
++ 添加依赖[pom.xml](./backend/pom.xml)
+  ```xml
+      <dependencices>
+          <!-- druid 阿里数据库连接池 -->
+          <dependency>
+              <groupId>com.alibaba</groupId>
+              <artifactId>druid-spring-boot-starter</artifactId>
+              <version>1.2.6</version>
+          </dependency>
+      </dependencices>
+  ```
+
++ 执行以下命令，得到加密公钥、私钥、加密后的密码
+  ```bash
+  java -cp .\druid-1.2.6.jar com.alibaba.druid.filter.config.ConfigTools my_password
+  ```
+
+
+#### 6.7.2.配置连接池和监控
++ 在配置文件中添加druid配置（以[本地环境dev](backend/src/main/resources/application-dev.yml)为例）
+  ```yaml
+  spring:
+    datasource:
+      url: jdbc:mysql://xxx.xxx.xxx.xxx:3306/geo_integrated?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
+      username: root
+      password: pDWP5Xi+pPQ7W78rw2xYLTE5qOdk6p+4g8VPOSUrdZHbckUhmJIrrPRW81lX/VOLIyK9e1qF89UBUy9x/K7egw==
+      publicKey: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAK7n4hdG4inyggm99S6HxCfuEGzLob0DplBKFbxROLveFXMEOLJ1b+BA/58qVLkh795Zn/c0V1PWmFklC/zG4u8CAwEAAQ==
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      type: com.alibaba.druid.pool.DruidDataSource
+      druid:
+        # 配置连接池
+        # 初始化时建立物理连接的个数。初始化发生在显示调用init方法，或者第一次getConnection时
+        initial-size: 5
+        # 最小连接池数量
+        min-idle: 5
+        # 最大连接池数量
+        max-active: 20
+        # 获取连接时最大等待时间(单位：毫秒)
+        max-wait: 60000
+        # 配置监控统计拦截的filters，stat:监控统计、log4j：日志记录、wall：防御sql注入
+        filters: stat, wall
+        # 配置监控页功能
+        stat-view-servlet:
+          url-pattern: /druid/*
+          allow: localhost,127.0.0.1
+          # 是否启用StatViewServlet（监控页面）默认值为false（考虑到安全问题默认并未启动，如需启用建议设置密码或白名单以保障安全）
+          enabled: true
+          # 登录用户名/密码
+          login-username: admin
+          login-password: 123456
+          # 禁用 HTML 中 Reset All 按钮
+          reset-enable: false
+        # 监控web
+        web-stat-filter:
+          enabled: true
+          exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
+          url-pattern: /*
+        filter:
+          # 对上面filters里面的stat的详细配置
+          stat:
+            slow-sql-millis: 1000
+            enabled: true
+            log-slow-sql: true
+          # 对上面filters里面的wall的详细配置
+          wall:
+            enabled: true
+            config:
+              drop-table-allow: false
+  ```
+
++ 修改SpringSecurity放行配置
+```java
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.csrf().disable()   // 由于使用的是JWT，这里不需要csrf
+                .sessionManagement()    // 基于token，所以不需要session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.GET,
+                        "/",
+                        "/*.html",
+                        "/favicon.ico",
+                        "/**/*.html",
+                        "/**/*.css",
+                        "/**/*.js",
+                        "/swagger-resources/**",
+                        "/v2/api-docs/**"
+                )// 允许对于网站静态资源的无授权访问
+                .permitAll()
+                .antMatchers("/management/account/login",
+                        "/management/account/generateAuthCode",
+                        "/management/account/register") // 对登录、注册、获取验证码要允许匿名访问
+                .permitAll()
+                .antMatchers(HttpMethod.OPTIONS)    // 跨域请求会先进行一次options请求
+                .permitAll()
+                .antMatchers("/druid/**")   // 放行druid监控
+                .permitAll()
+                .anyRequest()           // 除上面外的所有请求全部需要鉴权认证
+                .authenticated();
+        // 禁用缓存
+        httpSecurity.headers().cacheControl();
+        // 添加JWT filter
+        httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        // 添加自定义未授权和未登录结果返回
+        httpSecurity.exceptionHandling()
+                .accessDeniedHandler(restfulAccessDeniedHandler)
+                .authenticationEntryPoint(restAuthenticationEntryPoint);
+    }
+}
+```
+
++ 在[localhost:9090/druid](localhost:9090/druid)中使用yml文件中配置的druid用户名和密码登录查看sql监控

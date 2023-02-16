@@ -42,13 +42,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf() // 由于使用的是JWT，这里不需要csrf
-                .disable()
+        httpSecurity.csrf().disable()   // 由于使用的是JWT，这里不需要csrf
                 .sessionManagement()    // 基于token，所以不需要session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, // 允许对于网站静态资源的无授权访问
+                .antMatchers(HttpMethod.GET,
                         "/",
                         "/*.html",
                         "/favicon.ico",
@@ -57,17 +56,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js",
                         "/swagger-resources/**",
                         "/v2/api-docs/**"
-                )
-                .permitAll()
+                ).permitAll()                                           // 允许对于网站静态资源的无授权访问
                 .antMatchers("/management/account/login",
                         "/management/account/generateAuthCode",
-                        "/management/account/register") // 对登录、注册、获取验证码要允许匿名访问
-                .permitAll()
-                .antMatchers(HttpMethod.OPTIONS)    // 跨域请求会先进行一次options请求
-                .permitAll()
-                // .antMatchers("/**")  // 测试时全部运行访问
-                // .permitAll()
-                .anyRequest()           // 除上面外的所有请求全部需要鉴权认证
+                        "/management/account/register").permitAll()     // 对登录、注册、获取验证码要允许匿名访问
+                .antMatchers(HttpMethod.OPTIONS).permitAll()            // 跨域请求会先进行一次options请求
+                .antMatchers("/druid/**").permitAll()     // 放行druid监控
+                .anyRequest()                                           // 除上面外的所有请求全部需要鉴权认证
                 .authenticated();
         // 禁用缓存
         httpSecurity.headers().cacheControl();
