@@ -1,38 +1,86 @@
-# 地学综合平台
+# 科研数据管理平台
 
-## 后台管理系统
-### 1.首页
-#### 1.1.导航
+<p align="center">
+    <a href="https://github.com/spring-projects/spring-boot" target="_blank">	
+      <img src="https://img.shields.io/badge/SpringBoot-2.7.7-orange">
+    </a>
+    <a href="https://github.com/vuejs/vue" target="_blank">	
+      <img src="https://img.shields.io/badge/Vue-2.6.11-brightgreen">
+    </a>
+    <a href="https://docs.oracle.com/javase/8/docs/api/?xd_co_f=47c934d9-e663-4eba-819c-b726fc2d0847" target="_blank">	
+      <img src="https://img.shields.io/badge/JDK-1.8-orange">
+    </a>
+    <a href="https://github.com/baomidou/mybatis-plus" target="_blank">	
+      <img src="https://img.shields.io/badge/Mybatis--Plus-3.5.2-orange">
+    </a>
+    <a href="https://github.com/ElemeFE/element" target="_blank">
+        <img src="https://img.shields.io/badge/Element-%3E2.15.12-brightgreen" alt="element">
+    </a>
+    <a href="https://github.com/dromara/hutool" target="_blank">
+        <img src="https://img.shields.io/badge/Hutool-5.8.11-orange" alt="element">
+    </a>
+    <a href="https://github.com/alibaba/easyexcel" target="_blank">
+        <img src="https://img.shields.io/badge/EasyExcel-3.1.3-orange" alt="element">
+    </a>
+    <a href="https://github.com/alibaba/druid" target="_blank">
+        <img src="https://img.shields.io/badge/Druid-1.2.6-orange" alt="element">
+    </a>
+</p>
 
-### 2.数据管理
-#### 2.1.煤田数据
-#### 2.1.文献数据
+## 简介
++ 项目地址：https://github.com/whtli/geo-integrated
++ 登录账号：`admin`；密码：`111111`
 
-### 3.科研成果管理
-#### 3.1.所获荣誉
-#### 3.2.科研项目
-#### 3.3.科研项目
-#### 3.4.论文发表
-#### 3.5.发明专利
-#### 3.6.自主课题
-#### 3.7.其他项目
 
-### 4.新闻管理
-#### 4.1.最新动态
-#### 4.2.信息公告
+## 技术栈
 
-### 5.相关信息管理
-#### 5.1.平台概况
+### 后端
 
-### 6.可视化管理
-#### 6.2.网站数据统计
-#### 6.1.数据服务中心
++ 核心框架：[Spring Boot](https://github.com/spring-projects/spring-boot)、MySQL
++ 认证与授权：SpringSecurity、[jjwt](https://github.com/jwtk/jjwt)
++ ORM 框架：[MyBatis-Plus](https://github.com/baomidou/mybatis-plus)
++ NoSQL 缓存：[Redis](https://github.com/redis/redis)
++ 工具类库：[Hutool](https://github.com/dromara/hutool)
++ 数据库连接池：[Druid](https://github.com/alibaba/druid)
++ Excel工具：[EasyExcel](https://github.com/alibaba/easyexcel)
++ 离线 IP 地址库：[ip2region](https://github.com/lionsoul2014/ip2region)
++ UserAgent 解析：[yauaa](https://github.com/nielsbasjes/yauaa)
++ 图像云存储：七牛云
 
-### 7.系统管理
-#### 7.1.角色管理
-#### 7.2.用户管理
+### 前端
 
-### 8.日志管理
-#### 8.1.操作日志
-#### 8.2.异常日志
-#### 8.3.访问日志
++ 核心框架：[Vue2](https://github.com/vuejs/vue)、[Vue Router](https://github.com/vuejs/vue-router)、[Vuex](https://github.com/vuejs/vuex)
++ UI 框架：[Element UI](https://github.com/ElemeFE/element)
++ 网络请求库：[axios](https://github.com/axios/axios)
++ 可视化图表库：[echarts](https://github.com/apache/echarts)
+
+
+## 实现功能
+
+### 项目过程记录见[PROCESS_RECORD.md](PROCESS_RECORD.md)
+
++ 数据信息的增删改查
++ 数据表格的导入导出（EasyExcel）
++ 自定义AOP记录操作日志、异常日志
++ 整合OSS实现图像上传到七牛云
++ 整合SpringSecurity和JWT实现认证和授权
++ 整合 ECharts 的数据统计
++ 整合了Redis实现数据缓存
++ 整合Swagger-UI实现在线API文档
++ 整合SpringTask实现定时任务
++ 自定义全局异常处理
+
+
+## 注意事项
+
++ 创建 MySQL 数据库，字符集为utf8mb4，并执行[geo_integrated.sql](geo_integrated.sql)初始化表
++ 确保 Maven 和 npm 能够成功导入现版本依赖
++ 项目运行之前需要修改[backend/src/main/resources/application.yml](backend/src/main/resources/application.yml)等配置文件中的配置信息，如本地数据库名、七牛云的accessKey和accessSecretKey
++ 安装 Redis 并启动，然后启动后端服务
++ 系统的默认用户名密码为admin，123456
++ 分别在`management`目录下执行`npm install`安装依赖，然后可执行`npm run serve`启动项目
++ 部署前需要根据实际情况修改前端项目的baseURL和后端项目的server.address和server.port
+
+
+## 感谢上面提到的每个开源项目
+
