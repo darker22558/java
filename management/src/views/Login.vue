@@ -4,7 +4,7 @@
       <el-container>
         <el-header>
           <!--          <img class="logo" src="../assets/logo.png" />-->
-          <span style="font-size: 30px; font-weight: bold">地学综合平台管理系统</span>
+          <span style="font-size: 30px; font-weight: bold">科研数据管理系统</span>
         </el-header>
         <el-main>
           <el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="100px" class="loginForm">

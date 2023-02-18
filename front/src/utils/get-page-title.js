@@ -1,6 +1,6 @@
 import defaultSettings from "@/settings";
 
-const title = defaultSettings.title || "地学综合平台";
+const title = defaultSettings.title || "科研数据";
 
 export default function getPageTitle(pageTitle) {
   if (pageTitle) {

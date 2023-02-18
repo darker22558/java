@@ -263,7 +263,7 @@ export default service;
 #### 2.1.3.完成前端跨域配置
 + 见[request.js](./management/src/utils/request.js)文件中的创建axios实例，baseURL填写后端地址和端口
 
-### 2.2 地学综合平台管理系统
+### 2.2 科研数据管理系统
 
 #### 2.2.1.布局调整
 + 添加界面统一布局[Container](management/src/components/Container.vue)并完善侧边栏导航配置
@@ -274,7 +274,7 @@ export default service;
         <el-aside style="width: 18%; background-color: #545c64; height: 100vh">
           <div style="height: 54px; line-height: 60px; text-align: left; margin-left: 23px; margin-top: 6px">
             <img src="../assets/logo.png" alt="" style="width: 20px; position: relative; top: 5px"/>
-            <b style="color: black; margin-left: 5px; font-size: 18px">地学综合平台</b>
+            <b style="color: black; margin-left: 5px; font-size: 18px">科研数据</b>
           </div>
           <el-menu
             router
@@ -363,7 +363,7 @@ export default service;
 
 + 见[vue.config.js](management/vue.config.js)和[settings.js](management/src/settings.js)
 
-### 2.3 地学综合平台
+### 2.3 科研数据
 
 #### 2.3.1.布局调整
 + 添加界面统一布局[Container](management/src/components/Container.vue)

@@ -1,3 +1,3 @@
 module.exports = {
-  title: "地学综合平台",
+  title: "科研数据",
 };

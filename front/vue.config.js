@@ -5,7 +5,7 @@ function resolve(dir) {
 
 const defaultSettings = require("./src/settings.js");
 // 网站标题
-const name = defaultSettings.title || "地学综合平台";
+const name = defaultSettings.title || "科研数据";
 // 本地端口
 const port = process.env.port || process.env.npm_config_port || 9092;
 

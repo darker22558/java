@@ -4,7 +4,7 @@
       <el-aside style="width: 230px; background-color: #545c64; ">
         <div style="height: 54px; line-height: 60px; text-align: left; margin-left: 23px; margin-top: 6px">
           <img src="../assets/logo.png" alt="" style="width: 20px; position: relative; top: 5px"/>
-          <b style="color: black; margin-left: 5px; font-size: 18px">地学综合平台</b>
+          <b style="color: black; margin-left: 5px; font-size: 18px">科研数据</b>
         </div>
         <el-menu
           router

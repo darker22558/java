@@ -1,4 +1,4 @@
-# 科研数据管理平系统
+# 科研数据管理系统
 
 <p align="center">
     <a href="https://github.com/spring-projects/spring-boot" target="_blank">	

@@ -1,4 +1,4 @@
 module.exports = {
-  title: "地学综合平台管理系统",
+  title: "科研数据管理系统",
   tokenHead: "Geo ",
 };
