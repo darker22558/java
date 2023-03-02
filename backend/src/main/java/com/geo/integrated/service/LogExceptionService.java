@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.Async;
 /**
  * @author: whtli
  * @date: 2023/01/28
- * @description: 异常日志服务层
+ * @description: 异常日志业务层
  */
 public interface LogExceptionService extends IService<LogException> {
     /**

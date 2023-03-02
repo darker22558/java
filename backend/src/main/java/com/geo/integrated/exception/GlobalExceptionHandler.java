@@ -52,7 +52,7 @@ public class GlobalExceptionHandler {
     /**
      * 如果抛出的是ServiceException，则调用该方法
      *
-     * @param se 服务层实现异常
+     * @param se 业务层实现异常
      * @return 异常信息
      */
     @ResponseBody

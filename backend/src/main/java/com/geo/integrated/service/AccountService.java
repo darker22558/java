@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * @author: whtli
  * @date: 2023/01/16
- * @description: 用户登录管理服务层
+ * @description: 用户登录管理业务层
  */
 public interface AccountService extends IService<SysUser> {
 

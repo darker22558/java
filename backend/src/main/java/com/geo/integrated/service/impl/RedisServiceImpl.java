@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author: whtli
  * @date: 2023/02/02
- * @description: redis操作服务层实现
+ * @description: redis操作业务层实现
  */
 @Service
 public class RedisServiceImpl implements RedisService {

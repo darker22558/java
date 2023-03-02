@@ -31,7 +31,7 @@ import java.util.Random;
 /**
  * @author: whtli
  * @date: 2023/01/16
- * @description: 用户登录管理服务层实现
+ * @description: 用户登录管理业务层实现
  */
 @Service
 @Slf4j

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 /**
  * @author: whtli
  * @date: 2023/01/27
- * @description: 操作日志服务层实现
+ * @description: 操作日志业务层实现
  */
 @Service
 public class LogOperationServiceImpl extends ServiceImpl<LogOperationMapper, LogOperation> implements LogOperationService {

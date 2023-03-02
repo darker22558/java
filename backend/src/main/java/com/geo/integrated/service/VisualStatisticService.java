@@ -5,7 +5,7 @@ import java.util.Map;
 /**
  * @author: whtli
  * @date: 2023/02/09
- * @description: 网站数据统计服务层
+ * @description: 网站数据统计业务层
  */
 public interface VisualStatisticService {
     /**

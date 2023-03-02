@@ -17,7 +17,7 @@ import java.util.Date;
 /**
  * @author: whtli
  * @date: 2023/01/16
- * @description: 用户相关功能服务层实现
+ * @description: 用户相关功能业务层实现
  */
 @Service
 @Slf4j

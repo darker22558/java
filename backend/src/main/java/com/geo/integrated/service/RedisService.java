@@ -3,7 +3,7 @@ package com.geo.integrated.service;
 /**
  * @author: whtli
  * @date: 2023/02/02
- * @description: redis操作服务层
+ * @description: redis操作业务层
  * 对象和数组都以json形式进行存储
  */
 public interface RedisService {

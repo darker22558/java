@@ -536,8 +536,8 @@ export default service;
 #### 5.1.1.文献数据
 + 实体类[DataPaper.java](backend/src/main/java/com/geo/integrated/model/DataPaper.java)
 + 控制层[DataPaperController.java](backend/src/main/java/com/geo/integrated/controller/management/DataPaperController.java)
-+ 服务层[DataPaperService.java](backend/src/main/java/com/geo/integrated/service/DataPaperService.java)
-+ 服务层实现[DataPaperServiceImpl.java](backend/src/main/java/com/geo/integrated/service/impl/DataPaperServiceImpl.java)
++ 业务层[DataPaperService.java](backend/src/main/java/com/geo/integrated/service/DataPaperService.java)
++ 业务层实现[DataPaperServiceImpl.java](backend/src/main/java/com/geo/integrated/service/impl/DataPaperServiceImpl.java)
 + 持久层[DataPaperMapper.java](backend/src/main/java/com/geo/integrated/dao/DataPaperMapper.java)
 + xml[DataPaperMapper.xml](backend/src/main/resources/mapper/DataPaperMapper.xml)
 + 界面组件[PaperData.vue](management/src/views/data/PaperData.vue)
@@ -570,8 +570,8 @@ export default service;
 #### 5.1.2.煤田数据
 + 实体类[DataCoalfield.java](backend/src/main/java/com/geo/integrated/model/DataCoalfield.java)
 + 控制层[DataCoalfieldController.java](backend/src/main/java/com/geo/integrated/controller/management/DataCoalfieldController.java)
-+ 服务层[DataCoalfieldService.java](backend/src/main/java/com/geo/integrated/service/DataCoalfieldService.java)
-+ 服务层实现[DataCoalfieldServiceImpl.java](backend/src/main/java/com/geo/integrated/service/impl/DataCoalfieldServiceImpl.java)
++ 业务层[DataCoalfieldService.java](backend/src/main/java/com/geo/integrated/service/DataCoalfieldService.java)
++ 业务层实现[DataCoalfieldServiceImpl.java](backend/src/main/java/com/geo/integrated/service/impl/DataCoalfieldServiceImpl.java)
 + 持久层[DataCoalfieldMapper.java](backend/src/main/java/com/geo/integrated/dao/DataCoalfieldMapper.java)
 + xml[DataCoalfieldMapper.xml](backend/src/main/resources/mapper/DataCoalfieldMapper.xml)
 + 界面组件[CoalfieldData.vue](management/src/views/data/CoalfieldData.vue)
@@ -601,8 +601,8 @@ export default service;
 #### 5.2.1.操作日志
 + 实体类[LogOperation.java](backend/src/main/java/com/geo/integrated/model/LogOperation.java)
 + 控制层[LogOperationController.java](backend/src/main/java/com/geo/integrated/controller/management/LogOperationController.java)
-+ 服务层[LogOperationService.java](backend/src/main/java/com/geo/integrated/service/LogOperationService.java)
-+ 服务层实现[LogOperationServiceImpl.java](backend/src/main/java/com/geo/integrated/service/impl/LogOperationServiceImpl.java)
++ 业务层[LogOperationService.java](backend/src/main/java/com/geo/integrated/service/LogOperationService.java)
++ 业务层实现[LogOperationServiceImpl.java](backend/src/main/java/com/geo/integrated/service/impl/LogOperationServiceImpl.java)
 + 持久层[LogOperationMapper.java](backend/src/main/java/com/geo/integrated/dao/LogOperationMapper.java)
 + xml[LogOperationMapper.xml](backend/src/main/resources/mapper/LogOperationMapper.xml)\
 + 记录操作日志的annotation[OperationLogger.java](backend/src/main/java/com/geo/integrated/annotation/OperationLogger.java)

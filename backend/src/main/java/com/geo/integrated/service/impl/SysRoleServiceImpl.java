@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 /**
  * @author: whtli
  * @date: 2023/02/14
- * @description: 角色管理服务层实现
+ * @description: 角色管理业务层实现
  */
 @Service
 public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements SysRoleService {
