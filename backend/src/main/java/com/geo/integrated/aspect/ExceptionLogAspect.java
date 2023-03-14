@@ -38,7 +38,7 @@ public class ExceptionLogAspect {
     private UserAgentUtils userAgentUtils;
 
     /**
-     * 配置切点
+     * 配置切入点
      */
     @Pointcut("execution(* com.geo.integrated.controller..*.*(..))")
     public void logPointcut() {
