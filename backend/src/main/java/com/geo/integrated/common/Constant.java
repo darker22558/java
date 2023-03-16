@@ -27,7 +27,7 @@ public interface Constant {
     Integer CODE_NO_CONTENT = 204;
 
     /**
-     * 资源已被移除
+     * 资源已被移除，永久重定向
      */
     Integer CODE_MOVED_PERM = 301;
 
@@ -42,7 +42,7 @@ public interface Constant {
     Integer CODE_NOT_MODIFIED = 304;
 
     /**
-     * 参数列表错误（缺少，格式不匹配）
+     * 错误请求，参数列表错误（缺少，格式不匹配）
      */
     Integer CODE_BAD_REQUEST = 400;
 
@@ -57,12 +57,12 @@ public interface Constant {
     Integer CODE_FORBIDDEN = 403;
 
     /**
-     * 资源，服务未找到
+     * 资源、服务未找到
      */
     Integer CODE_NOT_FOUND = 404;
 
     /**
-     * 不允许的http方法
+     * 不允许的http方法，请求方法不对
      */
     Integer CODE_BAD_METHOD = 405;
 
@@ -77,7 +77,7 @@ public interface Constant {
     Integer CODE_UNSUPPORTED_TYPE = 415;
 
     /**
-     * 系统内部错误
+     * 服务器错误内部错误
      */
     Integer CODE_SYSTEM_ERROR = 500;
 

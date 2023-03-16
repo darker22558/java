@@ -55,7 +55,7 @@ public class ExceptionLogAspect {
      *
      * @param joinPoint 连接点
      * @param e         异常
-     * @return
+     * @return 异常日志实体类
      */
     private LogException handleLog(JoinPoint joinPoint, Exception e) {
         // 从ServletRequestAttributes中获取request信息
@@ -78,7 +78,7 @@ public class ExceptionLogAspect {
         Map<String, String> userAgentMap = userAgentUtils.parseOsAndBrowser(userAgent);
         String os = userAgentMap.get("os");
         String browser = userAgentMap.get("browser");
-        //todo 使用swagger后，可以直接使用注解上的内容作为 LogException 的 description
+        //TODO: 使用swagger后，可以直接使用注解上的内容作为 LogException 的 description
         String description = getDescriptionFromAnnotations(joinPoint);
         String error = getStackTrace(e);
         LogException log = new LogException(uri, method, param, description, error, ip, ipSource, os, browser, userAgent);
