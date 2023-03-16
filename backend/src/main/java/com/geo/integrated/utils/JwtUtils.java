@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @Component
 @Slf4j
-public class JwtTokenUtils {
+public class JwtUtils {
     private static final String CLAIM_KEY_USERNAME = "sub";
     private static final String CLAIM_KEY_CREATED = "created";
     private static final Integer TIME_SECOND = 60;
@@ -45,7 +45,7 @@ public class JwtTokenUtils {
     }
 
     /**
-     * 根据负载生成JWT的token
+     * 根据负载生成JWT
      */
     private String generateToken(Map<String, Object> claims) {
         return Jwts.builder()
@@ -56,7 +56,7 @@ public class JwtTokenUtils {
     }
 
     /**
-     * 从token中获取JWT中的负载（校验Token）
+     * 从token中获取负载（校验Token）
      */
     private Claims getClaimsFromToken(String token) {
         try {

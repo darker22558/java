@@ -1,6 +1,6 @@
 package com.geo.integrated.component;
 
-import com.geo.integrated.utils.JwtTokenUtils;
+import com.geo.integrated.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
-    private JwtTokenUtils jwtTokenUtils;
+    private JwtUtils jwtUtils;
     @Value("${jwt.tokenHeader}")
     private String tokenHeader;
     @Value("${jwt.tokenHead}")
@@ -41,11 +41,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith(this.tokenHead)) {
             // The part after "Geo "
             String authToken = authHeader.substring(this.tokenHead.length());
-            String username = jwtTokenUtils.getUserNameFromToken(authToken);
+            String username = jwtUtils.getUserNameFromToken(authToken);
             log.info("Checking username === {}", username);
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-                if (jwtTokenUtils.validateToken(authToken, userDetails)) {
+                if (jwtUtils.validateToken(authToken, userDetails)) {
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     log.info("Authenticated user === {}", username);

@@ -4,7 +4,7 @@ import com.geo.integrated.common.Constant;
 import com.geo.integrated.common.Result;
 import com.geo.integrated.model.dto.LoginDTO;
 import com.geo.integrated.service.AccountService;
-import com.geo.integrated.utils.JwtTokenUtils;
+import com.geo.integrated.utils.JwtUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
     @Autowired
-    private JwtTokenUtils jwtTokenUtils;
+    private JwtUtils jwtUtils;
     @Value("${jwt.tokenHeader}")
     private String tokenHeader;
     @Value("${jwt.tokenHead}")
@@ -92,7 +92,7 @@ public class AccountController {
     @GetMapping("/isTokenNeedToBeRefreshed")
     public Result isTokenNeedToBeRefreshed(@RequestParam String token) {
         log.info("判断token是否需要刷新 === {}", token);
-        boolean flag = jwtTokenUtils.isTokenNeedToBeRefreshed(token);
+        boolean flag = jwtUtils.isTokenNeedToBeRefreshed(token);
         return Result.success(flag);
     }
 
@@ -106,7 +106,7 @@ public class AccountController {
     @GetMapping("/refreshToken")
     public Result refreshToken(HttpServletRequest request) {
         String token = request.getHeader(tokenHeader);
-        String refreshToken = jwtTokenUtils.refreshHeadToken(token);
+        String refreshToken = jwtUtils.refreshHeadToken(token);
         if (refreshToken == null) {
             return Result.fail(Constant.CODE_UNAUTHORIZED,"token无效！", null);
         }

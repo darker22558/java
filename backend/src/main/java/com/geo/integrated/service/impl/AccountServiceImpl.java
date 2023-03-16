@@ -10,7 +10,7 @@ import com.geo.integrated.entity.SysUser;
 import com.geo.integrated.model.dto.SysUserDetails;
 import com.geo.integrated.service.AccountService;
 import com.geo.integrated.service.RedisService;
-import com.geo.integrated.utils.JwtTokenUtils;
+import com.geo.integrated.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,8 +22,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
@@ -41,7 +39,7 @@ public class AccountServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
-    private JwtTokenUtils jwtTokenUtils;
+    private JwtUtils jwtUtils;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Value("${redis.key.expire.authCode}")
@@ -126,7 +124,7 @@ public class AccountServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             }
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            String token = jwtTokenUtils.generateTokenByUserDetails(userDetails);
+            String token = jwtUtils.generateTokenByUserDetails(userDetails);
             if (token == null) {
                 log.warn("token生成失败 === {}", username);
                 throw new RuntimeException("未知错误，请刷新后重新登陆");
