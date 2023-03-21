@@ -3,6 +3,7 @@ package com.geo.integrated.exception;
 import com.geo.integrated.common.Constant;
 import com.geo.integrated.common.Result;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -18,6 +19,17 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    /**
+     * BadCredentialsException
+     */
+    @ExceptionHandler(BadCredentialsException.class)
+    public Result handler(BadCredentialsException e){
+        // 打印堆栈信息
+        String message = "坏的凭证".equals(e.getMessage()) ? "用户名或密码不正确" : e.getMessage();
+        log.error("BadCredentials异常 === {}", message);
+        return Result.fail(Constant.CODE_UNAUTHORIZED, e.getMessage(), null);
+    }
 
     /**
      * 实体校验异常
