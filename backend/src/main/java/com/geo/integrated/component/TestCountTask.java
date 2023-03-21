@@ -22,6 +22,9 @@ public class TestCountTask {
     public String countTask() {
         String countString = Constant.TASK_STRING + " : " +  count;
         log.info("定时任务 === {}", countString);
+        // 默认情况下，@Scheduled任务都在Spring创建的大小为1的默认线程池中执行，通过在加了@Scheduled注解的方法里加上下面这段代码来验证。
+        // 如果需要自定义线程池执行，只需要新加一个实现SchedulingConfigurer接口的 configureTasks 的类，这个类需要加上 @Configuration 注解。
+        log.info("Current Thread : {}", Thread.currentThread().getName());
         count ++;
         return countString;
     }
