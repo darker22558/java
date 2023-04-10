@@ -604,7 +604,7 @@ export default service;
 + 业务层[LogOperationService.java](backend/src/main/java/com/geo/integrated/service/LogOperationService.java)
 + 业务层实现[LogOperationServiceImpl.java](backend/src/main/java/com/geo/integrated/service/impl/LogOperationServiceImpl.java)
 + 持久层[LogOperationMapper.java](backend/src/main/java/com/geo/integrated/dao/LogOperationMapper.java)
-+ xml[LogOperationMapper.xml](backend/src/main/resources/mapper/LogOperationMapper.xml)\
++ xml文件[LogOperationMapper.xml](backend/src/main/resources/mapper/LogOperationMapper.xml)
 + 记录操作日志的annotation[OperationLogger.java](backend/src/main/java/com/geo/integrated/annotation/OperationLogger.java)
 + 记录操作日志的切面[OperationLogAspect.java](backend/src/main/java/com/geo/integrated/aspect/OperationLogAspect.java)
 + AOP工具类[AopUtils.java](backend/src/main/java/com/geo/integrated/utils/AopUtils.java)
@@ -1137,7 +1137,7 @@ jwt:
   tokenHead: Geo  #JWT负载中拿到开头
 ```
 
-+ 添加[JWT token](backend/src/main/java/com/geo/integrated/utils/JwtTokenUtil.java)的工具类
++ 添加[JWT token](backend/src/main/java/com/geo/integrated/utils/JwtUtils.java)的工具类
 
 + 添加[SpringSecurity](backend/src/main/java/com/geo/integrated/config/SecurityConfig.java)的配置类
 
@@ -1145,7 +1145,7 @@ jwt:
 
 + 添加[RestAuthenticationEntryPoint](backend/src/main/java/com/geo/integrated/component/RestAuthenticationEntryPoint.java)
 
-+ 添加[JwtAuthenticationTokenFilter](backend/src/main/java/com/geo/integrated/component/JwtAuthenticationTokenFilter.java)
++ 添加[JwtAuthenticationFilter](backend/src/main/java/com/geo/integrated/component/JwtAuthenticationFilter.java)
 
 + 添加[SysUserDetails](backend/src/main/java/com/geo/integrated/model/dto/SysUserDetails.java)
 
@@ -1169,11 +1169,11 @@ jwt:
 + 添加依赖[pom.xml](./backend/pom.xml)
   ```xml
       <dependencies>
-          <!--文档工具-->
+          <!-- EasyExcel -->
           <dependency>
-              <groupId>org.apache.poi</groupId>
-              <artifactId>poi-ooxml</artifactId>
-              <version>4.1.2</version>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>3.1.3</version>
           </dependency>
       </dependencies>
   ```
@@ -1329,7 +1329,6 @@ jwt:
   - exportDataTemplate 导出模板
   - importDataBatch 批量导入数据
   - exportDataBatch 批量导出数据
-
 
 ### 6.7.整合Druid
 
