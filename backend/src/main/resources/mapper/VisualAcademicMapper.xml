@@ -8,18 +8,18 @@
         group by t_b.type_name
     </select>
     <select id="getHonorCount" resultType="java.lang.Integer">
-        SELECT count(*) FROM ach_honor
+        SELECT count(id) FROM ach_honor
     </select>
     <select id="getProjectCount" resultType="java.lang.Integer">
-        SELECT count(*) FROM ach_project
+        SELECT count(id) FROM ach_project
     </select>
     <select id="getPaperPublishedCount" resultType="java.lang.Integer">
-        SELECT count(*) FROM ach_paper
+        SELECT count(id) FROM ach_paper
     </select>
     <select id="getPatentCount" resultType="java.lang.Integer">
-        SELECT count(*) FROM ach_patent
+        SELECT count(id) FROM ach_patent
     </select>
     <select id="getProjectList" resultType="com.geo.integrated.entity.AchievementProject">
-        SELECT * FROM ach_project
+        SELECT id, `number`, title, charge_person as chargePerson, start_date as startDate, end_date as endDate, type, funds, funds_source as fundsSource FROM ach_project
     </select>
 </mapper>

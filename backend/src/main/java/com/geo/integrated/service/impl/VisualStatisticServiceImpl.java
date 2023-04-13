@@ -1,6 +1,7 @@
 package com.geo.integrated.service.impl;
 
 import com.geo.integrated.dao.VisualStatisticMapper;
+import com.geo.integrated.model.vo.VisitorInfoSummary;
 import com.geo.integrated.service.VisualStatisticService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,14 +20,29 @@ public class VisualStatisticServiceImpl implements VisualStatisticService {
     @Resource
     private VisualStatisticMapper visualStatisticMapper;
 
+    @Override
+    public VisitorInfoSummary getStatisticalData() {
+        // TODO: 访问信息入库、使用redis获取日PV和日UV
+        // 总PV
+        int totalPageView = getTotalPageView();
+        // 日PV
+        int todayPageView = getTodayPageView();
+        // 总UV
+        int totalUniqueVisitor = getTotalUniqueVisitor();
+        // 日UV
+        int todayUniqueVisitor = getTodayUniqueVisitor();
+        VisitorInfoSummary visitorInfoSummary = new VisitorInfoSummary(totalPageView, todayPageView, totalUniqueVisitor, todayUniqueVisitor);
+        return visitorInfoSummary;
+    }
+
     /**
      * 获取总PV
      *
      * @return 总PV值
      */
-    @Override
     public int getTotalPageView() {
-        return 0;
+        int totalPageView = visualStatisticMapper.getTotalPageView();
+        return totalPageView;
     }
 
     /**
@@ -34,9 +50,9 @@ public class VisualStatisticServiceImpl implements VisualStatisticService {
      *
      * @return 日PV值
      */
-    @Override
     public int getTodayPageView() {
-        return 0;
+        int todayPageView = visualStatisticMapper.getTodayPageView();
+        return todayPageView;
     }
 
     /**
@@ -44,9 +60,9 @@ public class VisualStatisticServiceImpl implements VisualStatisticService {
      *
      * @return 总UV值
      */
-    @Override
     public int getTotalUniqueVisitor() {
-        return 0;
+        int totalUniqueVisitor = visualStatisticMapper.getTotalUniqueVisitor();
+        return totalUniqueVisitor;
     }
 
     /**
@@ -54,8 +70,8 @@ public class VisualStatisticServiceImpl implements VisualStatisticService {
      *
      * @return 日UV值
      */
-    @Override
     public int getTodayUniqueVisitor() {
-        return 0;
+        int todayUniqueVisitor = visualStatisticMapper.getTodayUniqueVisitor();
+        return todayUniqueVisitor;
     }
 }

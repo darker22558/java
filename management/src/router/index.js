@@ -14,6 +14,8 @@ import ExceptionLog from "@/views/log/ExceptionLog.vue";
 import Statistic from "@/views/visualization/Statistic.vue";
 import User from "@/views/system/User.vue";
 import Role from "@/views/system/Role.vue";
+import Status from "@/views/visualization/Status";
+import Academic from "@/views/visualization/Academic";
 
 Vue.use(VueRouter);
 
@@ -154,10 +156,22 @@ const routes = [
     hidden: false,
     children: [
       {
+        path: "academic",
+        name: "学术成果",
+        meta: { title: "学术成果数据", icon: "el-icon-data-analysis" },
+        component: Academic,
+      },
+      {
         path: "statistic",
         name: "网站数据",
         meta: { title: "网站数据统计", icon: "el-icon-data-analysis" },
         component: Statistic,
+      },
+      {
+        path: "status",
+        name: "系统状态",
+        meta: { title: "系统状态信息", icon: "el-icon-data-analysis" },
+        component: Status,
       },
       {
         path: "dataService",

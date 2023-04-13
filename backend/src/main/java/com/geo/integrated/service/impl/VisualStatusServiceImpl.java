@@ -1,21 +1,12 @@
 package com.geo.integrated.service.impl;
 
-import com.geo.integrated.common.Result;
 import com.geo.integrated.model.vo.SystemStatus;
 import com.geo.integrated.service.VisualStatusService;
-import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import oshi.SystemInfo;
 import oshi.hardware.*;
-import oshi.software.os.OSProcess;
 import oshi.software.os.OperatingSystem;
-import oshi.util.FormatUtil;
-import oshi.util.Util;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author: whtli

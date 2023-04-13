@@ -4,7 +4,6 @@ import com.geo.integrated.annotation.OperationLogger;
 import com.geo.integrated.common.Result;
 import com.geo.integrated.exception.ServiceException;
 import com.geo.integrated.model.vo.SystemStatus;
-import com.geo.integrated.service.VisualStatisticService;
 import com.geo.integrated.service.VisualStatusService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -12,16 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import oshi.SystemInfo;
-import oshi.hardware.CentralProcessor;
-import oshi.hardware.GlobalMemory;
-import oshi.hardware.HardwareAbstractionLayer;
-import oshi.software.os.OperatingSystem;
-import oshi.util.FormatUtil;
-
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * @author: whtli
@@ -48,8 +37,8 @@ public class VisualStatusController {
         try {
             SystemStatus systemStatus = visualStatusService.getSystemState();
             return Result.success("统计系统状态获取成功", systemStatus);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ServiceException e) {
+            log.error("统计系统状态获取失败 === {}", e.getMessage());
             return Result.fail("统计系统状态获取失败");
         }
     }

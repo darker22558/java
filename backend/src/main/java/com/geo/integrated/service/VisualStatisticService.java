@@ -1,5 +1,7 @@
 package com.geo.integrated.service;
 
+import com.geo.integrated.model.vo.VisitorInfoSummary;
+
 import java.util.Map;
 
 /**
@@ -9,30 +11,9 @@ import java.util.Map;
  */
 public interface VisualStatisticService {
     /**
-     * 获取总PV
+     * 网站访客信息数据统计
      *
-     * @return 总PV值
+     * @return
      */
-    int getTotalPageView();
-
-    /**
-     * 获取当日PV
-     *
-     * @return 日PV值
-     */
-    int getTodayPageView();
-
-    /**
-     * 获取总UV
-     *
-     * @return 总UV值
-     */
-    int getTotalUniqueVisitor();
-
-    /**
-     * 获取日UV
-     *
-     * @return 日UV值
-     */
-    int getTodayUniqueVisitor();
+    VisitorInfoSummary getStatisticalData();
 }
