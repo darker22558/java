@@ -731,6 +731,13 @@ import * as echarts from 'echarts';
   - [VisualStatisticMapper.java](backend/src/main/java/com/geo/integrated/dao/VisualStatisticMapper.java)
   - [VisualStatisticMapper.xml](backend/src/main/resources/mapper/VisualStatisticMapper.xml)
 
+#### 5.4.3.遇到的问题
+1) 使用`OSHI`获取系统状态信息时，后端正常，返回至前端的过程中遇到以下两个报错
+   + java.lang.IllegalStateException: Unmapped relationship: 7
+     - 添加依赖net.java.dev.jna，版本5.10.0
+   + COM exception querying MSAcpi_ThermalZoneTemperature, which might not be on
+     - 将获取到的系统状态信息转为String或者整型后再添加到VO中返回
+
 ### 5.5.系统相关（system）
 
 + 新增角色管理[界面](management/src/views/system/User.vue)与[接口](management/src/api/system/role.js)，与`5.1.数据相关（data）`中配置步骤类似
