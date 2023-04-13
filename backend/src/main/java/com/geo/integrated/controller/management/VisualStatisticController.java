@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -29,16 +30,14 @@ public class VisualStatisticController {
     /**
      * 获取统计数据
      *
-     * @return 存放了网站各类数据信息的哈希表
+     * @return 访问量信息
      */
     @ApiOperation("获取统计数据")
     @OperationLogger("获取统计数据")
     @GetMapping("/getStatisticalData")
     public Result getStatisticalData() {
-        Map<String, Object> map = new LinkedHashMap<>();
-        // 项目统计数据
-        map = visualStatisticService.getProjectStatistic();
-
+        Map<String, Object> map = new HashMap<>();
+        // TODO: PV和UV
         // 总PV
         int totalPageView = visualStatisticService.getTotalPageView();
         // 日PV
@@ -48,25 +47,10 @@ public class VisualStatisticController {
         // 日UV
         int todayUniqueVisitor = visualStatisticService.getTodayUniqueVisitor();
 
-         // 所获荣誉总数
-        int totalHonor = visualStatisticService.getHonorCount();
-        // 科研项目总数
-        int totalProject = visualStatisticService.getProjectCount();
-        // 发表论文总数
-        /* int totalPaperPublished = visualStatisticService.getPaperPublishedCount();*/
-        // 发明专利总数
-        int totalPatent = visualStatisticService.getPatentCount();
-
         map.put("totalPageView", totalPageView);
         map.put("todayPageView", todayPageView);
         map.put("totalUniqueVisitor", totalUniqueVisitor);
         map.put("todayUniqueVisitor", todayUniqueVisitor);
-
-        map.put("totalHonor", totalHonor);
-        map.put("totalProject", totalProject);
-        /* map.put("totalPaperPublished", totalPaperPublished);*/
-        map.put("totalPatent", totalPatent);
-
 
         return Result.success("统计信息获取成功", map);
     }

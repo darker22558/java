@@ -1,4 +1,4 @@
-package com.geo.integrated.model.vo;
+package com.geo.integrated.model.dto;
 
 import lombok.Data;
 
