@@ -12,10 +12,10 @@
     <div style="margin-left: 2px; margin-top: 3px">
       <el-table :data="patentList" border stripe v-loading="loading" :height="420" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="40"></el-table-column>
-        <el-table-column label="序号" prop="id" width="50"></el-table-column>
-        <el-table-column label="编号" prop="number" width="180"></el-table-column>
-        <el-table-column label="专利名称" prop="title" width="260" show-overflow-tooltip> </el-table-column>
-        <el-table-column label="完成人(固定人员)" prop="finisher" width="140"></el-table-column>
+        <el-table-column label="序号" prop="id" width="60"></el-table-column>
+        <el-table-column label="编号" prop="number" width="200"></el-table-column>
+        <el-table-column label="专利名称" prop="title" width="500" show-overflow-tooltip> </el-table-column>
+        <el-table-column label="完成人(固定人员)" prop="finisher" width="200"></el-table-column>
         <el-table-column label="操作" fixed="right">
           <template v-slot="scope">
             <el-button size="mini" type="success" icon="el-icon-edit" @click="editPatent(scope.row)">编辑</el-button>

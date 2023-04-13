@@ -13,9 +13,9 @@
       <el-table :data="honorList" border stripe v-loading="loading" :height="420" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="40"></el-table-column>
 <!--        <el-table-column label="序号" prop="id" width="50"></el-table-column>-->
-        <el-table-column label="荣誉名称" prop="honorName" width="200"></el-table-column>
-        <el-table-column label="成果名称" prop="achievementName" width="300" show-overflow-tooltip> </el-table-column>
-        <el-table-column label="实验室人员排名" prop="participantsRank" width="180"></el-table-column>
+        <el-table-column label="荣誉名称" prop="honorName" width="240"></el-table-column>
+        <el-table-column label="成果名称" prop="achievementName" width="500" show-overflow-tooltip> </el-table-column>
+        <el-table-column label="实验室人员排名" prop="participantsRank" width="300"></el-table-column>
         <el-table-column label="操作" fixed="right">
           <template v-slot="scope">
             <el-button size="mini" type="success" icon="el-icon-edit" @click="editHonor(scope.row)">编辑</el-button>

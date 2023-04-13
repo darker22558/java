@@ -23,14 +23,14 @@
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column label="序号" prop="id" width="50" />
+        <el-table-column label="序号" prop="id" width="80" />
         <el-table-column label="操作者" prop="username" width="80" />
         <el-table-column label="请求方式" prop="method" width="80" />
         <el-table-column label="描述" prop="description" width="140" />
-        <el-table-column label="ip" prop="ip" width="120" />
-        <el-table-column label="ip来源" prop="ipSource" show-overflow-tooltip />
-        <el-table-column label="操作系统" prop="os" width="100" />
-        <el-table-column label="浏览器" prop="browser" show-overflow-tooltip />
+        <el-table-column label="ip" prop="ip" width="160" />
+        <el-table-column label="ip来源" prop="ipSource" width="160" show-overflow-tooltip />
+        <el-table-column label="操作系统" prop="os" width="160" />
+        <el-table-column label="浏览器" prop="browser" width="160" show-overflow-tooltip />
         <el-table-column label="操作耗时" width="80">
           <template v-slot="scope">
             <el-tag size="small">{{ scope.row.times }}ms</el-tag>

@@ -25,12 +25,12 @@
           </template>
         </el-table-column>
         <el-table-column label="请求方式" prop="method" width="80" />
-        <el-table-column label="操作描述" prop="description" width="80" />
-        <el-table-column label="ip" prop="ip" width="120"/>
-        <el-table-column label="ip来源" prop="ipSource" width="100" show-overflow-tooltip/>
-        <el-table-column label="操作系统" prop="os" width="100" show-overflow-tooltip/>
-        <el-table-column label="浏览器" prop="browser" show-overflow-tooltip />
-        <el-table-column label="用户代理" prop="userAgent" width="80" show-overflow-tooltip></el-table-column>
+        <el-table-column label="操作描述" prop="description" width="160" />
+        <el-table-column label="ip" prop="ip" width="160"/>
+        <el-table-column label="ip来源" prop="ipSource" width="160" show-overflow-tooltip/>
+        <el-table-column label="操作系统" prop="os" width="160" show-overflow-tooltip/>
+        <el-table-column label="浏览器" prop="browser" width="160" show-overflow-tooltip />
+        <el-table-column label="用户代理" prop="userAgent" width="300" show-overflow-tooltip></el-table-column>
         <el-table-column label="操作时间" width="100">
           <template v-slot="scope">{{ scope.row.createTime.substring(0, 10) }}</template>
         </el-table-column>

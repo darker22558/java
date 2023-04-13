@@ -18,11 +18,11 @@
       <el-table :data="userList" border stripe v-loading="loading" :height="420" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="40"></el-table-column>
         <!--        <el-table-column label="序号" prop="id" width="50"></el-table-column>-->
-        <el-table-column label="用户名" prop="username" width="80"></el-table-column>
-        <el-table-column label="昵称" prop="nickname" width="80"></el-table-column>
-        <el-table-column label="头像地址" prop="avatar" width="120" show-overflow-tooltip></el-table-column>
-        <el-table-column label="邮箱" prop="email" width="140"></el-table-column>
-        <el-table-column label="创建时间" width="150">
+        <el-table-column label="用户名" prop="username" width="160"></el-table-column>
+        <el-table-column label="昵称" prop="nickname" width="160"></el-table-column>
+        <el-table-column label="头像地址" prop="avatar" width="200" show-overflow-tooltip></el-table-column>
+        <el-table-column label="邮箱" prop="email" width="200"></el-table-column>
+        <el-table-column label="创建时间" width="160">
           <template v-slot="scope">
             <el-date-picker style="width: 100%" disabled v-model="scope.row.createTime" size="small"></el-date-picker>
           </template>

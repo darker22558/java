@@ -18,7 +18,7 @@
         <el-table-column type="selection" width="40"> </el-table-column>
 <!--        <el-table-column label="序号" prop="id" width="50"> </el-table-column>-->
         <el-table-column label="eid" prop="eid" width="160"> </el-table-column>
-        <el-table-column label="标题" prop="title" width="340" show-overflow-tooltip></el-table-column>
+        <el-table-column label="标题" prop="title" width="800" show-overflow-tooltip></el-table-column>
         <el-table-column label="发表时间" width="150">
           <template v-slot="scope">
             <el-date-picker style="width: 100%" disabled v-model="scope.row.publicDate" size="small"></el-date-picker>
