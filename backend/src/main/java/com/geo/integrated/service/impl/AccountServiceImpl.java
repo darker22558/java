@@ -117,7 +117,7 @@ public class AccountServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             if (user == null) {
                 throw new BadCredentialsException("用户不存在");
             }
-            // UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            /* UserDetails userDetails = userDetailsService.loadUserByUsername(username);*/
             SysUserDetails userDetails = new SysUserDetails(user);
             if (!passwordEncoder.matches(password, userDetails.getPassword())) {
                 throw new BadCredentialsException("密码不正确");

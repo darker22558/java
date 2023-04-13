@@ -15,8 +15,8 @@ import lombok.Data;
  * @description: 访问日志实体类
  */
 @Data
-@TableName("log_visit")
-public class LogVisit implements Serializable {
+@TableName("log_visitor")
+public class LogVisitor implements Serializable {
     /**
      * id
      */

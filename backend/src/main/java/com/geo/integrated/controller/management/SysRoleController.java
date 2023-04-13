@@ -34,8 +34,6 @@ public class SysRoleController {
      * @param name        名称
      * @param description 描述
      * @param flag        唯一标识
-     * @param pageNum     页码
-     * @param pageSize    页内数量
      * @return 角色信息列表
      */
     @ApiOperation("获取角色信息列表")

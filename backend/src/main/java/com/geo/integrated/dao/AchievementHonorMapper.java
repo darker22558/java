@@ -9,15 +9,4 @@ import com.geo.integrated.entity.AchievementHonor;
  * @description: 所获荣誉信息数据持久层
  */
 public interface AchievementHonorMapper extends BaseMapper<AchievementHonor> {
-    int deleteByPrimaryKey(Long id);
-
-    int insert(AchievementHonor record);
-
-    int insertSelective(AchievementHonor record);
-
-    AchievementHonor selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(AchievementHonor record);
-
-    int updateByPrimaryKey(AchievementHonor record);
 }

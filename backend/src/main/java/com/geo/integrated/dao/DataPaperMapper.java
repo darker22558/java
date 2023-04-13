@@ -8,15 +8,4 @@ import com.geo.integrated.entity.DataPaper;
  * @description: 文献信息数据持久层
  */
 public interface DataPaperMapper extends BaseMapper<DataPaper> {
-    int deleteByPrimaryKey(Long id);
-
-    int insert(DataPaper record);
-
-    int insertSelective(DataPaper record);
-
-    DataPaper selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(DataPaper record);
-
-    int updateByPrimaryKey(DataPaper record);
 }

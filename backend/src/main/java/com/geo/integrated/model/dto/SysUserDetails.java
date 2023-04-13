@@ -14,6 +14,11 @@ import java.util.Collection;
 public class SysUserDetails implements UserDetails {
     private SysUser sysUser;
     // private List<SysUserPermission> permissionList;
+
+    /**
+     * 构造方法
+     * @param sysUser 用户实体类
+     */
     public SysUserDetails(SysUser sysUser) {
         this.sysUser = sysUser;
         // this.permissionList = permissionList;

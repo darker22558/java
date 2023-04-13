@@ -12,8 +12,17 @@ import java.util.Map;
  * @description: 用户管理业务层
  */
 public interface SysUserService extends IService<SysUser> {
-
+    /**
+     * 保存用户信息
+     * @param user
+     * @return
+     */
     Result saveUserInfo(SysUser user);
 
+    /**
+     * 更新用户信息
+     * @param user
+     * @return
+     */
     Result updateUserInfo(SysUser user);
 }

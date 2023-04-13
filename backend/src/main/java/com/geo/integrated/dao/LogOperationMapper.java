@@ -8,15 +8,4 @@ import com.geo.integrated.entity.LogOperation;
  * @description: 操作日志持久层
  */
 public interface LogOperationMapper extends BaseMapper<LogOperation> {
-    int deleteByPrimaryKey(Long id);
-
-    int insert(LogOperation record);
-
-    int insertSelective(LogOperation record);
-
-    LogOperation selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(LogOperation record);
-
-    int updateByPrimaryKey(LogOperation record);
 }
