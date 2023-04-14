@@ -37,7 +37,6 @@ public class GlobalExceptionHandler {
      * @param e 前端传入的实体不满足@Validate规则触发异常
      * @return 异常信息
      */
-    // @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public Result handler(MethodArgumentNotValidException e) {
         log.error("实体校验异常 === {}", e.getMessage());
@@ -53,7 +52,6 @@ public class GlobalExceptionHandler {
      * @param e 运行时异常
      * @return 异常信息
      */
-    // @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = RuntimeException.class)
     public Result handler(RuntimeException e) {
         log.error("运行时异常 === {}", e.getMessage());
