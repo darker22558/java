@@ -16,6 +16,9 @@ import User from "@/views/system/User.vue";
 import Role from "@/views/system/Role.vue";
 import Status from "@/views/visualization/Status";
 import Academic from "@/views/visualization/Academic";
+import China from "@/views/visualization/Map/China";
+import Province from "@/views/visualization/Map/Province";
+import City from "@/views/visualization/Map/City";
 
 Vue.use(VueRouter);
 
@@ -155,6 +158,26 @@ const routes = [
     meta: { title: "可视化", icon: "el-icon-data-analysis" },
     hidden: false,
     children: [
+      {
+        path: "china",
+        name: "中国地图",
+        meta: { title: "中国地图", icon: "el-icon-data-analysis" },
+        component: China,
+      },
+      {
+        path: "province",
+        name: "省份地图",
+        meta: { title: "省份地图", icon: "el-icon-data-analysis" },
+        component: Province,
+        hidden: true
+      },
+      {
+        path: "city",
+        name: "城市地图",
+        meta: { title: "城市地图", icon: "el-icon-data-analysis" },
+        component: City,
+        hidden: true
+      },
       {
         path: "academic",
         name: "学术成果",
