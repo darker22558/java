@@ -246,8 +246,6 @@ export default {
         this.cpuNumber = res.data.physicalPackageCount;
         // 物理核心数
         this.coreNumber = res.data.physicalProcessorCount;
-        console.log(res.data.availableMemory)
-        console.log(res.data.totalMemory)
         this.gaugeDataOption.series[0].data[0].value = ((res.data.availableMemory / res.data.totalMemory) * 100).toFixed(2);
         this.gauge = echarts.init(this.$refs.gauge);
         this.gauge.setOption(this.gaugeDataOption);
