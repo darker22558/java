@@ -28,7 +28,11 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column label="相关论文" prop="relevantPaper" width="800" show-overflow-tooltip> </el-table-column>
+        <el-table-column label="相关论文" prop="relevantPaper" width="800" show-overflow-tooltip>
+          <template v-slot="scope">
+            <a v-bind:href="scope.row.link" target="_blank">{{scope.row.relevantPaper}}</a>
+          </template>
+        </el-table-column>
         <el-table-column label="备注" prop="remark" width="50" show-overflow-tooltip> </el-table-column>
         <el-table-column label="操作" fixed="right">
           <template v-slot="scope">

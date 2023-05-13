@@ -10,10 +10,17 @@
     <result column="sample_number" jdbcType="INTEGER" property="sampleNumber" />
     <result column="ash_yield" jdbcType="VARCHAR" property="ashYield" />
     <result column="relevant_paper" jdbcType="VARCHAR" property="relevantPaper" />
+    <result column="link" jdbcType="VARCHAR" property="link" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
   <sql id="Base_Column_List">
     id, coalfield_name, province, coal_covering_area, coal_forming_periods, sample_number, 
-    ash_yield, relevant_paper, remark
+    ash_yield, relevant_paper, link, remark
   </sql>
+    <select id="getCoalfieldInfoOfAllProvince" resultType="com.geo.integrated.entity.DataCoalfield">
+      SELECT id, coalfield_name, province, coal_covering_area, coal_forming_periods, sample_number,
+             ash_yield, relevant_paper, link, remark
+      FROM data_coalfield
+      ORDER BY province;
+    </select>
 </mapper>

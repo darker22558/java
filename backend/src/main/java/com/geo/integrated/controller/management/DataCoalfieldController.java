@@ -11,6 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.Map;
  * @date: 2023/01/26
  * @description: 煤田信息数据管理控制层
  */
+@Slf4j
 @Api(tags = "DataCoalfieldController")
 @RestController
 @RequestMapping("/management/data/coalfield")
@@ -114,6 +116,19 @@ public class DataCoalfieldController {
             return Result.success("煤田信息维护成功");
         } else {
             return Result.fail("煤田信息维护失败");
+        }
+    }
+
+    @ApiOperation("获取各省的煤田信息")
+    @OperationLogger("获取各省的煤田信息")
+    @GetMapping("/getCoalfieldInfoOfAllProvince")
+    public Result getCoalfieldInfoOfAllProvince() {
+        try {
+            Map<String, Object> data = dataCoalfieldService.getCoalfieldInfoOfAllProvince();
+            return Result.success("获取各省的煤田信息成功", data);
+        } catch (Exception e) {
+            log.error("获取各省的煤田信息失败 === {}", e.getMessage());
+            return Result.fail("获取各省的煤田信息失败");
         }
     }
 }

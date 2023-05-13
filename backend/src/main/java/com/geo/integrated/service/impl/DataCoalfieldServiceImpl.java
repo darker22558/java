@@ -6,6 +6,11 @@ import com.geo.integrated.entity.DataCoalfield;
 import com.geo.integrated.service.DataCoalfieldService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author: whtli
  * @date: 2023/01/26
@@ -13,4 +18,19 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class DataCoalfieldServiceImpl extends ServiceImpl<DataCoalfieldMapper, DataCoalfield> implements DataCoalfieldService {
+    @Resource
+    DataCoalfieldMapper dataCoalfieldMapper;
+    @Override
+    public Map<String, Object> getCoalfieldInfoOfAllProvince() {
+        List<DataCoalfield> coalfieldList = dataCoalfieldMapper.getCoalfieldInfoOfAllProvince();
+        Map<String, Integer> coalfieldCountOfProvince = new HashMap<>();
+        for (DataCoalfield item : coalfieldList) {
+            String province = item.getProvince();
+            coalfieldCountOfProvince.put(province, coalfieldCountOfProvince.getOrDefault(province, 0) + 1);
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("coalfieldList", coalfieldList);
+        map.put("coalfieldCountOfProvince", coalfieldCountOfProvince);
+        return map;
+    }
 }

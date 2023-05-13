@@ -66,6 +66,12 @@ public class DataCoalfield implements Serializable {
     private String relevantPaper;
 
     /**
+     * 论文链接
+     */
+    @ApiModelProperty(value = "论文链接")
+    private String link;
+
+    /**
      * 备注
      */
     @ApiModelProperty(value = "备注")
