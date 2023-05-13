@@ -37,7 +37,7 @@
                   <span>{{ item.name }}</span>
                 </template>
                 <template v-for="(children, indexOfChild) in item.children">
-                  <el-menu-item :key="indexOfChild" :index="item.path + '/' + children.path">
+                  <el-menu-item v-if="!children.hidden" :key="indexOfChild" :index="item.path + '/' + children.path">
                     <template slot="title" v-if="children.meta">
                       <i :class="children.meta.icon"></i>
                       <span>{{ children.meta.title }}</span>
