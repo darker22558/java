@@ -1,4 +1,4 @@
-# 科研数据管理系统
+# 实验室数据管理系统
 
 <p align="center">
     <a href="https://github.com/spring-projects/spring-boot" target="_blank">	
@@ -30,6 +30,8 @@
 ## 简介
 + 项目地址：https://github.com/whtli/geo-integrated
 + 登录账号：`admin`；密码：`111111`
++ 一个可用于管理实验室科研数据的系统demo
++ 详细开发过程及遇到的问题见[PROCESS_RECORD.md](PROCESS_RECORD.md)
 
 
 ## 技术栈
@@ -56,8 +58,6 @@
 
 
 ## 实现功能
-
-### 项目过程记录见[PROCESS_RECORD.md](PROCESS_RECORD.md)
 
 + 数据信息的增删改查
 + 数据表格的导入导出（EasyExcel）
